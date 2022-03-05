@@ -1,19 +1,42 @@
 package de.marcus.javagame.entities;
 
-public class Creature {
+import com.badlogic.gdx.graphics.Texture;
+import lombok.*;
+import org.graalvm.compiler.lir.CompositeValue;
+
+@Getter
+@Setter
+public class Creature extends Entity{
     private int health;
+    private int maxHealth;
+
     private int hunger;
+    private int maxHunger;
+
     private int armor;
+    private int maxArmor;
+
     private int thirst;
+    private int maxThirst;
+
+
+    private float movementSpeed;
     private boolean isDead;
 
 
     private boolean invincible;
     /**
-     * These mean if the creature can loose hunger or thirst.soil
+     * These mean if the creature can loose hunger or thirst.
      */
     private boolean hungry;
     private boolean thirsty;
 
-
+    public Creature(float posX, float posY, Texture texture, int maxHealth, int maxHunger, int maxArmor, int maxThirst, float movementSpeed) {
+        super(posX, posY, texture);
+        this.maxHealth = maxHealth;
+        this.maxHunger = maxHunger;
+        this.maxArmor = maxArmor;
+        this.maxThirst = maxThirst;
+        this.movementSpeed = movementSpeed;
+    }
 }
