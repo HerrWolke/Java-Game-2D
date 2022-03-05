@@ -10,7 +10,7 @@ public class Creature {
 
     private boolean invincible;
     /**
-     * These mean if the creature can loose hunger or thirst
+     * These mean if the creature can loose hunger or thirst.
      */
     private boolean hungry;
     private boolean thirsty;
