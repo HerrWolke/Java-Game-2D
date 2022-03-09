@@ -1,4 +1,4 @@
-package de.marcus.javagame.entities;
+package de.marcus.javagame.misc;
 
 import lombok.AllArgsConstructor;
 

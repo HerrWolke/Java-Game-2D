@@ -23,6 +23,8 @@ public class Creature extends Entity{
     private float movementSpeed;
     private boolean isDead;
 
+    //TODO: ADD SOMETHING FOR DROPS
+
 
     private boolean invincible;
     /**

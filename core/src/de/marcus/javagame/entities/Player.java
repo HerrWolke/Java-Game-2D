@@ -1,9 +1,9 @@
 package de.marcus.javagame.entities;
 
 import com.badlogic.gdx.graphics.Texture;
+import de.marcus.javagame.misc.Inventory;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.Value;
 
 @Getter
 @Setter
