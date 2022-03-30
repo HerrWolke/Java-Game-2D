@@ -2,78 +2,139 @@ package de.marcus.javagame;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import de.marcus.javagame.entities.Item;
-import de.marcus.javagame.game.Assets;
-import de.marcus.javagame.managers.EntityManager;
+import de.alsclo.voronoi.Voronoi;
+import de.alsclo.voronoi.graph.Graph;
+import de.alsclo.voronoi.graph.Point;
+import de.marcus.javagame.misc.CustomComparator;
+
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 public class JavaGame extends ApplicationAdapter {
-	SpriteBatch batch;
-	Assets assets;
-	Item sword;
-	EntityManager entityManager;
-	OrthographicCamera camera;
-	OrthographicCamera uiCam;
-	Viewport viewport;
+    Batch batch;
+    OrthographicCamera camera;
 
-	
-	@Override
-	public void create () {
-		batch = new SpriteBatch();
-		assets = new Assets();
-		assets.load();
-		assets.manager.finishLoading();
+    Viewport viewport;
+    ShapeRenderer shapeRenderer;
+    List<Point> list;
+    Voronoi voronoi;
+    Graph graph;
+
+    @Override
+    public void create() {
 
 
+        batch = new SpriteBatch();
+        shapeRenderer = new ShapeRenderer();
+        camera = new OrthographicCamera(50, 50);
+        viewport = new FillViewport(camera.viewportWidth, camera.viewportHeight, camera);
+        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
 
-		entityManager = new EntityManager();
-		camera = new OrthographicCamera(50,50);
-		viewport = new StretchViewport(camera.viewportWidth,camera.viewportHeight,camera);
-		camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
-	}
+        list = new ArrayList<>();
+        for (int i = 0; i < 999; i++) {
+            double x = Math.random() * 50;
+            double y = Math.random() * 50;
+            Point p = new Point(x, y);
+            list.add(p);
+        }
 
-	@Override
-	public void render () {
-		ScreenUtils.clear(0, 0, 0, 1);
+        voronoi = new Voronoi(list);
+        graph = voronoi.relax().getGraph();
 
-		BitmapFont font = new BitmapFont(Gdx.files.internal("default.fnt"));
-		batch.setProjectionMatrix(camera.combined);
-		batch.begin();
+//		for (Point point : graph.getSitePoints().stream().sorted(new CustomComparator()).collect(Collectors.toList())) {
+//
+//			System.out.println(point.x + " " + point.y);
+//		}
 
-		for (int i = 0; i <= camera.viewportWidth; i+=5) {
-			for (int x = 0; x <= camera.viewportHeight; x+=5) {
-				batch.draw(assets.manager.<Texture>get("world/grass.png"),i,x,5,5);
-			}
-		}
+        List<Point> collect = graph.getSitePoints().stream().sorted(new CustomComparator()).collect(Collectors.toList());
 
-		Sprite bow = new Sprite(assets.textureAtlas.findRegion("bow"), 0, 0, 32, 32);
-		bow.setSize(1,1);
-		bow.draw(batch);
-		font.draw(batch, "Upper left, FPS=" + Gdx.graphics.getFramesPerSecond(), 0, camera.viewportHeight);
-//		sword.render(batch);
-		batch.end();
+        for (Point point : collect)  {
+            System.out.println("x: " + point.x + " , y:" + point.y);
+        }
 
 
-	}
+        Gdx.graphics.setContinuousRendering(false);
+        Gdx.graphics.requestRendering();
+    }
 
-	public void update() {
+    @Override
+    public void render() {
+        super.render();
 
-	}
 
-	@Override
-	public void resize(int width, int height) {
-		viewport.update(width,height);
-	}
+        System.out.println("Rend");
 
-	@Override
-	public void dispose () {
-		batch.dispose();
-		assets.dispose();
-	}
+        camera.update();
+
+        shapeRenderer.setProjectionMatrix(camera.combined);
+        Gdx.gl.glClearColor(0, 0, 0, 0);
+        Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT | GL30.GL_DEPTH_BUFFER_BIT);
+
+        shapeRenderer.setAutoShapeType(true);
+
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+
+
+
+        for (Point point : graph.getSitePoints()) {
+            if(Math.random() > 0.5 )
+                shapeRenderer.setColor(Color.RED);
+            else
+                shapeRenderer.setColor(Color.WHITE);
+            shapeRenderer.circle((float) point.x, (float) point.y, 0.05f,20);
+
+        }
+        shapeRenderer.end();
+        shapeRenderer.setColor(Color.WHITE);
+        shapeRenderer.begin();
+        graph.edgeStream().filter(e -> e.getA() != null && e.getB() != null).forEach(e -> {
+            Point a = e.getA().getLocation();
+            Point b = e.getB().getLocation();
+            shapeRenderer.line((float) a.x, (float) a.y, (float) b.x, (float) b.y);
+
+        });
+        shapeRenderer.end();
+
+//		shapeRenderer.begin();
+//		for (DTriangle t : del.getTriangles()) {
+//			shapeRenderer.line((float) t.a.x,(float) t.a.y,(float) t.b.x,(float) t.b.y);
+//		}
+//		shapeRenderer.end();
+//
+//		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+//		for (DPoint point : list) {
+//			shapeRenderer.rect((float) point.x,(float) point.y,0.1f,0.1f,Color.RED, Color.RED,Color.RED,Color.RED);
+//		}
+//		shapeRenderer.end();
+    }
+
+    public void update() {
+
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        viewport.update(width, height);
+        shapeRenderer.setProjectionMatrix(camera.combined);
+    }
+
+    @Override
+    public void dispose() {
+
+    }
+
+
 }
