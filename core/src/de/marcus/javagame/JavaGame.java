@@ -31,6 +31,8 @@ public class JavaGame extends ApplicationAdapter {
     List<Point> list;
     Voronoi voronoi;
     Graph graph;
+    Color color = Color.WHITE;
+    List<Point> sortedPoints;
 
     @Override
     public void create() {
@@ -43,7 +45,7 @@ public class JavaGame extends ApplicationAdapter {
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
 
         list = new ArrayList<>();
-        for (int i = 0; i < 999; i++) {
+        for (int i = 0; i < 1000; i++) {
             double x = Math.random() * 50;
             double y = Math.random() * 50;
             Point p = new Point(x, y);
@@ -58,23 +60,21 @@ public class JavaGame extends ApplicationAdapter {
 //			System.out.println(point.x + " " + point.y);
 //		}
 
-        List<Point> collect = graph.getSitePoints().stream().sorted(new CustomComparator()).collect(Collectors.toList());
+        sortedPoints = graph.getSitePoints().stream().sorted(new CustomComparator()).collect(Collectors.toList());
 
-        for (Point point : collect)  {
+        for (Point point : sortedPoints) {
             System.out.println("x: " + point.x + " , y:" + point.y);
         }
 
 
-        Gdx.graphics.setContinuousRendering(false);
-        Gdx.graphics.requestRendering();
+//        Gdx.graphics.setContinuousRendering(false);
+//        Gdx.graphics.requestRendering();
     }
 
     @Override
     public void render() {
         super.render();
 
-
-        System.out.println("Rend");
 
         camera.update();
 
@@ -88,15 +88,17 @@ public class JavaGame extends ApplicationAdapter {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
 
+        int counter = 0;
+        for (Point point : sortedPoints) {
+            if(counter % 20 == 0)
+                colorNext();
 
-        for (Point point : graph.getSitePoints()) {
-            if(Math.random() > 0.5 )
-                shapeRenderer.setColor(Color.RED);
-            else
-                shapeRenderer.setColor(Color.WHITE);
-            shapeRenderer.circle((float) point.x, (float) point.y, 0.05f,20);
-
+            shapeRenderer.setColor(color);
+            shapeRenderer.circle((float) point.x, (float) point.y, 0.05f, 20);
+            counter++;
         }
+        color = Color.WHITE;
+
         shapeRenderer.end();
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.begin();
@@ -136,5 +138,18 @@ public class JavaGame extends ApplicationAdapter {
 
     }
 
+    public void colorNext() {
+        System.out.println("Change color");
+
+        if (Color.WHITE.equals(color)) {
+            color = Color.BLUE;
+        } else if (Color.BLUE.equals(color)) {
+            color = Color.GREEN;
+        } else if (Color.GREEN.equals(color)) {
+            color = Color.RED;
+        } else if(color.equals(Color.RED)) {
+            color = Color.WHITE;
+        }
+    }
 
 }

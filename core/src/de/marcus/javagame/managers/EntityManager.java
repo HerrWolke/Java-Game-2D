@@ -5,6 +5,13 @@ import de.marcus.javagame.entities.Entity;
 
 import java.util.ArrayList;
 
+/**
+ * @author Marcus
+ *
+ * Entity System: Manager
+ *
+ *
+ */
 public class EntityManager {
     public ArrayList<Entity> entities;
 

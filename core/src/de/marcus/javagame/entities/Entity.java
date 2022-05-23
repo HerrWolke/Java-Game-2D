@@ -7,6 +7,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * @author Marcus
+ *
+ * Entity System: Entity
+ *
+ * Intended for non-living entities (items).
+ * Base class for Creature
+ * @see Creature
+ */
 @Getter
 @Setter
 @AllArgsConstructor

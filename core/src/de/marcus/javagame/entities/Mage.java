@@ -2,6 +2,13 @@ package de.marcus.javagame.entities;
 
 import com.badlogic.gdx.graphics.Texture;
 
+/**
+ * @author Marcus
+ *
+ * Entity System: Mage
+ *
+ * Enemy Mage
+ */
 public class Mage extends Enemy {
     private DamageType damageType;
 

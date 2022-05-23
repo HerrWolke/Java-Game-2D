@@ -4,6 +4,16 @@ import com.badlogic.gdx.graphics.Texture;
 import lombok.*;
 import org.graalvm.compiler.lir.CompositeValue;
 
+/**
+ * @author Marcus
+ *
+ * Entity System Creature
+ *
+ * Intended to be used for every living Entity (Animals, Enemys, Players)
+ *
+ *
+ */
+
 @Getter
 @Setter
 public class Creature extends Entity{

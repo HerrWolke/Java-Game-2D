@@ -5,6 +5,13 @@ import de.marcus.javagame.misc.Inventory;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * @author Marcus
+ *
+ * Entity System Creature
+ *
+ * Only intended to be used for the player; Only intended to be used ONCE! as this is a singleplayer game (currently)
+ */
 @Getter
 @Setter
 public class Player extends Creature{

@@ -4,6 +4,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * @author Marcus
+ *
+ * Entity System: Item
+ *
+ * Extended Entity for items. On creation, a despawn timer is created (using long / ms) that will delete that
+ * item when the timer hits zero
+ */
 public class Item extends Entity{
     public static final long MAX_ITEM_LIFETIME = 600000;
 
