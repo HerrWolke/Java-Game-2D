@@ -9,9 +9,9 @@ import lombok.Setter;
 
 /**
  * @author Marcus
- *
+ * <p>
  * Entity System: Entity
- *
+ * <p>
  * Intended for non-living entities (items).
  * Base class for Creature
  * @see Creature
@@ -24,13 +24,13 @@ public class Entity {
     private Texture texture;
 
     public Entity(float posX, float posY, Texture texture) {
-        position = new Vector2(posX,posY);
+        position = new Vector2(posX, posY);
         this.texture = texture;
     }
 
 
     public void render(SpriteBatch batch) {
-        batch.draw(texture,position.x,position.y);
+        batch.draw(texture, position.x, position.y);
     }
 
     public void update() {

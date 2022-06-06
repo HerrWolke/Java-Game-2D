@@ -7,14 +7,14 @@ import lombok.Setter;
 
 /**
  * @author Marcus
- *
+ * <p>
  * Entity System Creature
- *
+ * <p>
  * Only intended to be used for the player; Only intended to be used ONCE! as this is a singleplayer game (currently)
  */
 @Getter
 @Setter
-public class Player extends Creature{
+public class Player extends Creature {
     private Inventory hotbar;
     private Inventory inventory;
 

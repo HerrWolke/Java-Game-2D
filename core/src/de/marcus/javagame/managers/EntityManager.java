@@ -7,10 +7,8 @@ import java.util.ArrayList;
 
 /**
  * @author Marcus
- *
+ * <p>
  * Entity System: Manager
- *
- *
  */
 public class EntityManager {
     public ArrayList<Entity> entities;
@@ -21,7 +19,7 @@ public class EntityManager {
 
     public void render(SpriteBatch spriteBatch) {
         for (Entity entity : entities) {
-            spriteBatch.draw(entity.getTexture(),entity.getPosition().x,entity.getPosition().y);
+            spriteBatch.draw(entity.getTexture(), entity.getPosition().x, entity.getPosition().y);
         }
     }
 

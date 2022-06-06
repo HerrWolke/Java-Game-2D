@@ -1,22 +1,20 @@
 package de.marcus.javagame.entities;
 
 import com.badlogic.gdx.graphics.Texture;
-import lombok.*;
-import org.graalvm.compiler.lir.CompositeValue;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Marcus
- *
+ * <p>
  * Entity System Creature
- *
+ * <p>
  * Intended to be used for every living Entity (Animals, Enemys, Players)
- *
- *
  */
 
 @Getter
 @Setter
-public class Creature extends Entity{
+public class Creature extends Entity {
     private int health;
     private int maxHealth;
 

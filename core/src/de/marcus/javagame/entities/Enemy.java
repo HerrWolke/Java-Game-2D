@@ -2,7 +2,7 @@ package de.marcus.javagame.entities;
 
 import com.badlogic.gdx.graphics.Texture;
 
-public class Enemy extends Creature{
+public class Enemy extends Creature {
     private int damage;
     private double attackSpeed;
     private float range;

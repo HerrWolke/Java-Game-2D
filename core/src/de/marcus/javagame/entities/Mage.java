@@ -4,9 +4,9 @@ import com.badlogic.gdx.graphics.Texture;
 
 /**
  * @author Marcus
- *
+ * <p>
  * Entity System: Mage
- *
+ * <p>
  * Enemy Mage
  */
 public class Mage extends Enemy {

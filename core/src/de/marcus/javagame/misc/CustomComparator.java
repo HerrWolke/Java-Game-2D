@@ -10,7 +10,7 @@ public class CustomComparator implements Comparator<Point> {
     public int compare(Point o1, Point o2) {
 
         int comp = Double.compare(Math.round(o1.x), Math.round(o2.x));
-        if(comp == 0) {
+        if (comp == 0) {
             comp = Double.compare(Math.round(o1.y), Math.round(o2.y));
         }
         return comp;

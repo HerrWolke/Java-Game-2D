@@ -6,13 +6,13 @@ import com.badlogic.gdx.math.Vector2;
 
 /**
  * @author Marcus
- *
+ * <p>
  * Entity System: Item
- *
+ * <p>
  * Extended Entity for items. On creation, a despawn timer is created (using long / ms) that will delete that
  * item when the timer hits zero
  */
-public class Item extends Entity{
+public class Item extends Entity {
     public static final long MAX_ITEM_LIFETIME = 600000;
 
     public long despawnTimer;
@@ -23,10 +23,10 @@ public class Item extends Entity{
     }
 
     public void update() {
-        despawnTimer =- 1;
+        despawnTimer = -1;
     }
 
     public void render(SpriteBatch spriteBatch) {
-        spriteBatch.draw(getTexture(),getPosition().x,getPosition().y);
+        spriteBatch.draw(getTexture(), getPosition().x, getPosition().y);
     }
 }
