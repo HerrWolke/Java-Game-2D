@@ -2,8 +2,8 @@ package de.marcus.javagame.screens;
 
 import com.badlogic.gdx.Application;
 
-public class MenuScreen extends AbstractScreen {
-    public MenuScreen(LoadingScreen app) {
+public class SelectProfileScreen extends AbstractScreen {
+    public SelectProfileScreen(LoadingScreen app) {
         super(app);
     }
 

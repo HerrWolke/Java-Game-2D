@@ -2,8 +2,8 @@ package de.marcus.javagame.screens;
 
 import com.badlogic.gdx.Application;
 
-public class MenuScreen extends AbstractScreen {
-    public MenuScreen(LoadingScreen app) {
+public class InventoryScreen extends AbstractScreen{
+    public InventoryScreen(LoadingScreen app) {
         super(app);
     }
 

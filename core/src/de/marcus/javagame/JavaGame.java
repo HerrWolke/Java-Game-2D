@@ -15,6 +15,9 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import de.marcus.javagame.managers.GameScreenManager;
+import de.marcus.javagame.screens.GameScreen;
+import de.marcus.javagame.screens.LoadingScreen;
 
 public class JavaGame extends ApplicationAdapter {
     Batch batch;
@@ -26,13 +29,13 @@ public class JavaGame extends ApplicationAdapter {
     TiledMapRenderer tr;
     public Animation<TextureRegion> runningAnimation;
     float animTime = 0f;
-
+    GameScreenManager gsm;
 
 
     @Override
     public void create() {
 
-
+        gsm = new GameScreenManager(new LoadingScreen());
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera(50, 50);
@@ -48,6 +51,7 @@ public class JavaGame extends ApplicationAdapter {
         TextureAtlas atlas = new TextureAtlas("file.atlas");
         runningAnimation =
                 new Animation<TextureRegion>(0.033f, atlas.findRegions("running/running"), Animation.PlayMode.LOOP);
+
     }
 
     @Override
