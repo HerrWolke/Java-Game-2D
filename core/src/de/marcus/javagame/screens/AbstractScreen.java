@@ -3,13 +3,14 @@ package de.marcus.javagame.screens;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public abstract class AbstractScreen implements Screen {
     protected final LoadingScreen app;
     Stage stage;
     public AbstractScreen(LoadingScreen app) {
         this.app = app;
-        this.stage = new Stage();
+        this.stage = new Stage(new ScreenViewport());
     }
     public abstract void update(float delta);
     @Override

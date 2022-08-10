@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class GameScreenManager {
     private final LoadingScreen app;
-    HashMap<SCREENS, AbstractScreen> screens;
+   public HashMap<SCREENS, AbstractScreen> screens;
     public enum SCREENS{
         LOAD,
         START_MENU,

@@ -11,7 +11,7 @@ public class GameScreen extends AbstractScreen {
     SpriteBatch batch;
     public GameScreen(LoadingScreen app) {
         super(app);
-        app.dispose();
+        //app.dispose();
         batch = new SpriteBatch();
     }
 
