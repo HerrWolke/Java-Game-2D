@@ -69,6 +69,24 @@ public class StartMenuScreen extends AbstractScreen{
                app.g.setScreen(GameScreenManager.SCREENS.SELECT_PROFILE);
             };
         });
+        //listner für quit Button
+        quit.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                dispose();
+                app.dispose();
+            }
+        });
+        //listner für settings Button
+        settings.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.gl.glClearColor( 0, 0, 0, 1 );
+                Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
+                dispose();
+                app.g.setScreen(GameScreenManager.SCREENS.SETTINGS);
+            };
+        });
        //Bild für linken Rand
         leftImage = new Image(new Texture(Gdx.files.internal("items.png")));
         //vertical Group wo die Buttons reinkommen

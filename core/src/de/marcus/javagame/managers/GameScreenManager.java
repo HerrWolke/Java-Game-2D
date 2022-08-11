@@ -13,7 +13,8 @@ public class GameScreenManager {
         MENU,
         SELECT_PROFILE,
         INVENTORY,
-        GAME
+        GAME,
+        SETTINGS
     }
     public GameScreenManager(final LoadingScreen app) {
         this.app = app;
@@ -28,6 +29,7 @@ public class GameScreenManager {
         this.screens.put(SCREENS.SELECT_PROFILE, new SelectProfileScreen(app));
         this.screens.put(SCREENS.INVENTORY, new InventoryScreen(app));
         this.screens.put(SCREENS.GAME, new GameScreen(app));
+        this.screens.put(SCREENS.SETTINGS, new SettingScreen(app));
         //weitere screens
 
     }
