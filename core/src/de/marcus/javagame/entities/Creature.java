@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.LinkedList;
+
 /**
  * @author Marcus
  * <p>
@@ -15,6 +17,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Creature extends Entity {
+    LinkedList<StatusEffect> effects;
+
     private int health;
     private int maxHealth;
 
@@ -48,5 +52,12 @@ public class Creature extends Entity {
         this.maxArmor = maxArmor;
         this.maxThirst = maxThirst;
         this.movementSpeed = movementSpeed;
+        effects = new LinkedList<StatusEffect>();
+    }
+
+    public void die(Weapon cause) {
+        /*
+         * TODO: Drop Loot
+         */
     }
 }

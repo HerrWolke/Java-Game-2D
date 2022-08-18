@@ -1,6 +1,7 @@
-package de.marcus.javagame.entities;
+package de.marcus.javagame.entities.agressive.notbiomspecific;
 
 import com.badlogic.gdx.graphics.Texture;
+import de.marcus.javagame.entities.agressive.Enemy;
 
 /**
  * @author Marcus

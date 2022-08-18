@@ -1,6 +1,7 @@
-package de.marcus.javagame.entities;
+package de.marcus.javagame.entities.agressive;
 
 import com.badlogic.gdx.graphics.Texture;
+import de.marcus.javagame.entities.Creature;
 
 public class Enemy extends Creature {
     private int damage;
@@ -13,4 +14,6 @@ public class Enemy extends Creature {
         this.attackSpeed = attackSpeed;
         this.range = range;
     }
+
+
 }
