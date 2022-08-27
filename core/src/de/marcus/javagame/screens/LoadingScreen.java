@@ -10,8 +10,10 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
+import de.marcus.javagame.entities.logging.Logger;
+import de.marcus.javagame.entities.logging.LoggingSystem;
 import de.marcus.javagame.managers.GameScreenManager;
-
+import sun.util.logging.resources.logging;
 
 
 public class LoadingScreen extends Game {
@@ -20,9 +22,12 @@ public class LoadingScreen extends Game {
     Animation<TextureRegion> loadingAnimation;
     TextureAtlas atlas;
     boolean loaded;
+    public static LoggingSystem loggingSystem;
 
     @Override
     public void create () {
+        loggingSystem = new LoggingSystem();
+
         batch = new SpriteBatch();
         g = new GameScreenManager(this);
         atlas = new TextureAtlas("running.atlas");

@@ -15,6 +15,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import de.marcus.javagame.entities.logging.LoggingSystem;
 import de.marcus.javagame.managers.GameScreenManager;
 import de.marcus.javagame.screens.GameScreen;
 import de.marcus.javagame.screens.LoadingScreen;
@@ -32,8 +33,12 @@ public class JavaGame extends ApplicationAdapter {
     GameScreenManager gsm;
 
 
+
     @Override
     public void create() {
+
+
+
 
         gsm = new GameScreenManager(new LoadingScreen());
         batch = new SpriteBatch();

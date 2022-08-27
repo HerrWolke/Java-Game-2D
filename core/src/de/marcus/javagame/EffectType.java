@@ -1,15 +1,17 @@
 package de.marcus.javagame;
 
 public enum EffectType {
-    POISON(EffectInfluence.DAMAGE),
-    FIRE(EffectInfluence.DAMAGE),
-    FROZEN(EffectInfluence.MOVEMENT);
+    POISON(EffectInfluence.DAMAGE,0.5),
+    FIRE(EffectInfluence.DAMAGE,1.0),
+    FROZEN(EffectInfluence.MOVEMENT,0.0);
 
-    EffectType(EffectInfluence influence) {
+    EffectType(EffectInfluence influence, double damage) {
         this.influence = influence;
+        this.damage = damage;
     }
 
     private EffectInfluence influence;
+    private double damage;
 
     private enum EffectInfluence {
         /**

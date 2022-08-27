@@ -12,6 +12,11 @@ public class StatusEffect {
         this.duration = duration;
     }
 
+    public void update(Creature creature, long deltaTime) {
+
+        decrementTimer(deltaTime);
+    }
+
     public boolean decrementTimer(long decrement) {
         duration -= decrement;
 
