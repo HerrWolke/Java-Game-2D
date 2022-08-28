@@ -17,6 +17,8 @@ import lombok.Setter;
 public class Player extends Creature {
     private Inventory hotbar;
     private Inventory inventory;
+    private int currentHealth;
+    Item currentItem;
 
 
     public Player(float posX, float posY, Texture texture, int maxHealth, int maxHunger, int maxArmor, int maxThirst, float movementSpeed) {
@@ -24,4 +26,27 @@ public class Player extends Creature {
         hotbar = new Inventory(5);
         inventory = new Inventory(15);
     }
+    public void runForwards(){
+
+    }
+    public void runBackwards(){
+
+    }
+    public void runLeft(){
+
+    }
+    public void runRight(){
+
+    }
+    public void attack(){
+
+    }
+    public void block(){
+
+    }
+    public void interact(){
+
+    }
+
+
 }
