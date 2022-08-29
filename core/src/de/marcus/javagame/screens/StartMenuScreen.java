@@ -36,26 +36,26 @@ public class StartMenuScreen extends AbstractScreen{
         //style für Startbutton
          startStyle = new ImageButton.ImageButtonStyle();
         startStyle.imageUp      = new TextureRegionDrawable(TextureManager.getTexture("play"));
-        startStyle.imageDown    = new TextureRegionDrawable(TextureManager.getTexture("play_ausgewaehlt"));
-        startStyle.imageOver = new TextureRegionDrawable(TextureManager.getTexture("play_ausgewaehlt"));
+        startStyle.imageDown    = new TextureRegionDrawable(TextureManager.getTexture("play_sel"));
+        startStyle.imageOver = new TextureRegionDrawable(TextureManager.getTexture("play_sel"));
         //startStyle.imageChecked = new TextureRegionDrawable(TextureManager.getTexture("start_menu_startButton_normal"));
         //style für Menübutton
         menuStyle = new ImageButton.ImageButtonStyle();
-        startStyle.imageUp      = new TextureRegionDrawable(TextureManager.getTexture("settings"));
-        startStyle.imageDown    = new TextureRegionDrawable(TextureManager.getTexture("settings_ausgewaehlt"));
-        startStyle.imageOver   = new TextureRegionDrawable(TextureManager.getTexture("settings_ausgewaehlt"));
+        startStyle.imageUp      = new TextureRegionDrawable(TextureManager.getTexture("set"));
+        startStyle.imageDown    = new TextureRegionDrawable(TextureManager.getTexture("set_sel"));
+        startStyle.imageOver   = new TextureRegionDrawable(TextureManager.getTexture("set_sel"));
 
        //style für quitButton
          quitStyle = new ImageButton.ImageButtonStyle();
 
         startStyle.imageUp      = new TextureRegionDrawable(TextureManager.getTexture("quit"));
-        startStyle.imageDown    = new TextureRegionDrawable(TextureManager.getTexture("quit_ausgewaehlt"));
-        startStyle.imageOver    = new TextureRegionDrawable(TextureManager.getTexture("quit_ausgewaehlt"));
+        startStyle.imageDown    = new TextureRegionDrawable(TextureManager.getTexture("quit_sel"));
+        startStyle.imageOver    = new TextureRegionDrawable(TextureManager.getTexture("quit_sel"));
        //style für archievments
         archievementStyle = new ImageButton.ImageButtonStyle();
-        archievementStyle.imageUp = new TextureRegionDrawable(TextureManager.getTexture("achievement"));
-        archievementStyle.imageDown = new TextureRegionDrawable(TextureManager.getTexture("achievments_ausgewaehlt"));
-        archievementStyle.imageOver = new TextureRegionDrawable(TextureManager.getTexture("achievments_ausgewaehlt"));
+        archievementStyle.imageUp = new TextureRegionDrawable(TextureManager.getTexture("ach"));
+        archievementStyle.imageDown = new TextureRegionDrawable(TextureManager.getTexture("ach_sel"));
+        archievementStyle.imageOver = new TextureRegionDrawable(TextureManager.getTexture("ach_sel"));
         //erstellen der Buttons
         start = new ImageButton(startStyle);
         settings = new ImageButton(menuStyle);
@@ -100,7 +100,7 @@ public class StartMenuScreen extends AbstractScreen{
             };
         });
        //Bild für linken Rand
-        backgroundImage = new Image(TextureManager.getTexture("background"));
+//        backgroundImage = new Image(TextureManager.getTexture("background"));
         //vertical Group wo die Buttons reinkommen
        // verticalGroup.setWidth(550f);
         verticalGroup.setDebug(true);
