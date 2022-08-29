@@ -3,13 +3,13 @@ package de.marcus.javagame.screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
+import de.marcus.javagame.entities.logging.LoggingSystem;
 import de.marcus.javagame.managers.GameScreenManager;
 
 
@@ -20,9 +20,12 @@ public class LoadingScreen extends Game {
     Animation<TextureRegion> loadingAnimation;
     TextureAtlas atlas;
     boolean loaded;
+    public static LoggingSystem loggingSystem;
 
     @Override
     public void create () {
+        loggingSystem = new LoggingSystem();
+
         batch = new SpriteBatch();
         g = new GameScreenManager(this);
         atlas = new TextureAtlas("running.atlas");
