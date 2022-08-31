@@ -34,7 +34,7 @@ public class StartMenuScreen extends AbstractScreen{
         //app.dispose();
 
         //style für Startbutton
-         startStyle = new ImageButton.ImageButtonStyle();
+        startStyle = new ImageButton.ImageButtonStyle();
         startStyle.imageUp      = new TextureRegionDrawable(TextureManager.getTexture("play"));
         startStyle.imageDown    = new TextureRegionDrawable(TextureManager.getTexture("play_ausgewaehlt"));
         startStyle.imageOver = new TextureRegionDrawable(TextureManager.getTexture("play_ausgewaehlt"));
@@ -45,13 +45,13 @@ public class StartMenuScreen extends AbstractScreen{
         menuStyle.imageDown    = new TextureRegionDrawable(TextureManager.getTexture("settings_ausgewaehlt"));
         menuStyle.imageOver   = new TextureRegionDrawable(TextureManager.getTexture("settings_ausgewaehlt"));
 
-       //style für quitButton
-         quitStyle = new ImageButton.ImageButtonStyle();
+        //style für quitButton
+        quitStyle = new ImageButton.ImageButtonStyle();
 
         quitStyle.imageUp      = new TextureRegionDrawable(TextureManager.getTexture("quit"));
         quitStyle.imageDown    = new TextureRegionDrawable(TextureManager.getTexture("quit_ausgewaehlt"));
         quitStyle.imageOver    = new TextureRegionDrawable(TextureManager.getTexture("quit_ausgewaehlt"));
-       //style für archievments
+        //style für archievments
         archievementStyle = new ImageButton.ImageButtonStyle();
         archievementStyle.imageUp = new TextureRegionDrawable(TextureManager.getTexture("achievement"));
         archievementStyle.imageDown = new TextureRegionDrawable(TextureManager.getTexture("achievement_ausgewaehlt"));
@@ -100,10 +100,10 @@ public class StartMenuScreen extends AbstractScreen{
                 app.g.setScreen(GameScreenManager.SCREENS.SETTINGS);                                       //TODO: Archievment screen
             };
         });
-       //Bild für linken Rand
+        //Bild für linken Rand
         backgroundImage = TextureManager.getTexture("background2");
         //vertical Group wo die Buttons reinkommen
-       // verticalGroup.setWidth(550f);
+        // verticalGroup.setWidth(550f);
 
 
 
@@ -128,12 +128,12 @@ public class StartMenuScreen extends AbstractScreen{
 
     @Override
     public void update(float delta) {
-      //code der geupdatet wird
+        //code der geupdatet wird
     }
 
     @Override
     public void show() {
-       //statisch
+        //statisch
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
