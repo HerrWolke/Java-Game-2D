@@ -1,10 +1,14 @@
 package de.marcus.javagame.managers;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import de.marcus.javagame.entities.Creature;
 import de.marcus.javagame.entities.Entity;
 import de.marcus.javagame.entities.Weapon;
+import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.UUID;
 
@@ -14,20 +18,25 @@ import java.util.UUID;
  * Entity System: Manager
  */
 public class EntityManager {
-    private LinkedHashMap<UUID, Entity> currentUsedEntites;
+    @JsonProperty("active_entities")
+    private LinkedHashMap<UUID, Entity> currentUsedEntities;
+
+    @JsonProperty("loaded_entities")
+    private LinkedHashMap<UUID, Entity> memoryLoadedEntities;
 
     public EntityManager() {
-        this.currentUsedEntites = new LinkedHashMap<>();
+        this.currentUsedEntities = new LinkedHashMap<>();
+        this.memoryLoadedEntities = new LinkedHashMap<>();
     }
 
-    public void render(SpriteBatch spriteBatch) {
-        for (Entity entity : currentUsedEntites.values()) {
+    public void render(@NonNull SpriteBatch spriteBatch) {
+        for (Entity entity : currentUsedEntities.values()) {
             spriteBatch.draw(entity.getTexture(), entity.getPosition().x, entity.getPosition().y);
         }
     }
 
     public void update() {
-        for (Entity entity : currentUsedEntites.values()) {
+        for (Entity entity : currentUsedEntities.values()) {
             entity.update();
         }
     }
@@ -36,28 +45,48 @@ public class EntityManager {
 
     }
 
-    public void spawn(Entity... entities) {
-        for (Entity entity : entities) {
-            currentUsedEntites.put(UUID.randomUUID(), entity);
-        }
+    public void moveToMemory(@NonNull UUID @NotNull ... uuids) {
+        HashMap<UUID, Entity> toMove = new HashMap<>();
 
-    }
-
-    public void despawn(UUID... uuids) {
         for (UUID uuid : uuids) {
-            currentUsedEntites.remove(uuid);
+            toMove.put(uuid, currentUsedEntities.get(uuid));
+            currentUsedEntities.remove(uuid);
+        }
+        memoryLoadedEntities.putAll(toMove);
+
+    }
+
+    public void spawn(@NonNull Entity... entities) {
+        for (Entity entity : entities) {
+            currentUsedEntities.put(UUID.randomUUID(), entity);
+
+        }
+
+    }
+
+    public void despawn(@NonNull UUID... uuids) {
+        for (UUID uuid : uuids) {
+            currentUsedEntities.remove(uuid);
         }
     }
 
-    public void kill(UUID uuid, Weapon killer) {
+    public void kill(@NonNull UUID uuid, Weapon killer) {
 
-            try {
-                Creature creature = (Creature) currentUsedEntites.get(uuid);
-                creature.die(killer);
-                currentUsedEntites.remove(uuid);
-            } catch (ClassCastException ex) {
-                System.err.println("Fatal Error. An Entity which is not a creature was called to be killed. UUID " + uuid);
-            }
-
+        try {
+            Creature creature = (Creature) currentUsedEntities.get(uuid);
+            creature.die(killer);
+            currentUsedEntities.remove(uuid);
+        } catch (ClassCastException ex) {
+            System.err.println("Fatal Error. An Entity which is not a creature was called to be killed. UUID " + uuid);
         }
+
     }
+
+    @Override
+    public String toString() {
+        return "EntityManager{" +
+                "currentUsedEntities=" + currentUsedEntities +
+                ", memoryLoadedEntities=" + memoryLoadedEntities +
+                '}';
+    }
+}

@@ -22,6 +22,11 @@ public class Item extends Entity {
         this.despawnTimer = MAX_ITEM_LIFETIME;
     }
 
+    public Item(Vector2 position) {
+        super(position, null);
+        this.despawnTimer = MAX_ITEM_LIFETIME;
+    }
+
     public void update() {
         despawnTimer = -1;
     }
@@ -29,4 +34,6 @@ public class Item extends Entity {
     public void render(SpriteBatch spriteBatch) {
         spriteBatch.draw(getTexture(), getPosition().x, getPosition().y);
     }
+
+
 }

@@ -17,8 +17,8 @@ public class QuestingManager {
 
     public void setActiveQuest(Quest.QuestType type, Quest activeMainQuest) {
         Quest quest = activeQuests.get(type);
-        if(quest == null) {
-            activeQuests.replace(type,activeMainQuest);
+        if (quest == null) {
+            activeQuests.replace(type, activeMainQuest);
         } else {
             loggingSystem.getLogger().log(Logger.LoggerLevel.ERROR, "Tried to set a quest, but the quest " + quest.name() + " is currently active. The quest to be set was " + activeMainQuest.name());
         }

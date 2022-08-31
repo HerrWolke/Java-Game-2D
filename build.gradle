@@ -119,5 +119,7 @@ project(":core") {
         implementation 'com.github.waveware4ai:delaunator-java:2402c3ab79'
         implementation "org.spongepowered:noise:2.0.0-SNAPSHOT"
         implementation 'de.alsclo:voronoi-java:1.0'
+        implementation 'com.fasterxml.jackson.core:jackson-core:2.13.3'
+        implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
     }
 }

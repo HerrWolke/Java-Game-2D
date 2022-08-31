@@ -115,3 +115,5 @@ Thumbs.db
 /ios/IOSLauncher.app.dSYM
 gradlew
 gradlew.bat
+/entity_data.json
+/inventory.json

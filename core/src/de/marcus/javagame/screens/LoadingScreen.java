@@ -7,11 +7,8 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.Timer;
 import de.marcus.javagame.entities.logging.LoggingSystem;
 import de.marcus.javagame.managers.GameScreenManager;
-
 
 
 public class LoadingScreen extends Game {
@@ -23,7 +20,7 @@ public class LoadingScreen extends Game {
     public static LoggingSystem loggingSystem;
 
     @Override
-    public void create () {
+    public void create() {
         loggingSystem = new LoggingSystem();
 
         batch = new SpriteBatch();
@@ -36,20 +33,20 @@ public class LoadingScreen extends Game {
     }
 
     @Override
-    public void render () {
+    public void render() {
 
         TextureRegion frame = loadingAnimation.getKeyFrame(0.5f, true);
         //ScreenUtils.clear(1, 0, 0, 1);
         batch.begin();
-        batch.draw(frame, 0, 0, 500,500);
+        batch.draw(frame, 0, 0, 500, 500);
 
         batch.end();
 
         //nur ein test
-        if(loaded){
+        if (loaded) {
 
-            Gdx.gl.glClearColor( 0, 0, 0, 1 );
-            Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
+            Gdx.gl.glClearColor(0, 0, 0, 1);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
             g.setScreen(GameScreenManager.SCREENS.START_MENU);
 
         }
@@ -57,7 +54,7 @@ public class LoadingScreen extends Game {
     }
 
     @Override
-    public void dispose () {
+    public void dispose() {
         batch.dispose();
 
     }

@@ -1,6 +1,6 @@
 package de.marcus.javagame.screens;
 
-public class SettingScreen extends AbstractScreen{
+public class SettingScreen extends AbstractScreen {
     public SettingScreen(LoadingScreen app) {
         super(app);
     }

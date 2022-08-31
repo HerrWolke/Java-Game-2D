@@ -5,19 +5,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import de.marcus.javagame.entities.logging.LoggingSystem;
 import de.marcus.javagame.managers.GameScreenManager;
-import de.marcus.javagame.screens.GameScreen;
 import de.marcus.javagame.screens.LoadingScreen;
 
 public class JavaGame extends ApplicationAdapter {
@@ -33,11 +27,8 @@ public class JavaGame extends ApplicationAdapter {
     GameScreenManager gsm;
 
 
-
     @Override
     public void create() {
-
-
 
 
         gsm = new GameScreenManager(new LoadingScreen());
@@ -77,7 +68,7 @@ public class JavaGame extends ApplicationAdapter {
 
         TextureRegion frame = runningAnimation.getKeyFrame(animTime, true);
         batch.begin();
-        batch.draw(frame, 25, 25, 10,10);
+        batch.draw(frame, 25, 25, 10, 10);
         batch.end();
     }
 

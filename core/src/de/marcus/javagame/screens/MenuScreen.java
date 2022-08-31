@@ -1,7 +1,5 @@
 package de.marcus.javagame.screens;
 
-import com.badlogic.gdx.Application;
-
 public class MenuScreen extends AbstractScreen {
     public MenuScreen(LoadingScreen app) {
         super(app);

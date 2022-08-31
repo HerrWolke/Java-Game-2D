@@ -1,9 +1,9 @@
 package de.marcus.javagame;
 
 public enum EffectType {
-    POISON(EffectInfluence.DAMAGE,0.5),
-    FIRE(EffectInfluence.DAMAGE,1.0),
-    FROZEN(EffectInfluence.MOVEMENT,0.0);
+    POISON(EffectInfluence.DAMAGE, 0.5),
+    FIRE(EffectInfluence.DAMAGE, 1.0),
+    FROZEN(EffectInfluence.MOVEMENT, 0.0);
 
     EffectType(EffectInfluence influence, double damage) {
         this.influence = influence;
@@ -16,7 +16,7 @@ public enum EffectType {
     private enum EffectInfluence {
         /**
          * These Effects can be positive or negative
-         *
+         * <p>
          * In case of negative, they would p.e. slow the player or damage him
          */
         DAMAGE,

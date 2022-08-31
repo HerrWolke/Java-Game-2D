@@ -1,24 +1,20 @@
 package de.marcus.javagame.screens;
 
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import de.marcus.javagame.entities.Player;
 import de.marcus.javagame.managers.GameScreenManager;
 import de.marcus.javagame.managers.InputManager;
 
 public class GameScreen extends AbstractScreen {
-   Player mainCharacter;
-   //Map map;
-   InputManager inputManager;
+    Player mainCharacter;
+    //Map map;
+    InputManager inputManager;
 
     // StoryHandler sthandler;
     //LoadWorld loader;
     //Entities entities;
 
 
-    public GameScreen(LoadingScreen app,int profile) {
+    public GameScreen(LoadingScreen app, int profile) {
         super(app);
         //app.dispose();
 
@@ -28,7 +24,7 @@ public class GameScreen extends AbstractScreen {
 
     @Override
     public void update(float delta) {
-     //story spawns etc
+        //story spawns etc
         //inputmanager.keyDown()
     }
 
@@ -36,10 +32,10 @@ public class GameScreen extends AbstractScreen {
     public void show() {
         //nur ein Test
         //t = new Texture(Gdx.files.internal("items.png"));
-      //  batch.begin();
-     //   batch.draw(t, 0, 0);
-      //  batch.end();
-       super.app.g.setScreen(GameScreenManager.SCREENS.INVENTORY);
+        //  batch.begin();
+        //   batch.draw(t, 0, 0);
+        //  batch.end();
+        super.app.g.setScreen(GameScreenManager.SCREENS.INVENTORY);
     }
 
     @Override
@@ -56,7 +52,8 @@ public class GameScreen extends AbstractScreen {
     public void hide() {
 
     }
-    public void load(int profile){
+
+    public void load(int profile) {
 
     }
 }
