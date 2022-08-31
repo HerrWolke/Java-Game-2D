@@ -5,7 +5,7 @@ import de.marcus.javagame.questing.Quest;
 
 import java.util.LinkedHashMap;
 
-import static de.marcus.javagame.screens.LoadingScreen.loggingSystem;
+//import static de.marcus.javagame.screens.LoadingScreen.loggingSystem;
 
 
 public class QuestingManager {
@@ -20,7 +20,7 @@ public class QuestingManager {
         if (quest == null) {
             activeQuests.replace(type, activeMainQuest);
         } else {
-            loggingSystem.getLogger().log(Logger.LoggerLevel.ERROR, "Tried to set a quest, but the quest " + quest.name() + " is currently active. The quest to be set was " + activeMainQuest.name());
+            //loggingSystem.getLogger().log(Logger.LoggerLevel.ERROR, "Tried to set a quest, but the quest " + quest.name() + " is currently active. The quest to be set was " + activeMainQuest.name());
         }
     }
 

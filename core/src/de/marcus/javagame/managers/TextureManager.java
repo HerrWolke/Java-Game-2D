@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 
 public class TextureManager {
-    public static TextureAtlas images = new TextureAtlas("packed/atlas.atlas");    //muss geupdated werden
+    public static TextureAtlas images = new TextureAtlas("test.atlas");    //muss geupdated werden
 
     public static TextureRegion getTexture(String name) {
         return images.findRegion(name);

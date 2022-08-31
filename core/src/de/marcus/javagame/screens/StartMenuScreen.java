@@ -1,84 +1,78 @@
 package de.marcus.javagame.screens;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import de.marcus.javagame.managers.GameScreenManager;
 import de.marcus.javagame.managers.TextureManager;
 
-public class StartMenuScreen extends AbstractScreen {
-    Image backgroundImage; //background
+public class StartMenuScreen extends AbstractScreen{
+    TextureRegion backgroundImage; //background
     ImageButton.ImageButtonStyle startStyle;
     ImageButton.ImageButtonStyle menuStyle;
     ImageButton.ImageButtonStyle quitStyle;
-    ImageButton.ImageButtonStyle achievementStyle;
-    ImageButton achievement;
+    ImageButton.ImageButtonStyle archievementStyle;
+    ImageButton archievment;
     ImageButton start;
     ImageButton settings; //setting Screen
     ImageButton quit;
-    VerticalGroup verticalGroup;
     Table table;
-
     public StartMenuScreen(LoadingScreen app) {
 
         super(app);
-        verticalGroup = new VerticalGroup();
-        app.dispose();
+
+        //app.dispose();
 
         //style für Startbutton
-        startStyle = new ImageButton.ImageButtonStyle();
-
-        startStyle.imageUp = new TextureRegionDrawable(TextureManager.getTexture("play"));
-        startStyle.imageDown = new TextureRegionDrawable(TextureManager.getTexture("play_sel"));
-        startStyle.imageOver = new TextureRegionDrawable(TextureManager.getTexture("play_sel"));
+         startStyle = new ImageButton.ImageButtonStyle();
+        startStyle.imageUp      = new TextureRegionDrawable(TextureManager.getTexture("play"));
+        startStyle.imageDown    = new TextureRegionDrawable(TextureManager.getTexture("play_ausgewaehlt"));
+        startStyle.imageOver = new TextureRegionDrawable(TextureManager.getTexture("play_ausgewaehlt"));
         //startStyle.imageChecked = new TextureRegionDrawable(TextureManager.getTexture("start_menu_startButton_normal"));
         //style für Menübutton
         menuStyle = new ImageButton.ImageButtonStyle();
+        menuStyle.imageUp      = new TextureRegionDrawable(TextureManager.getTexture("settings"));
+        menuStyle.imageDown    = new TextureRegionDrawable(TextureManager.getTexture("settings_ausgewaehlt"));
+        menuStyle.imageOver   = new TextureRegionDrawable(TextureManager.getTexture("settings_ausgewaehlt"));
 
-        menuStyle.imageUp = new TextureRegionDrawable(TextureManager.getTexture("set"));
-        menuStyle.imageDown = new TextureRegionDrawable(TextureManager.getTexture("set_sel"));
-        menuStyle.imageOver = new TextureRegionDrawable(TextureManager.getTexture("set_sel"));
+       //style für quitButton
+         quitStyle = new ImageButton.ImageButtonStyle();
 
-        //style für quitButton
-        quitStyle = new ImageButton.ImageButtonStyle();
-
-        quitStyle.imageUp = new TextureRegionDrawable(TextureManager.getTexture("quit"));
-        quitStyle.imageDown = new TextureRegionDrawable(TextureManager.getTexture("quit_sel"));
-        quitStyle.imageOver = new TextureRegionDrawable(TextureManager.getTexture("quit_sel"));
-
-        //style für achievements
-        achievementStyle = new ImageButton.ImageButtonStyle();
-
-        achievementStyle.imageUp = new TextureRegionDrawable(TextureManager.getTexture("ach"));
-        achievementStyle.imageDown = new TextureRegionDrawable(TextureManager.getTexture("ach_sel"));
-        achievementStyle.imageOver = new TextureRegionDrawable(TextureManager.getTexture("ach_sel"));
-
+        quitStyle.imageUp      = new TextureRegionDrawable(TextureManager.getTexture("quit"));
+        quitStyle.imageDown    = new TextureRegionDrawable(TextureManager.getTexture("quit_ausgewaehlt"));
+        quitStyle.imageOver    = new TextureRegionDrawable(TextureManager.getTexture("quit_ausgewaehlt"));
+       //style für archievments
+        archievementStyle = new ImageButton.ImageButtonStyle();
+        archievementStyle.imageUp = new TextureRegionDrawable(TextureManager.getTexture("achievement"));
+        archievementStyle.imageDown = new TextureRegionDrawable(TextureManager.getTexture("achievement_ausgewaehlt"));
+        archievementStyle.imageOver = new TextureRegionDrawable(TextureManager.getTexture("achievement_ausgewaehlt"));
         //erstellen der Buttons
         start = new ImageButton(startStyle);
         settings = new ImageButton(menuStyle);
         quit = new ImageButton(quitStyle);
-        achievement = new ImageButton(achievementStyle);
-
+        archievment = new ImageButton(archievementStyle);
         //listener für startButton
         start.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.gl.glClearColor(0, 0, 0, 1);
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-                dispose();
                 app.g.setScreen(GameScreenManager.SCREENS.SELECT_PROFILE);
-            }
+                dispose();
 
-            ;
+            };
         });
-
-        //listener für quit Button
+        //listner für quit Button
         quit.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -86,66 +80,60 @@ public class StartMenuScreen extends AbstractScreen {
                 app.dispose();
             }
         });
-
-        //listener für settings Button
+        //listner für settings Button
         settings.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.gl.glClearColor(0, 0, 0, 1);
-                Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+                Gdx.gl.glClearColor( 0, 0, 0, 1 );
+                Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
                 dispose();
                 app.g.setScreen(GameScreenManager.SCREENS.SETTINGS);
-            }
-
-            ;
+            };
         });
-
-        //listener für archievements
-        achievement.addListener(new ClickListener() {
+        //listner für archievements
+        archievment.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.gl.glClearColor(0, 0, 0, 1);
-                Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+                Gdx.gl.glClearColor( 0, 0, 0, 1 );
+                Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
                 dispose();
-                app.g.setScreen(GameScreenManager.SCREENS.SETTINGS);                                       //TODO: Achievement screen
-            }
-
-            ;
+                app.g.setScreen(GameScreenManager.SCREENS.SETTINGS);                                       //TODO: Archievment screen
+            };
         });
-
-        //Bild für linken Rand
-        // backgroundImage = new Image(TextureManager.getTexture("background"));
+       //Bild für linken Rand
+        backgroundImage = TextureManager.getTexture("background2");
         //vertical Group wo die Buttons reinkommen
-        // verticalGroup.setWidth(550f);
-        verticalGroup.setDebug(true);
-        verticalGroup.addActor(start);
-        verticalGroup.addActor(achievement);
-        verticalGroup.addActor(settings);
-        verticalGroup.addActor(quit);
-        verticalGroup.pad(120.0f);
+       // verticalGroup.setWidth(550f);
+
 
 
         Gdx.input.setInputProcessor(stage);
         //table in der linkes Bild und verticalGroup sind
+
         table = new Table();
         stage.addActor(table);
         table.setFillParent(true);
-        table.setDebug(true);
-        table.add(backgroundImage);
-        table.add(verticalGroup);
-        table.setFillParent(true);
+        table.setBackground(new TextureRegionDrawable(backgroundImage));
+        table.add(start).pad(25f);
+        table.row();
+        table.add(settings).pad(25f);
+        table.row();
+        table.add(archievment).pad(25f);
+        table.row();
+        table.add(quit).pad(25f);
 
+        table.setFillParent(true);
 
     }
 
     @Override
     public void update(float delta) {
-        //code der geupdatet wird
+      //code der geupdatet wird
     }
 
     @Override
     public void show() {
-        //statisch
+       //statisch
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();

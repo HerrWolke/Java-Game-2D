@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static de.marcus.javagame.screens.LoadingScreen.loggingSystem;
+//import static de.marcus.javagame.screens.LoadingScreen.loggingSystem;
 
 public class QuestDetails {
     private final int maxStage;
@@ -26,7 +26,7 @@ public class QuestDetails {
         currentStage = 1;
         currentStageText = stageTexts[0];
         if (maxStage > stageTexts.length) {
-            loggingSystem.getLogger().log(Logger.LoggerLevel.INFO, "Questing Error. A quest was initialised with less stage info than stages. Max stages: " + maxStage + ", provided Info: " + stageTexts.length);
+           // loggingSystem.getLogger().log(Logger.LoggerLevel.INFO, "Questing Error. A quest was initialised with less stage info than stages. Max stages: " + maxStage + ", provided Info: " + stageTexts.length);
             System.exit(0);
         }
 

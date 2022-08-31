@@ -23,16 +23,20 @@ public class SelectProfileScreen extends AbstractScreen {
 
     public SelectProfileScreen(LoadingScreen app) {
         super(app);
-        //app.dispose();
+
 
 
         table = new Table();
-        table.setFillParent(true);
-        table.setBackground(new TextureRegionDrawable(TextureManager.getFinishedAnimation(true, 2.0f, "play")));
         stage.addActor(table);
+        table.setPosition(0f,0f);
+        table.pad(50f);
+        table.setDebug(true);
+        table.setFillParent(true);
+        table.setBackground(new TextureRegionDrawable(TextureManager.getTexture("background")));
+
         //Style für back Button
         backStyle = new ImageButton.ImageButtonStyle();
-        backStyle.imageUp = new TextureRegionDrawable(TextureManager.getTexture("play"));
+        backStyle.imageUp = new TextureRegionDrawable(TextureManager.getTexture("back_arrow"));
         backStyle.imageDown = backStyle.imageUp;
         //erstellen, listener und hinzufügen button
         back = new ImageButton(backStyle);
@@ -49,11 +53,12 @@ public class SelectProfileScreen extends AbstractScreen {
 
         });
         table.add(back);
+        table.row();
         //Style für Button 1
         profile1Style = new ImageButton.ImageButtonStyle();
-        profile1Style.imageDown = new TextureRegionDrawable(TextureManager.getTexture("play"));
+        profile1Style.imageDown = new TextureRegionDrawable(TextureManager.getTexture("tower"));
         profile1Style.imageUp = profile1Style.imageDown;
-        profile1Style.imageOver = new TextureRegionDrawable(TextureManager.getTexture("play"));
+        profile1Style.imageOver = new TextureRegionDrawable(TextureManager.getTexture("tower"));
         //erstellen, listener und hinzufügen button
         profile1Button = new ImageButton(profile1Style);
         profile1Button.addListener(new ClickListener() {
@@ -69,11 +74,11 @@ public class SelectProfileScreen extends AbstractScreen {
         });
         table.add(profile1Button);
         //Style für Button 2
+
         profile2Style = new ImageButton.ImageButtonStyle();
-        profile2Style = new ImageButton.ImageButtonStyle();
-        profile2Style.imageDown = new TextureRegionDrawable(TextureManager.getTexture("play"));
+        profile2Style.imageDown = new TextureRegionDrawable(TextureManager.getTexture("tower"));
         profile2Style.imageUp = profile2Style.imageDown;
-        profile2Style.imageOver = new TextureRegionDrawable(TextureManager.getTexture("play"));
+        profile2Style.imageOver = new TextureRegionDrawable(TextureManager.getTexture("tower"));
         //erstellen, listener und hinzufügen button
         profile2Button = new ImageButton(profile2Style);
         profile2Button.addListener(new ClickListener() {
@@ -89,14 +94,14 @@ public class SelectProfileScreen extends AbstractScreen {
         });
         table.add(profile2Button);
         //Style für button 3
+
         profile3Style = new ImageButton.ImageButtonStyle();
-        profile3Style = new ImageButton.ImageButtonStyle();
-        profile3Style.imageDown = new TextureRegionDrawable(TextureManager.getTexture("play"));
+        profile3Style.imageDown = new TextureRegionDrawable(TextureManager.getTexture("tower"));
         profile3Style.imageUp = profile3Style.imageDown;
-        profile3Style.imageOver = new TextureRegionDrawable(TextureManager.getTexture("play"));
+        profile3Style.imageOver = new TextureRegionDrawable(TextureManager.getTexture("tower"));
         //erstellen, listener und hinzufügen button
         profile3Button = new ImageButton(profile3Style);
-        profile2Button.addListener(new ClickListener() {
+        profile3Button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -108,6 +113,7 @@ public class SelectProfileScreen extends AbstractScreen {
             ;
         });
         table.add(profile3Button);
+
     }
 
     @Override
@@ -117,6 +123,8 @@ public class SelectProfileScreen extends AbstractScreen {
 
     @Override
     public void show() {
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
 
     }
 
