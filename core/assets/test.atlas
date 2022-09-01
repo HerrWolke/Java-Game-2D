@@ -1,0 +1,89 @@
+test.png
+size: 3844, 1167
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+achievement
+  rotate: false
+  xy: 2172, 1083
+  size: 577, 65
+  orig: 640, 192
+  offset: 63, 63
+  index: -1
+achievement_ausgewaehlt
+  rotate: false
+  xy: 1541, 1083
+  size: 629, 66
+  orig: 640, 192
+  offset: 11, 63
+  index: -1
+back_arrow
+  rotate: false
+  xy: 2783, 1083
+  size: 143, 51
+  orig: 256, 64
+  offset: 45, 9
+  index: -1
+background
+  rotate: false
+  xy: 1, 1
+  size: 1920, 1080
+  orig: 1920, 1080
+  offset: 0, 0
+  index: -1
+background2
+  rotate: false
+  xy: 1923, 1
+  size: 1920, 1080
+  orig: 1920, 1080
+  offset: 0, 0
+  index: -1
+play
+  rotate: false
+  xy: 964, 1083
+  size: 169, 82
+  orig: 640, 192
+  offset: 63, 46
+  index: -1
+play_ausgewaehlt
+  rotate: false
+  xy: 741, 1083
+  size: 221, 82
+  orig: 640, 192
+  offset: 11, 46
+  index: -1
+quit
+  rotate: false
+  xy: 1364, 1083
+  size: 175, 77
+  orig: 640, 192
+  offset: 63, 51
+  index: -1
+quit_ausgewaehlt
+  rotate: false
+  xy: 1135, 1083
+  size: 227, 78
+  orig: 640, 192
+  offset: 11, 51
+  index: -1
+settings
+  rotate: false
+  xy: 397, 1083
+  size: 342, 82
+  orig: 640, 192
+  offset: 63, 46
+  index: -1
+settings_ausgewaehlt
+  rotate: false
+  xy: 1, 1083
+  size: 394, 83
+  orig: 640, 192
+  offset: 11, 46
+  index: -1
+tower
+  rotate: false
+  xy: 2751, 1083
+  size: 30, 54
+  orig: 64, 64
+  offset: 17, 0
+  index: -1
