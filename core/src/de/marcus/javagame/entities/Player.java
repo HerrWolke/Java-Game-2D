@@ -25,6 +25,9 @@ public class Player extends Creature {
         inventory = new Inventory();
     }
 
+
+
+
     public void runForwards() {
 
     }

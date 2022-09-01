@@ -38,4 +38,12 @@ public class Entity {
     public void update() {
 
     }
+    /**
+     *
+     * @param x Negative x = left
+     * @param y Negative y = down
+     */
+    public void move(int x, int y) {
+        position.set(position.x + x,position.y + y);
+    }
 }
