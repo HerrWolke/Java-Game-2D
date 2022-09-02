@@ -45,6 +45,7 @@ public class GameScreenManager {
     //fügen Screen hinzu
     public void setScreen(SCREENS screen) {
         app.setScreen(screens.get(screen));
+
     }
 
     public void dispose() {
@@ -54,4 +55,8 @@ public class GameScreenManager {
             }
         }
     }
+
+
+
+
 }

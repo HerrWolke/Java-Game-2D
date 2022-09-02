@@ -2,6 +2,7 @@ package de.marcus.javagame.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -21,6 +22,8 @@ public class LoadingScreen extends Game {
 
     @Override
     public void create() {
+
+
         loggingSystem = new LoggingSystem();
 
         batch = new SpriteBatch();
@@ -32,6 +35,10 @@ public class LoadingScreen extends Game {
 
     @Override
     public void render() {
+        super.render();
+
+
+
 
 
         //ScreenUtils.clear(1, 0, 0, 1);
@@ -47,6 +54,12 @@ public class LoadingScreen extends Game {
         //nur ein test
 
 
+    }
+
+    @Override
+    public void setScreen(Screen screen) {
+        super.setScreen(screen);
+        super.render();
     }
 
     @Override
