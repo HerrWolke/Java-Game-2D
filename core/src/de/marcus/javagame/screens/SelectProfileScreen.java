@@ -28,7 +28,7 @@ public class SelectProfileScreen extends AbstractScreen {
 
         table = new Table();
         stage.addActor(table);
-        table.setPosition(0f,0f);
+
         table.pad(50f);
         table.setDebug(true);
         table.setFillParent(true);
@@ -52,8 +52,9 @@ public class SelectProfileScreen extends AbstractScreen {
             ;
 
         });
-        table.add(back);
-        table.row();
+
+        back.setPosition(Gdx.graphics.getWidth()-(Gdx.graphics.getWidth()-5f),Gdx.graphics.getHeight()-(0.1f * Gdx.graphics.getHeight()));
+        stage.addActor(back);
         //Style für Button 1
         profile1Style = new ImageButton.ImageButtonStyle();
         profile1Style.imageDown = new TextureRegionDrawable(TextureManager.getTexture("tower"));
@@ -70,9 +71,9 @@ public class SelectProfileScreen extends AbstractScreen {
                 app.g.setScreen(GameScreenManager.SCREENS.GAME1);
             }
 
-            ;
+
         });
-        table.add(profile1Button);
+        table.add(profile1Button).padBottom(0f);
         //Style für Button 2
 
         profile2Style = new ImageButton.ImageButtonStyle();
@@ -110,7 +111,7 @@ public class SelectProfileScreen extends AbstractScreen {
                 app.g.setScreen(GameScreenManager.SCREENS.GAME3);
             }
 
-            ;
+
         });
         table.add(profile3Button);
 
@@ -118,7 +119,7 @@ public class SelectProfileScreen extends AbstractScreen {
 
     @Override
     public void update(float delta) {
-
+        back.setPosition(Gdx.graphics.getWidth()-(0.99f * Gdx.graphics.getWidth()),Gdx.graphics.getHeight()-(0.05f * Gdx.graphics.getHeight()));
     }
 
     @Override

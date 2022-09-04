@@ -67,6 +67,32 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean keyUp(int keycode) {
+        if (keycode == settings.get(CONTROLS.RUN_FORWARD)) {
+            p.runForwardsStop();
+            return false;
+        } else if (keycode == settings.get(CONTROLS.RUN_BACKWARD)) {
+            p.runBackwardsStop();
+            return false;
+        } else if (keycode == settings.get(CONTROLS.RUN_RIGHT)) {
+            p.runRightStop();
+            return false;
+        } else if (keycode == settings.get(CONTROLS.RUN_LEFT)) {
+            p.runLeftStop();
+            return false;
+        } else if (keycode == settings.get(CONTROLS.SETTINGS)) {
+            //new screen
+            return false;
+        } else if (keycode == settings.get(CONTROLS.ATTACK)) {
+            p.attackStop();
+            return false;
+        } else if (keycode == settings.get(CONTROLS.BLOCK_SPEAK)) {
+            //wenn person mit der man interacten kann in range vor ihm
+            p.interactStop();
+            //sonst
+            p.blockStop();
+            return false;
+        }
+
         return false;
     }
 
@@ -77,6 +103,7 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+       //attack block
         return false;
     }
 
