@@ -1,5 +1,7 @@
 package de.marcus.javagame.entities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -30,11 +32,17 @@ public class Player extends Creature {
     int heightRunning = 0;
     int widthPlayer = 100;
     int heightPlayer = 100;
+
+    private OrthographicCamera camera;
+
+
 //    TextureRegion playerRunning = TextureManager.getFinishedAnimation(true,0.5f,"player_running");
 //sprite; wenn wasd flippen, wenn bewegt animation, sonst sprite
     public Player(float posX, float posY, Texture texture, int maxHealth, int maxHunger, int maxArmor, int maxThirst, float movementSpeed) {
         super(posX, posY, texture, maxHealth, maxHunger, maxArmor, maxThirst, movementSpeed);
         inventory = new Inventory();
+        camera = initialiseCamera();
+
 //        batchPlayer.begin();
 //        batchPlayer.draw(player,getPosition().x,getPosition().y);
 //        batchPlayer.end();
@@ -44,8 +52,26 @@ public class Player extends Creature {
 
     }
 
+    private OrthographicCamera initialiseCamera() {
+        float w = Gdx.graphics.getWidth();
+        float h = Gdx.graphics.getHeight();
+        camera  = new OrthographicCamera();
+        camera = new OrthographicCamera(50, 50 * (h / w));
+        camera.position.set(getPosition().x,getPosition().y, 0);
+        camera.update();
 
 
+        return camera;
+    }
+
+    @Override
+    public void move(float x, float y) {
+        super.move(x, y);
+        camera.position.set(getPosition().x,getPosition().y, 0);
+        camera.update();
+//        System.out.printf("Player Pos: %s %s \n",getPosition().x,getPosition().y);
+//        System.out.printf("Cam Pos: %s %s \n", camera.position.x,camera.position.y);
+    }
 
     public void runForwards() {
 

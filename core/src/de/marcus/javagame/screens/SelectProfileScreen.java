@@ -52,14 +52,18 @@ public class SelectProfileScreen extends AbstractScreen {
             ;
 
         });
-
+        TextureRegionDrawable tower = new TextureRegionDrawable(TextureManager.getTexture("tower"));
+        // Default Values (Resizen wenn wir wollen)
+        tower.setMinHeight(54);
+        tower.setMinWidth(30);
+        
         back.setPosition(Gdx.graphics.getWidth()-(Gdx.graphics.getWidth()-5f),Gdx.graphics.getHeight()-(0.1f * Gdx.graphics.getHeight()));
         stage.addActor(back);
         //Style für Button 1
         profile1Style = new ImageButton.ImageButtonStyle();
-        profile1Style.imageDown = new TextureRegionDrawable(TextureManager.getTexture("tower"));
+        profile1Style.imageDown = tower;
         profile1Style.imageUp = profile1Style.imageDown;
-        profile1Style.imageOver = new TextureRegionDrawable(TextureManager.getTexture("tower"));
+        profile1Style.imageOver = tower;
         //erstellen, listener und hinzufügen button
         profile1Button = new ImageButton(profile1Style);
         profile1Button.addListener(new ClickListener() {
@@ -77,9 +81,9 @@ public class SelectProfileScreen extends AbstractScreen {
         //Style für Button 2
 
         profile2Style = new ImageButton.ImageButtonStyle();
-        profile2Style.imageDown = new TextureRegionDrawable(TextureManager.getTexture("tower"));
+        profile2Style.imageDown = tower;
         profile2Style.imageUp = profile2Style.imageDown;
-        profile2Style.imageOver = new TextureRegionDrawable(TextureManager.getTexture("tower"));
+        profile2Style.imageOver = tower;
         //erstellen, listener und hinzufügen button
         profile2Button = new ImageButton(profile2Style);
         profile2Button.addListener(new ClickListener() {
@@ -97,11 +101,16 @@ public class SelectProfileScreen extends AbstractScreen {
         //Style für button 3
 
         profile3Style = new ImageButton.ImageButtonStyle();
-        profile3Style.imageDown = new TextureRegionDrawable(TextureManager.getTexture("tower"));
+        
+        profile3Style.imageDown = tower;
         profile3Style.imageUp = profile3Style.imageDown;
-        profile3Style.imageOver = new TextureRegionDrawable(TextureManager.getTexture("tower"));
+        profile3Style.imageOver = tower;
+
+
+
         //erstellen, listener und hinzufügen button
         profile3Button = new ImageButton(profile3Style);
+
         profile3Button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

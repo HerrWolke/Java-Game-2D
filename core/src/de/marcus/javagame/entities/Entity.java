@@ -35,6 +35,10 @@ public class Entity {
         batch.draw(texture, position.x, position.y);
     }
 
+    public void render(SpriteBatch batch, float height, float width) {
+        batch.draw(texture, position.x, position.y,width,height);
+    }
+
     public void update() {
 
     }
@@ -43,7 +47,7 @@ public class Entity {
      * @param x Negative x = left
      * @param y Negative y = down
      */
-    public void move(int x, int y) {
+    public void move(float x, float y) {
         position.set(position.x + x,position.y + y);
     }
 }
