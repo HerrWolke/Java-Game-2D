@@ -12,7 +12,7 @@ import de.marcus.javagame.managers.GameScreenManager;
 
 
 public class LoadingScreen extends Game {
-    SpriteBatch batch;
+
     GameScreenManager g;
     Animation<TextureRegion> loadingAnimation;
     TextureAtlas atlas;
@@ -23,7 +23,8 @@ public class LoadingScreen extends Game {
     public void create() {
         loggingSystem = new LoggingSystem();
 
-        batch = new SpriteBatch();
+
+
         g = new GameScreenManager(this);
 
         loaded = true;
@@ -51,7 +52,7 @@ public class LoadingScreen extends Game {
 
     @Override
     public void dispose() {
-        batch.dispose();
+
 
     }
 }

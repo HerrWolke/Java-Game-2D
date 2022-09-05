@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import de.marcus.javagame.managers.GameScreenManager;
@@ -25,6 +27,8 @@ public class JavaGame extends ApplicationAdapter {
     public Animation<TextureRegion> runningAnimation;
     float animTime = 0f;
     GameScreenManager gsm;
+    OrthogonalTiledMapRenderer tiledMapRenderer;
+
 
 
     @Override
@@ -37,12 +41,10 @@ public class JavaGame extends ApplicationAdapter {
         camera = new OrthographicCamera(50, 50);
         viewport = new FillViewport(camera.viewportWidth, camera.viewportHeight, camera);
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
-//        map = new TmxMapLoader().load(Gdx.files.internal("map.tmx").file().getAbsolutePath());
-//        tr = new OrthogonalTiledMapRenderer(map);
-//        tr.setView(camera);
 
-//        TexturePacker.process("testimage","testimage/", "file");
-
+        TmxMapLoader load = new TmxMapLoader();
+        TiledMap load1 = load.load("word_tmx/Tilemap.tmx");
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(load1,0.01f);
 
         TextureAtlas atlas = new TextureAtlas("file.atlas");
         runningAnimation =
@@ -56,7 +58,8 @@ public class JavaGame extends ApplicationAdapter {
 
 
         camera.update();
-        batch.setProjectionMatrix(camera.combined);
+        tiledMapRenderer.setView(camera);
+//        batch.setProjectionMatrix(camera.combined);
 
 
         Gdx.gl.glClearColor(0, 0, 0, 0);
@@ -66,10 +69,12 @@ public class JavaGame extends ApplicationAdapter {
 
         animTime += Gdx.graphics.getDeltaTime();
 
-        TextureRegion frame = runningAnimation.getKeyFrame(animTime, true);
-        batch.begin();
-        batch.draw(frame, 25, 25, 10, 10);
-        batch.end();
+//        TextureRegion frame = runningAnimation.getKeyFrame(animTime, true);
+//        batch.begin();
+//        batch.draw(frame, 25, 25, 10, 10);
+//        batch.end();
+
+        tiledMapRenderer.render();
     }
 
     public void update() {

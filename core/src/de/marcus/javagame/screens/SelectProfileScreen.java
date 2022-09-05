@@ -115,6 +115,7 @@ public class SelectProfileScreen extends AbstractScreen {
         });
         table.add(profile3Button);
 
+
     }
 
     @Override
@@ -126,7 +127,7 @@ public class SelectProfileScreen extends AbstractScreen {
     public void show() {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override

@@ -30,17 +30,17 @@ public class Player extends Creature {
     int heightRunning = 0;
     int widthPlayer = 100;
     int heightPlayer = 100;
-    TextureRegion playerRunning = TextureManager.getFinishedAnimation(true,0.5f,"player_running");
+//    TextureRegion playerRunning = TextureManager.getFinishedAnimation(true,0.5f,"player_running");
 //sprite; wenn wasd flippen, wenn bewegt animation, sonst sprite
     public Player(float posX, float posY, Texture texture, int maxHealth, int maxHunger, int maxArmor, int maxThirst, float movementSpeed) {
         super(posX, posY, texture, maxHealth, maxHunger, maxArmor, maxThirst, movementSpeed);
         inventory = new Inventory();
-        batchPlayer.begin();
-        batchPlayer.draw(player,getPosition().x,getPosition().y);
-        batchPlayer.end();
-        batchPlayerRunning.begin();
-        batchPlayerRunning.draw(playerRunning,getPosition().x,getPosition().y,widthRunning,heightRunning);
-        batchPlayerRunning.end();
+//        batchPlayer.begin();
+//        batchPlayer.draw(player,getPosition().x,getPosition().y);
+//        batchPlayer.end();
+//        batchPlayerRunning.begin();
+//        batchPlayerRunning.draw(playerRunning,getPosition().x,getPosition().y,widthRunning,heightRunning);
+//        batchPlayerRunning.end();
 
     }
 
