@@ -1,8 +1,10 @@
 package de.marcus.javagame.managers;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.math.Vector3;
 import de.marcus.javagame.entities.Player;
 
 import java.util.HashMap;
@@ -34,58 +36,62 @@ public class InputManager implements InputProcessor {
         p = player;
     }
 
+
+    public void handleMovement() {
+        Vector3 posCam = new Vector3(0, 0, 0);
+
+        if (Gdx.input.isKeyPressed(settings.get(CONTROLS.RUN_LEFT)))
+            posCam.x -= 1;
+
+        if (Gdx.input.isKeyPressed(settings.get(CONTROLS.RUN_RIGHT)))
+            posCam.x += 1;
+
+        if (Gdx.input.isKeyPressed(settings.get(CONTROLS.RUN_FORWARD)))
+            posCam.y += 1;
+
+        if (Gdx.input.isKeyPressed(settings.get(CONTROLS.RUN_BACKWARD)))
+            posCam.y -= 1;
+
+//        System.out.printf("x: %s, y: %s",posCam.x,posCam.y);
+
+        p.move(posCam.x, posCam.y);
+    }
+
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == settings.get(CONTROLS.RUN_FORWARD)) {
-            p.runForwards();
-            return false;
-        } else if (keycode == settings.get(CONTROLS.RUN_BACKWARD)) {
-            p.runBackwards();
-            return false;
-        } else if (keycode == settings.get(CONTROLS.RUN_RIGHT)) {
-            p.runRight();
-            return false;
-        } else if (keycode == settings.get(CONTROLS.RUN_LEFT)) {
-            p.runLeft();
-            return false;
-        } else if (keycode == settings.get(CONTROLS.SETTINGS)) {
+
+
+        if (keycode == settings.get(CONTROLS.SETTINGS)) {
             //new screen
-            return false;
-        } else if (keycode == settings.get(CONTROLS.ATTACK)) {
+
+        }
+        if (keycode == settings.get(CONTROLS.ATTACK)) {
             p.attack();
-            return false;
-        } else if (keycode == settings.get(CONTROLS.BLOCK_SPEAK)) {
+
+        }
+        if (keycode == settings.get(CONTROLS.BLOCK_SPEAK)) {
             //wenn person mit der man interacten kann in range vor ihm
             p.interact();
             //sonst
             p.block();
-            return false;
+
         }
 
-        return false;
+        return true;
     }
 
     @Override
     public boolean keyUp(int keycode) {
-        if (keycode == settings.get(CONTROLS.RUN_FORWARD)) {
-            p.runForwardsStop();
-            return false;
-        } else if (keycode == settings.get(CONTROLS.RUN_BACKWARD)) {
-            p.runBackwardsStop();
-            return false;
-        } else if (keycode == settings.get(CONTROLS.RUN_RIGHT)) {
-            p.runRightStop();
-            return false;
-        } else if (keycode == settings.get(CONTROLS.RUN_LEFT)) {
-            p.runLeftStop();
-            return false;
-        } else if (keycode == settings.get(CONTROLS.SETTINGS)) {
+
+        if (keycode == settings.get(CONTROLS.SETTINGS)) {
             //new screen
             return false;
-        } else if (keycode == settings.get(CONTROLS.ATTACK)) {
+        }
+        if (keycode == settings.get(CONTROLS.ATTACK)) {
             p.attackStop();
             return false;
-        } else if (keycode == settings.get(CONTROLS.BLOCK_SPEAK)) {
+        }
+        if (keycode == settings.get(CONTROLS.BLOCK_SPEAK)) {
             //wenn person mit der man interacten kann in range vor ihm
             p.interactStop();
             //sonst
@@ -103,7 +109,7 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-       //attack block
+        //attack block
         return false;
     }
 

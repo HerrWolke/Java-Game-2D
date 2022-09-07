@@ -1,6 +1,5 @@
 package de.marcus.javagame.managers;
 
-import de.marcus.javagame.entities.logging.Logger;
 import de.marcus.javagame.questing.Quest;
 
 import java.util.LinkedHashMap;

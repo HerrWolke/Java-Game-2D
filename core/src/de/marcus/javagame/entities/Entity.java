@@ -22,8 +22,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Entity {
-    private Vector2 position;
-    private Texture texture;
+    protected Vector2 position;
+    protected Texture texture;
 
     public Entity(float posX, float posY, Texture texture) {
         position = new Vector2(posX, posY);
@@ -36,7 +36,8 @@ public class Entity {
     }
 
     public void render(SpriteBatch batch, float height, float width) {
-        batch.draw(texture, position.x, position.y,width,height);
+
+        batch.draw(texture, position.x, position.y, width, height);
     }
 
     public void update() {
@@ -47,7 +48,5 @@ public class Entity {
      * @param x Negative x = left
      * @param y Negative y = down
      */
-    public void move(float x, float y) {
-        position.set(position.x + x,position.y + y);
-    }
+
 }

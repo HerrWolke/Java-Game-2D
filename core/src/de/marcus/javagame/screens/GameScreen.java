@@ -1,25 +1,20 @@
 package de.marcus.javagame.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import de.marcus.javagame.entities.Player;
+import com.badlogic.gdx.utils.Align;
+import de.marcus.javagame.graphics.ui.UI;
+import de.marcus.javagame.managers.EntityManager;
 import de.marcus.javagame.managers.InputManager;
-import de.marcus.javagame.managers.TextureManager;
 import de.marcus.javagame.world.GameWorld;
 
 public class GameScreen extends AbstractScreen {
-    Player mainCharacter;
+
     //Map map;
     InputManager inputManager;
 
@@ -31,6 +26,13 @@ public class GameScreen extends AbstractScreen {
     private final BitmapFont font;
     private final SpriteBatch batch;
 
+    EntityManager entityManager;
+
+    UI ui;
+
+    boolean yes = true;
+
+
     // StoryHandler sthandler;
     //LoadWorld loader;
     //Entities entities;
@@ -39,81 +41,75 @@ public class GameScreen extends AbstractScreen {
     public GameScreen(LoadingScreen app, int profile) {
         super(app);
         //app.dispose();
+        ui = new UI();
+
+        entityManager = new EntityManager();
 
 
-        mainCharacter = new Player(0, 0, new Texture("badlogic.jpg"), 10, 10, 10, 10, 1f);
+        inputManager = new InputManager(entityManager.getPlayer());
 
-        inputManager = new InputManager(mainCharacter);
-
-        float w = Gdx.graphics.getWidth();
-        float h = Gdx.graphics.getHeight();
         font = new BitmapFont();
         batch = new SpriteBatch();
-        batch.setProjectionMatrix(mainCharacter.getCamera().combined);
+        batch.setProjectionMatrix(entityManager.getPlayer().getCamera().combined);
+
+
         Table table = new Table();
         stage.addActor(table);
-        table.pad(50f);
-//        table.setBackground(new TextureRegionDrawable(TextureManager.getTexture("background")));
+
 
         table.setDebug(true);
         table.setFillParent(true);
-        label = new Label("FPS this is a test for some ui code which is great: " + Gdx.graphics.getFramesPerSecond(),new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-        label.setPosition(Gdx.graphics.getWidth()-(Gdx.graphics.getWidth()-5f),Gdx.graphics.getHeight()-(0.1f * Gdx.graphics.getHeight()));
-
-        table.add(label);
+        label = new Label("FPS this is a test for some ui code which is great: " + Gdx.graphics.getFramesPerSecond(), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        label.setAlignment(Align.center);
 
 
-        gameWorld = new GameWorld(mainCharacter.getCamera());
+//        System.out.println(Gdx.graphics.getWidth()-(Gdx.graphics.getWidth()*0.05f));
+        label.setPosition(Gdx.graphics.getWidth() - (Gdx.graphics.getWidth() * 0.05f), Gdx.graphics.getHeight() - (0.05f * Gdx.graphics.getHeight()));
+
+        table.addActor(label);
+        table.addActor(ui.getUiContainer());
+
+
+        gameWorld = new GameWorld(entityManager.getPlayer().getCamera());
 
     }
 
     @Override
     public void update(float delta) {
         //story spawns etc
-        //inputmanager.keyDown()
+        inputManager.handleMovement();
+    }
 
-
+    @Override
+    public void resize(int width, int height) {
+        super.resize(width, height);
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
     public void render(float delta) {
+        update(delta);
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        if (yes) {
+            ui.getHealthBar().setValue(3.0f);
+            yes = false;
+        }
 
 
-        batch.setProjectionMatrix(mainCharacter.getCamera().combined);
+        batch.setProjectionMatrix(entityManager.getPlayer().getCamera().combined);
+        gameWorld.render(entityManager.getPlayer().getCamera());
 
 
-
-
-        Vector3 posCam = new Vector3(0, 0, 0);
-
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
-            posCam.x -= (float) Math.round(5 * Gdx.graphics.getDeltaTime() * 50) / 50f;
-
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
-            posCam.x += (float) Math.round(5 * Gdx.graphics.getDeltaTime() * 50) / 50f;
-
-        if (Gdx.input.isKeyPressed(Input.Keys.UP))
-            posCam.y += (float) Math.round(5 * Gdx.graphics.getDeltaTime() * 50) / 50f;
-
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
-            posCam.y -= (float) Math.round(5 * Gdx.graphics.getDeltaTime() * 50) / 50f;
-
-
-        mainCharacter.move(posCam.x, posCam.y);
-
-        gameWorld.render(mainCharacter.getCamera());
-
-        batch.begin();
-        mainCharacter.render(batch,1,1);
 //        font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 20);
-        batch.end();
 
 
-//        label.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
-        label.setPosition(Gdx.graphics.getWidth()-(Gdx.graphics.getWidth()-5f),Gdx.graphics.getHeight()-(0.1f * Gdx.graphics.getHeight()));
+        label.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
+
+//        label.setPosition(Gdx.graphics.getWidth()-(Gdx.graphics.getWidth()-5f),Gdx.graphics.getHeight()-(0.1f * Gdx.graphics.getHeight()));
+//        label.pack();
+
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
@@ -121,16 +117,10 @@ public class GameScreen extends AbstractScreen {
 
     @Override
     public void show() {
-        //nur ein Test
-        //t = new Texture(Gdx.files.internal("items.png"));
-        //  batch.begin();
-        //   batch.draw(t, 0, 0);
-        //  batch.end();
-//        super.app.g.setScreen(GameScreenManager.SCREENS.INVENTORY);
-
         System.out.println("draw");
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+        Gdx.input.setInputProcessor(inputManager);
     }
 
     @Override

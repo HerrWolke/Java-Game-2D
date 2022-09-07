@@ -1,5 +1,6 @@
 package de.marcus.javagame.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import lombok.Getter;
 import lombok.Setter;
@@ -59,5 +60,11 @@ public class Creature extends Entity {
         /*
          * TODO: Drop Loot
          */
+    }
+
+    public void move(float x, float y) {
+        if (x != 0)
+            System.out.println(position.x + (x * movementSpeed));
+        position.set(position.x + (Gdx.graphics.getDeltaTime() * (x * movementSpeed)), position.y + (Gdx.graphics.getDeltaTime() * (y * movementSpeed)));
     }
 }

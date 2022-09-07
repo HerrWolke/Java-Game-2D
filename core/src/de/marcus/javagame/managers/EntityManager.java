@@ -4,8 +4,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.marcus.javagame.entities.Creature;
 import de.marcus.javagame.entities.Entity;
+import de.marcus.javagame.entities.Player;
 import de.marcus.javagame.entities.Weapon;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -17,22 +20,32 @@ import java.util.UUID;
  * <p>
  * Entity System: Manager
  */
+
+@Getter
+@Setter
 public class EntityManager {
     @JsonProperty("active_entities")
-    private LinkedHashMap<UUID, Entity> currentUsedEntities;
+    private final LinkedHashMap<UUID, Entity> currentUsedEntities;
 
     @JsonProperty("loaded_entities")
-    private LinkedHashMap<UUID, Entity> memoryLoadedEntities;
+    private final LinkedHashMap<UUID, Entity> memoryLoadedEntities;
+
+    @JsonProperty("player")
+    private final Player player;
 
     public EntityManager() {
         this.currentUsedEntities = new LinkedHashMap<>();
         this.memoryLoadedEntities = new LinkedHashMap<>();
+        this.player = new Player(0, 0, null, 4, 4, 4, 4, 5.0f);
     }
 
     public void render(@NonNull SpriteBatch spriteBatch) {
+        spriteBatch.begin();
+        player.render(spriteBatch);
         for (Entity entity : currentUsedEntities.values()) {
             spriteBatch.draw(entity.getTexture(), entity.getPosition().x, entity.getPosition().y);
         }
+        spriteBatch.end();
     }
 
     public void update() {

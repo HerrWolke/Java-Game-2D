@@ -3,10 +3,8 @@ package de.marcus.javagame.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import de.marcus.javagame.datahandling.data.Inventory;
 import de.marcus.javagame.managers.TextureManager;
 import lombok.Getter;
@@ -36,7 +34,7 @@ public class Player extends Creature {
     private OrthographicCamera camera;
 
 
-//    TextureRegion playerRunning = TextureManager.getFinishedAnimation(true,0.5f,"player_running");
+    //    TextureRegion playerRunning = TextureManager.getFinishedAnimation(true,0.5f,"player_running");
 //sprite; wenn wasd flippen, wenn bewegt animation, sonst sprite
     public Player(float posX, float posY, Texture texture, int maxHealth, int maxHunger, int maxArmor, int maxThirst, float movementSpeed) {
         super(posX, posY, texture, maxHealth, maxHunger, maxArmor, maxThirst, movementSpeed);
@@ -55,9 +53,9 @@ public class Player extends Creature {
     private OrthographicCamera initialiseCamera() {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
-        camera  = new OrthographicCamera();
+        camera = new OrthographicCamera();
         camera = new OrthographicCamera(50, 50 * (h / w));
-        camera.position.set(getPosition().x,getPosition().y, 0);
+        camera.position.set(getPosition().x, getPosition().y, 0);
         camera.update();
 
 
@@ -66,33 +64,10 @@ public class Player extends Creature {
 
     @Override
     public void move(float x, float y) {
+
         super.move(x, y);
-        camera.position.set(getPosition().x,getPosition().y, 0);
+        camera.position.set(position.x, position.y, 0);
         camera.update();
-//        System.out.printf("Player Pos: %s %s \n",getPosition().x,getPosition().y);
-//        System.out.printf("Cam Pos: %s %s \n", camera.position.x,camera.position.y);
-    }
-
-    public void runForwards() {
-
-         move(0,2);
-         widthPlayer = 0;
-         heightPlayer = 0;
-         widthRunning = 100;
-         heightRunning = 100;
-         //hide player, spiele animation
-    }
-
-    public void runBackwards() {
-
-    }
-
-    public void runLeft() {
-
-    }
-
-    public void runRight() {
-
     }
 
     public void attack() {

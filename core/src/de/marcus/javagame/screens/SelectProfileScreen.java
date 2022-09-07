@@ -25,7 +25,6 @@ public class SelectProfileScreen extends AbstractScreen {
         super(app);
 
 
-
         table = new Table();
         stage.addActor(table);
 
@@ -36,7 +35,7 @@ public class SelectProfileScreen extends AbstractScreen {
 
         //Style für back Button
         backStyle = new ImageButton.ImageButtonStyle();
-        backStyle.imageUp = new TextureRegionDrawable(TextureManager.getTexture("back_arrow"));
+        backStyle.imageUp = new TextureRegionDrawable(TextureManager.getTexture("button_back"));
         backStyle.imageDown = backStyle.imageUp;
         //erstellen, listener und hinzufügen button
         back = new ImageButton(backStyle);
@@ -54,10 +53,10 @@ public class SelectProfileScreen extends AbstractScreen {
         });
         TextureRegionDrawable tower = new TextureRegionDrawable(TextureManager.getTexture("tower"));
         // Default Values (Resizen wenn wir wollen)
-        tower.setMinHeight(54);
-        tower.setMinWidth(30);
-        
-        back.setPosition(Gdx.graphics.getWidth()-(Gdx.graphics.getWidth()-5f),Gdx.graphics.getHeight()-(0.1f * Gdx.graphics.getHeight()));
+//        tower.setMinHeight(216);
+//        tower.setMinWidth(120);
+
+        back.setPosition(Gdx.graphics.getWidth() - (Gdx.graphics.getWidth() - 5f), Gdx.graphics.getHeight() - (0.1f * Gdx.graphics.getHeight()));
         stage.addActor(back);
         //Style für Button 1
         profile1Style = new ImageButton.ImageButtonStyle();
@@ -101,11 +100,10 @@ public class SelectProfileScreen extends AbstractScreen {
         //Style für button 3
 
         profile3Style = new ImageButton.ImageButtonStyle();
-        
+
         profile3Style.imageDown = tower;
         profile3Style.imageUp = profile3Style.imageDown;
         profile3Style.imageOver = tower;
-
 
 
         //erstellen, listener und hinzufügen button
@@ -129,7 +127,7 @@ public class SelectProfileScreen extends AbstractScreen {
 
     @Override
     public void update(float delta) {
-        back.setPosition(Gdx.graphics.getWidth()-(0.99f * Gdx.graphics.getWidth()),Gdx.graphics.getHeight()-(0.05f * Gdx.graphics.getHeight()));
+        back.setPosition(Gdx.graphics.getWidth() - (0.99f * Gdx.graphics.getWidth()), Gdx.graphics.getHeight() - (0.05f * Gdx.graphics.getHeight()));
     }
 
     @Override

@@ -5,7 +5,7 @@ import org.robovm.apple.uikit.UIApplication;
 
 import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
-import de.marcus.javagame.JavaGame;
+import de.marcus.javagame.testing.JavaGame;
 
 public class IOSLauncher extends IOSApplication.Delegate {
     @Override
