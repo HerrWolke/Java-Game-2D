@@ -2,10 +2,14 @@ package de.marcus.javagame.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Marcus
@@ -33,6 +37,19 @@ public class Creature extends Entity {
     private int maxThirst;
 
 
+    List<Animation<TextureRegion>> animations;
+    /**
+     * Animations
+     * 0 = idle
+     * 1 = forward
+     * 2 = backward
+     * 3 = x movement
+     * Rest doesn't matter
+     */
+    private int activeAnimation;
+    private boolean mirrorAnimations;
+
+
     private float movementSpeed;
     private boolean isDead;
 
@@ -46,14 +63,18 @@ public class Creature extends Entity {
     private boolean hungry;
     private boolean thirsty;
 
-    public Creature(float posX, float posY, Texture texture, int maxHealth, int maxHunger, int maxArmor, int maxThirst, float movementSpeed) {
+    boolean test = true;
+
+
+    public Creature(float posX, float posY, Texture texture, int maxHealth, int maxHunger, int maxArmor, int maxThirst, float movementSpeed, List<Animation<TextureRegion>> animations) {
         super(posX, posY, texture);
         this.maxHealth = maxHealth;
         this.maxHunger = maxHunger;
         this.maxArmor = maxArmor;
         this.maxThirst = maxThirst;
         this.movementSpeed = movementSpeed;
-        effects = new LinkedList<StatusEffect>();
+        effects = new LinkedList<>();
+        this.animations = animations;
     }
 
     public void die(Weapon cause) {
@@ -62,9 +83,35 @@ public class Creature extends Entity {
          */
     }
 
+
+    public void render(SpriteBatch batch, float passedAnimationTime, float width, float height) {
+        Animation<TextureRegion> textureRegionAnimation = animations.get(activeAnimation);
+        TextureRegion keyFrame = textureRegionAnimation.getKeyFrame(passedAnimationTime, true);
+
+            if(mirrorAnimations && !keyFrame.isFlipX()) {
+//                System.out.println("flip!");
+                keyFrame.flip(true, false);
+            }
+            else if(!mirrorAnimations && keyFrame.isFlipX()) {
+                keyFrame.flip(true, false);
+//                System.out.println("unflip");
+            }
+
+//            System.out.println("flip " + keyFrame.isFlipX() + " cause " + mirrorAnimations);
+            batch.draw(keyFrame, position.x, position.y,width,height);
+    }
+
     public void move(float x, float y) {
-        if (x != 0)
-            System.out.println(position.x + (x * movementSpeed));
+
+
+        activeAnimation = (y == 0 ?
+                (x == 0 ? 0 : 3)
+                : y > 0 ? 1 : 2);
+
+        //Mirrors animation if the active animation is x movement and player is moving left
+        mirrorAnimations = activeAnimation == 3 && (!(x > 0));
+//        System.out.println(mirrorAnimations);
+
         position.set(position.x + (Gdx.graphics.getDeltaTime() * (x * movementSpeed)), position.y + (Gdx.graphics.getDeltaTime() * (y * movementSpeed)));
     }
 }

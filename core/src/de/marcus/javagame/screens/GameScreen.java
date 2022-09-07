@@ -113,6 +113,7 @@ public class GameScreen extends AbstractScreen {
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+        entityManager.render(batch);
     }
 
     @Override

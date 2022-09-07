@@ -36,7 +36,6 @@ public class Entity {
     }
 
     public void render(SpriteBatch batch, float height, float width) {
-
         batch.draw(texture, position.x, position.y, width, height);
     }
 

@@ -3,12 +3,15 @@ package de.marcus.javagame.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import de.marcus.javagame.datahandling.data.Inventory;
 import de.marcus.javagame.managers.TextureManager;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 /**
  * @author Marcus
@@ -25,7 +28,8 @@ public class Player extends Creature {
     private Inventory inventory;
     private int currentHealth;
     Item currentItem;
-    TextureRegion player = TextureManager.getTexture("player");
+
+
     int widthRunning = 0;
     int heightRunning = 0;
     int widthPlayer = 100;
@@ -34,10 +38,10 @@ public class Player extends Creature {
     private OrthographicCamera camera;
 
 
-    //    TextureRegion playerRunning = TextureManager.getFinishedAnimation(true,0.5f,"player_running");
+//        TextureRegion playerRunning = TextureManager.getFinishedAnimation(true,0.5f,"player_running");
 //sprite; wenn wasd flippen, wenn bewegt animation, sonst sprite
-    public Player(float posX, float posY, Texture texture, int maxHealth, int maxHunger, int maxArmor, int maxThirst, float movementSpeed) {
-        super(posX, posY, texture, maxHealth, maxHunger, maxArmor, maxThirst, movementSpeed);
+    public Player(float posX, float posY, Texture texture, int maxHealth, int maxHunger, int maxArmor, int maxThirst, float movementSpeed, List<Animation<TextureRegion>> animations) {
+        super(posX, posY, texture, maxHealth, maxHunger, maxArmor, maxThirst, movementSpeed, animations);
         inventory = new Inventory();
         camera = initialiseCamera();
 
@@ -51,8 +55,10 @@ public class Player extends Creature {
     }
 
     private OrthographicCamera initialiseCamera() {
+        //for aspect ratio
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
+
         camera = new OrthographicCamera();
         camera = new OrthographicCamera(50, 50 * (h / w));
         camera.position.set(getPosition().x, getPosition().y, 0);
@@ -64,7 +70,7 @@ public class Player extends Creature {
 
     @Override
     public void move(float x, float y) {
-
+        //updates the player position which is then used to move the camera
         super.move(x, y);
         camera.position.set(position.x, position.y, 0);
         camera.update();

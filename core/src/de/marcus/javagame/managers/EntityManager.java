@@ -1,6 +1,9 @@
 package de.marcus.javagame.managers;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.marcus.javagame.entities.Creature;
 import de.marcus.javagame.entities.Entity;
@@ -11,9 +14,7 @@ import lombok.NonNull;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author Marcus
@@ -33,15 +34,26 @@ public class EntityManager {
     @JsonProperty("player")
     private final Player player;
 
+    private float passedAnimTime;
+
     public EntityManager() {
+        passedAnimTime = 0f;
         this.currentUsedEntities = new LinkedHashMap<>();
         this.memoryLoadedEntities = new LinkedHashMap<>();
-        this.player = new Player(0, 0, null, 4, 4, 4, 4, 5.0f);
+        this.player = new Player(0, 0, null, 4, 4, 4, 4, 5.0f, Arrays.asList(
+                TextureManager.getAnimation("standing_character",true,0.25f),
+                TextureManager.getAnimation("running",true,0.25f),
+                TextureManager.getAnimation("running",true,0.25f),
+                TextureManager.getAnimation("running",true,0.25f)
+                ));
+        System.out.println("frames " + player.getAnimations().get(0).getKeyFrames().length);
     }
 
     public void render(@NonNull SpriteBatch spriteBatch) {
+        passedAnimTime += Gdx.graphics.getDeltaTime();
+
         spriteBatch.begin();
-        player.render(spriteBatch);
+        player.render(spriteBatch,passedAnimTime,2.5f,2.5f);
         for (Entity entity : currentUsedEntities.values()) {
             spriteBatch.draw(entity.getTexture(), entity.getPosition().x, entity.getPosition().y);
         }
