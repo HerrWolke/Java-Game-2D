@@ -65,10 +65,12 @@ public class InputManager implements InputProcessor {
             //new screen
 
         }
+
         if (keycode == settings.get(CONTROLS.ATTACK)) {
             p.attack();
 
         }
+
         if (keycode == settings.get(CONTROLS.BLOCK_SPEAK)) {
             //wenn person mit der man interacten kann in range vor ihm
             p.interact();

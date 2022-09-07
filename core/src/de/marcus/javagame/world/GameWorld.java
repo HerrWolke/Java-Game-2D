@@ -23,6 +23,10 @@ public class GameWorld {
         renderer.render();
     }
 
+    private void generateCollisions() {
+
+    }
+
 
     public void dispose() {
         tiledMap.dispose();

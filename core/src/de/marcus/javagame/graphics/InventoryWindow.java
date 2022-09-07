@@ -18,6 +18,7 @@ public class InventoryWindow extends Window {
         this.setModal(true);
         this.setVisible(true);
         this.setMovable(true);
+
         this.setPosition(
                 (Gdx.graphics.getWidth() / 2f) - (this.getWidth() / 2),
                 (Gdx.graphics.getHeight() / 2f) - (this.getHeight() / 2)
