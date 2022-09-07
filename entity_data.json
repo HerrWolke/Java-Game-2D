@@ -1,0 +1,23 @@
+{
+  "current_pos_entities": {
+    "efc57599-df1a-4dd2-9287-385ed2641d95": {
+      "position": {
+        "x": 3.0,
+        "y": 0.0,
+        "zero": false,
+        "unit": false
+      },
+      "texture": null
+    },
+    "2d2a3aa2-317e-42c9-b92f-0cfbe699b67c": {
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "zero": true,
+        "unit": false
+      },
+      "texture": null
+    }
+  },
+  "entities": {}
+}
