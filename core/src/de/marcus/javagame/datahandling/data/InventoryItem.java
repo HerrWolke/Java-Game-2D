@@ -9,7 +9,7 @@ public enum InventoryItem {
         this.maxStackSize = maxStackSize;
     }
 
-    private int maxStackSize;
+    private final int maxStackSize;
 
 
     public enum Attributes {

@@ -1,13 +1,12 @@
 package de.marcus.javagame.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.Align;
+import de.marcus.javagame.datahandling.SavedataHandler;
+import de.marcus.javagame.datahandling.data.Inventory;
 import de.marcus.javagame.graphics.ui.UI;
 import de.marcus.javagame.managers.EntityManager;
 import de.marcus.javagame.managers.InputManager;
@@ -15,8 +14,9 @@ import de.marcus.javagame.world.GameWorld;
 
 public class GameScreen extends AbstractScreen {
 
-    //Map map;
+
     InputManager inputManager;
+
 
 
     GameWorld gameWorld;
@@ -43,7 +43,12 @@ public class GameScreen extends AbstractScreen {
         //app.dispose();
         ui = new UI();
 
-        entityManager = new EntityManager();
+
+        entityManager = SavedataHandler.load(EntityManager.class);
+        Inventory inventory = SavedataHandler.load(Inventory.class);
+
+        System.out.println(inventory.toString());
+        System.out.println(entityManager.toString());
 
 
         inputManager = new InputManager(entityManager.getPlayer());
@@ -52,24 +57,7 @@ public class GameScreen extends AbstractScreen {
         batch = new SpriteBatch();
         batch.setProjectionMatrix(entityManager.getPlayer().getCamera().combined);
 
-
-//        Table table = new Table();
-//        stage.addActor(table);
-//
-//
-//        table.setDebug(true);
-//        table.setFillParent(true);
-//        label = new Label("FPS this is a test for some ui code which is great: " + Gdx.graphics.getFramesPerSecond(), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-//        label.setAlignment(Align.center);
-
-
-//        System.out.println(Gdx.graphics.getWidth()-(Gdx.graphics.getWidth()*0.05f));
-//        label.setPosition(Gdx.graphics.getWidth() - (Gdx.graphics.getWidth() * 0.05f), Gdx.graphics.getHeight() - (0.05f * Gdx.graphics.getHeight()));
-
-//        table.addActor(label);
-            stage.addActor(ui.getUiContainer());
-
-
+        stage.addActor(ui.getUiContainer());
         gameWorld = new GameWorld(entityManager.getPlayer().getCamera());
 
     }

@@ -1,12 +1,1 @@
-{
-  "inventory_data": [
-    {
-      "itemCount": 2,
-      "item": "COIN"
-    },
-    {
-      "itemCount": 5,
-      "item": "COIN"
-    }
-  ]
-}
+{"inventory_data":[{"itemCount":2,"item":"COIN"},{"itemCount":5,"item":"COIN"}],"hotbar_data":[{"itemCount":2,"item":"COIN"},{"itemCount":5,"item":"COIN"}]}

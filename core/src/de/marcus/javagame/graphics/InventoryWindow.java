@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
 
 public class InventoryWindow extends Window {
 
@@ -23,7 +22,6 @@ public class InventoryWindow extends Window {
         this.setModal(false);
         this.setVisible(true);
         this.setMovable(true);
-
 
 
     }

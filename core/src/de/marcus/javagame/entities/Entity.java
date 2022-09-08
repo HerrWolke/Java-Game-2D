@@ -42,10 +42,12 @@ public class Entity {
     public void update() {
 
     }
-    /**
-     *
-     * @param x Negative x = left
-     * @param y Negative y = down
-     */
 
+    @Override
+    public String toString() {
+        return "Entity{" +
+                "position=" + position +
+                ", texture=" + texture +
+                '}';
+    }
 }

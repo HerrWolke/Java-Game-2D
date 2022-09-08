@@ -44,7 +44,6 @@ public class Test extends Game {
         button.setHeight(50);
 
 
-
         parent.addActor(label);
         topUI.addActor(button);
 

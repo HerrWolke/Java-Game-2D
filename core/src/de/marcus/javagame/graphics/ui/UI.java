@@ -56,7 +56,6 @@ public class UI {
     }
 
 
-
     public static Drawable getColoredDrawable(int width, int height, Color color) {
         Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
         pixmap.setColor(color);

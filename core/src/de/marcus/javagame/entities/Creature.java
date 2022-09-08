@@ -88,17 +88,16 @@ public class Creature extends Entity {
         Animation<TextureRegion> textureRegionAnimation = animations.get(activeAnimation);
         TextureRegion keyFrame = textureRegionAnimation.getKeyFrame(passedAnimationTime, true);
 
-            if(mirrorAnimations && !keyFrame.isFlipX()) {
+        if (mirrorAnimations && !keyFrame.isFlipX()) {
 //                System.out.println("flip!");
-                keyFrame.flip(true, false);
-            }
-            else if(!mirrorAnimations && keyFrame.isFlipX()) {
-                keyFrame.flip(true, false);
+            keyFrame.flip(true, false);
+        } else if (!mirrorAnimations && keyFrame.isFlipX()) {
+            keyFrame.flip(true, false);
 //                System.out.println("unflip");
-            }
+        }
 
 //            System.out.println("flip " + keyFrame.isFlipX() + " cause " + mirrorAnimations);
-            batch.draw(keyFrame, position.x, position.y,width,height);
+        batch.draw(keyFrame, position.x, position.y, width, height);
     }
 
     public void move(float x, float y) {

@@ -2,16 +2,14 @@ package de.marcus.javagame.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.marcus.javagame.datahandling.data.Inventory;
+import de.marcus.javagame.datahandling.data.InventoryItem;
 import de.marcus.javagame.managers.TextureManager;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.Arrays;
 
 /**
  * @author Marcus
@@ -23,35 +21,25 @@ import java.util.List;
 @Getter
 @Setter
 public class Player extends Creature {
-    SpriteBatch batchPlayer;
-    SpriteBatch batchPlayerRunning;
+
+
     private Inventory inventory;
-    private int currentHealth;
-    Item currentItem;
+    InventoryItem currentItem;
 
-
-    int widthRunning = 0;
-    int heightRunning = 0;
-    int widthPlayer = 100;
-    int heightPlayer = 100;
-
+    @JsonIgnore
     private OrthographicCamera camera;
 
 
-//        TextureRegion playerRunning = TextureManager.getFinishedAnimation(true,0.5f,"player_running");
-//sprite; wenn wasd flippen, wenn bewegt animation, sonst sprite
-    public Player(float posX, float posY, Texture texture, int maxHealth, int maxHunger, int maxArmor, int maxThirst, float movementSpeed, List<Animation<TextureRegion>> animations) {
-        super(posX, posY, texture, maxHealth, maxHunger, maxArmor, maxThirst, movementSpeed, animations);
+
+    public Player(float posX, float posY) {
+        super(posX, posY, null, 4, 4, 4, 4, 5.0f, Arrays.asList(
+                TextureManager.getAnimation("standing_character", true, 0.25f),
+                TextureManager.getAnimation("running", true, 0.25f),
+                TextureManager.getAnimation("running", true, 0.25f),
+                TextureManager.getAnimation("running", true, 0.25f)
+        ));
         inventory = new Inventory();
         camera = initialiseCamera();
-
-//        batchPlayer.begin();
-//        batchPlayer.draw(player,getPosition().x,getPosition().y);
-//        batchPlayer.end();
-//        batchPlayerRunning.begin();
-//        batchPlayerRunning.draw(playerRunning,getPosition().x,getPosition().y,widthRunning,heightRunning);
-//        batchPlayerRunning.end();
-
     }
 
     private OrthographicCamera initialiseCamera() {
@@ -86,23 +74,6 @@ public class Player extends Creature {
 
     public void interact() {
 
-    }
-
-
-    public void runForwardsStop() {
-        widthPlayer = 100;
-        heightPlayer = 100;
-        widthRunning = 0;
-        heightRunning = 0;
-    }
-
-    public void runBackwardsStop() {
-    }
-
-    public void runRightStop() {
-    }
-
-    public void runLeftStop() {
     }
 
     public void attackStop() {

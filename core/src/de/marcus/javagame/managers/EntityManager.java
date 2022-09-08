@@ -1,10 +1,10 @@
 package de.marcus.javagame.managers;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import de.marcus.javagame.datahandling.Loadable;
 import de.marcus.javagame.entities.Creature;
 import de.marcus.javagame.entities.Entity;
 import de.marcus.javagame.entities.Player;
@@ -14,7 +14,9 @@ import lombok.NonNull;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.UUID;
 
 /**
  * @author Marcus
@@ -24,36 +26,37 @@ import java.util.*;
 
 @Getter
 @Setter
-public class EntityManager {
+
+public class EntityManager extends Loadable {
     @JsonProperty("active_entities")
-    private final LinkedHashMap<UUID, Entity> currentUsedEntities;
+    private  LinkedHashMap<UUID, Entity> currentUsedEntities;
 
     @JsonProperty("loaded_entities")
-    private final LinkedHashMap<UUID, Entity> memoryLoadedEntities;
+    private LinkedHashMap<UUID, Entity> memoryLoadedEntities;
 
-    @JsonProperty("player")
+    @JsonIgnore
     private final Player player;
 
+    @JsonIgnore
     private float passedAnimTime;
 
     public EntityManager() {
         passedAnimTime = 0f;
         this.currentUsedEntities = new LinkedHashMap<>();
         this.memoryLoadedEntities = new LinkedHashMap<>();
-        this.player = new Player(0, 0, null, 4, 4, 4, 4, 5.0f, Arrays.asList(
-                TextureManager.getAnimation("standing_character",true,0.25f),
-                TextureManager.getAnimation("running",true,0.25f),
-                TextureManager.getAnimation("running",true,0.25f),
-                TextureManager.getAnimation("running",true,0.25f)
-                ));
+        this.player = new Player(60, 80);
+
+
         System.out.println("frames " + player.getAnimations().get(0).getKeyFrames().length);
+
+
     }
 
     public void render(@NonNull SpriteBatch spriteBatch) {
         passedAnimTime += Gdx.graphics.getDeltaTime();
 
         spriteBatch.begin();
-        player.render(spriteBatch,passedAnimTime,2.5f,2.5f);
+        player.render(spriteBatch, passedAnimTime, 2.5f, 2.5f);
         for (Entity entity : currentUsedEntities.values()) {
             spriteBatch.draw(entity.getTexture(), entity.getPosition().x, entity.getPosition().y);
         }
@@ -84,9 +87,7 @@ public class EntityManager {
     public void spawn(@NonNull Entity... entities) {
         for (Entity entity : entities) {
             currentUsedEntities.put(UUID.randomUUID(), entity);
-
         }
-
     }
 
     public void despawn(@NonNull UUID... uuids) {
@@ -110,8 +111,8 @@ public class EntityManager {
     @Override
     public String toString() {
         return "EntityManager{" +
-                "currentUsedEntities=" + currentUsedEntities +
-                ", memoryLoadedEntities=" + memoryLoadedEntities +
+                "currentUsedEntities=" + currentUsedEntities.toString() +
+                ", memoryLoadedEntities=" + memoryLoadedEntities.toString() +
                 '}';
     }
 }
