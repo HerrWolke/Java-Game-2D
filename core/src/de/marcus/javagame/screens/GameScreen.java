@@ -66,6 +66,7 @@ public class GameScreen extends AbstractScreen {
     public void update(float delta) {
         //story spawns etc
         inputManager.handleMovement();
+        ui.update(entityManager.getPlayer().getPosition().x,entityManager.getPlayer().getPosition().y);
     }
 
     @Override

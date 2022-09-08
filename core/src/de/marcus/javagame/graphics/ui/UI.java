@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -18,6 +20,10 @@ public class UI {
     Table uiContainer;
     ProgressBar healthBar;
     ProgressBar armorBar;
+
+    Label position;
+
+    Label fps;
 
     public UI() {
         uiContainer = new Table();
@@ -41,15 +47,21 @@ public class UI {
         armorBar.setValue(4.0f);
         armorBar.setAnimateDuration(0.5f);
 
+        position = new Label("x: 0 \n y: 0",new Label.LabelStyle(new BitmapFont(),Color.BLACK));
+        fps = new Label("FPS: 0",new Label.LabelStyle(new BitmapFont(),Color.BLACK));
 
         System.out.println(healthBar.getX());
         System.out.println(healthBar.getY());
         uiContainer.pad(Gdx.graphics.getWidth() * 0.01f);
         uiContainer.setFillParent(true);
         uiContainer.setDebug(false);
-        uiContainer.add(healthBar).width(128).padBottom(healthBar.getHeight() * 0.25f);
+        uiContainer.add(healthBar).width(128).padBottom(healthBar.getHeight() * 0.25f).left();
         uiContainer.row();
-        uiContainer.add(armorBar).width(128);
+        uiContainer.add(armorBar).width(128).padBottom(healthBar.getHeight() * 0.25f).left();
+        uiContainer.row();
+        uiContainer.add(position).padBottom(healthBar.getHeight() * 0.25f).left();
+        uiContainer.row();
+        uiContainer.add(fps).left();
         uiContainer.left().top();
 
 
@@ -66,5 +78,10 @@ public class UI {
         pixmap.dispose();
 
         return drawable;
+    }
+
+    public void update(float x, float y) {
+        position.setText(String.format("X: %s | Y: %s",Math.round(x * 100.0) / 100.0,Math.round(y * 100.0) / 100.0));
+        fps.setText(String.format("FPS: %s",Gdx.graphics.getFramesPerSecond()));
     }
 }
