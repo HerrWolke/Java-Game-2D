@@ -6,11 +6,13 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector3;
 import de.marcus.javagame.entities.Player;
+import de.marcus.javagame.graphics.ui.UI;
 
 import java.util.HashMap;
 
 public class InputManager implements InputProcessor {
     Player p;
+    UI ui;
 
     enum CONTROLS {
         RUN_FORWARD,
@@ -20,12 +22,13 @@ public class InputManager implements InputProcessor {
         SETTINGS,
         ATTACK,
         BLOCK_SPEAK,
+        OPEN_INVENTORY
 
     }
 
     HashMap<CONTROLS, Integer> settings = new HashMap<CONTROLS, Integer>();
 
-    public InputManager(Player player) {
+    public InputManager(Player player, UI ui) {
         settings.put(CONTROLS.RUN_FORWARD, Input.Keys.W);
         settings.put(CONTROLS.RUN_BACKWARD, Input.Keys.S);
         settings.put(CONTROLS.RUN_LEFT, Input.Keys.A);
@@ -33,7 +36,9 @@ public class InputManager implements InputProcessor {
         settings.put(CONTROLS.SETTINGS, Input.Keys.ESCAPE);
         settings.put(CONTROLS.ATTACK, Input.Keys.LEFT);
         settings.put(CONTROLS.BLOCK_SPEAK, Input.Keys.RIGHT);
+        settings.put(CONTROLS.OPEN_INVENTORY, Input.Keys.E);
         p = player;
+        this.ui = ui;
     }
 
 
@@ -52,6 +57,8 @@ public class InputManager implements InputProcessor {
         if (Gdx.input.isKeyPressed(settings.get(CONTROLS.RUN_BACKWARD)))
             posCam.y -= 1;
 
+
+
 //        System.out.printf("x: %s, y: %s",posCam.x,posCam.y);
 
         p.move(posCam.x, posCam.y);
@@ -69,6 +76,10 @@ public class InputManager implements InputProcessor {
         if (keycode == settings.get(CONTROLS.ATTACK)) {
             p.attack();
 
+        }
+
+        if(keycode == settings.get(CONTROLS.OPEN_INVENTORY)) {
+            ui.changeInventoryShowState();
         }
 
         if (keycode == settings.get(CONTROLS.BLOCK_SPEAK)) {

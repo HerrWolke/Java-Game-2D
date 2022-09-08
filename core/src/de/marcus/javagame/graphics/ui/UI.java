@@ -6,12 +6,15 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
+import de.marcus.javagame.graphics.InventoryWindow;
+import de.marcus.javagame.screens.InventoryScreen;
 import lombok.Getter;
 
 @Getter
@@ -20,13 +23,17 @@ public class UI {
     Table uiContainer;
     ProgressBar healthBar;
     ProgressBar armorBar;
-
     Label position;
-
     Label fps;
 
-    public UI() {
+    InventoryWindow inventory;
+
+    Stage stage;
+
+    public UI(Stage stage) {
+        this.stage = stage;
         uiContainer = new Table();
+        inventory = new InventoryWindow();
 
 
         TiledDrawable heartDrawable = new TiledDrawable(new TextureRegion(new Texture("hearts.png")));
@@ -63,9 +70,12 @@ public class UI {
         uiContainer.row();
         uiContainer.add(fps).left();
         uiContainer.left().top();
+        stage.addActor(inventory);
 
 
     }
+
+
 
 
     public static Drawable getColoredDrawable(int width, int height, Color color) {
@@ -83,5 +93,12 @@ public class UI {
     public void update(float x, float y) {
         position.setText(String.format("X: %s | Y: %s",Math.round(x * 100.0) / 100.0,Math.round(y * 100.0) / 100.0));
         fps.setText(String.format("FPS: %s",Gdx.graphics.getFramesPerSecond()));
+    }
+
+    public void changeInventoryShowState() {
+        inventory.setVisible(!inventory.isVisible());
+
+        if(inventory.isVisible())
+            Gdx.input.setInputProcessor(stage);
     }
 }

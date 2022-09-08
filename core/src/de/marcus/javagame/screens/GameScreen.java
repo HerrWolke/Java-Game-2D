@@ -41,7 +41,7 @@ public class GameScreen extends AbstractScreen {
     public GameScreen(LoadingScreen app, int profile) {
         super(app);
         //app.dispose();
-        ui = new UI();
+        ui = new UI(stage);
 
 
         entityManager = SavedataHandler.load(EntityManager.class);
@@ -51,7 +51,8 @@ public class GameScreen extends AbstractScreen {
         System.out.println(entityManager.toString());
 
 
-        inputManager = new InputManager(entityManager.getPlayer());
+        inputManager = new InputManager(entityManager.getPlayer(), ui);
+
 
         font = new BitmapFont();
         batch = new SpriteBatch();
@@ -90,6 +91,7 @@ public class GameScreen extends AbstractScreen {
 
         batch.setProjectionMatrix(entityManager.getPlayer().getCamera().combined);
         gameWorld.render(entityManager.getPlayer().getCamera());
+        entityManager.render(batch);
 
 
 //        font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 20);
@@ -103,7 +105,7 @@ public class GameScreen extends AbstractScreen {
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-        entityManager.render(batch);
+
     }
 
     @Override
