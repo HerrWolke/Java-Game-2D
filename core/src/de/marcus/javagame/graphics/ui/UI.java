@@ -10,47 +10,52 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
+import lombok.Getter;
 
+@Getter
 public class UI {
 
     Table uiContainer;
     ProgressBar healthBar;
-
+    ProgressBar armorBar;
 
     public UI() {
         uiContainer = new Table();
 
-        TextureRegion textureRegion = new TextureRegion(new Texture("hearts.png"));
-        TiledDrawable hearts = new TiledDrawable(textureRegion);
 
+        TiledDrawable heartDrawable = new TiledDrawable(new TextureRegion(new Texture("hearts.png")));
         TiledDrawable dead = new TiledDrawable(new TextureRegion(new Texture("hearts_dead.png")));
+
+        TiledDrawable chestplateDrawable = new TiledDrawable(new TextureRegion(new Texture("items/chestplate.png")));
+        TiledDrawable chestplateDead = new TiledDrawable(new TextureRegion(new Texture("items/chestplate_dead.png")));
+        chestplateDead.tint(Color.GREEN);
+
         Drawable knob = getColoredDrawable(0, 32, Color.GREEN);
-
-
         healthBar = new ProgressBar(0.0f, 4.0f, 1.0f, false, new ProgressBar.ProgressBarStyle(dead, knob));
-        healthBar.setSize(128, 32);
-
-        healthBar.getStyle().knobBefore = hearts;
+        healthBar.getStyle().knobBefore = heartDrawable;
         healthBar.setValue(4.0f);
-
         healthBar.setAnimateDuration(0.5f);
 
+        armorBar = new ProgressBar(0.0f, 4.0f, 1.0f, false, new ProgressBar.ProgressBarStyle(chestplateDead, knob));
+        armorBar.getStyle().knobBefore = chestplateDrawable;
+        armorBar.setValue(4.0f);
+        armorBar.setAnimateDuration(0.5f);
 
-        healthBar.setPosition(Gdx.graphics.getWidth() - (Gdx.graphics.getWidth() - 5f), Gdx.graphics.getHeight() - (0.1f * Gdx.graphics.getHeight()));
+
         System.out.println(healthBar.getX());
         System.out.println(healthBar.getY());
-        uiContainer.addActor(healthBar);
-        uiContainer.setDebug(true);
+        uiContainer.pad(Gdx.graphics.getWidth() * 0.01f);
+        uiContainer.setFillParent(true);
+        uiContainer.setDebug(false);
+        uiContainer.add(healthBar).width(128).padBottom(healthBar.getHeight() * 0.25f);
+        uiContainer.row();
+        uiContainer.add(armorBar).width(128);
+        uiContainer.left().top();
+
 
     }
 
-    public Table getUiContainer() {
-        return uiContainer;
-    }
 
-    public ProgressBar getHealthBar() {
-        return healthBar;
-    }
 
     public static Drawable getColoredDrawable(int width, int height, Color color) {
         Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);

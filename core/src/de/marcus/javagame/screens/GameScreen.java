@@ -53,21 +53,21 @@ public class GameScreen extends AbstractScreen {
         batch.setProjectionMatrix(entityManager.getPlayer().getCamera().combined);
 
 
-        Table table = new Table();
-        stage.addActor(table);
-
-
-        table.setDebug(true);
-        table.setFillParent(true);
-        label = new Label("FPS this is a test for some ui code which is great: " + Gdx.graphics.getFramesPerSecond(), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-        label.setAlignment(Align.center);
+//        Table table = new Table();
+//        stage.addActor(table);
+//
+//
+//        table.setDebug(true);
+//        table.setFillParent(true);
+//        label = new Label("FPS this is a test for some ui code which is great: " + Gdx.graphics.getFramesPerSecond(), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+//        label.setAlignment(Align.center);
 
 
 //        System.out.println(Gdx.graphics.getWidth()-(Gdx.graphics.getWidth()*0.05f));
-        label.setPosition(Gdx.graphics.getWidth() - (Gdx.graphics.getWidth() * 0.05f), Gdx.graphics.getHeight() - (0.05f * Gdx.graphics.getHeight()));
+//        label.setPosition(Gdx.graphics.getWidth() - (Gdx.graphics.getWidth() * 0.05f), Gdx.graphics.getHeight() - (0.05f * Gdx.graphics.getHeight()));
 
-        table.addActor(label);
-        table.addActor(ui.getUiContainer());
+//        table.addActor(label);
+            stage.addActor(ui.getUiContainer());
 
 
         gameWorld = new GameWorld(entityManager.getPlayer().getCamera());
@@ -94,6 +94,7 @@ public class GameScreen extends AbstractScreen {
 
         if (yes) {
             ui.getHealthBar().setValue(3.0f);
+            ui.getArmorBar().setValue(3.0f);
             yes = false;
         }
 
@@ -105,7 +106,7 @@ public class GameScreen extends AbstractScreen {
 //        font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 20);
 
 
-        label.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
+//        label.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
 
 //        label.setPosition(Gdx.graphics.getWidth()-(Gdx.graphics.getWidth()-5f),Gdx.graphics.getHeight()-(0.1f * Gdx.graphics.getHeight()));
 //        label.pack();

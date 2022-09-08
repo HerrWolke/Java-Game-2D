@@ -28,8 +28,9 @@ public class Test extends Game {
         parent.pad(50);
         topUI = new Table();
 
+
         stage.addActor(parent);
-        parent.addActor(topUI);
+        parent.add(topUI).grow();
         parent.setDebug(true);
         topUI.setDebug(true);
         parent.setFillParent(true);
@@ -42,12 +43,12 @@ public class Test extends Game {
         button.setWidth(200);
         button.setHeight(50);
 
-        button.top().left();
+
 
         parent.addActor(label);
         topUI.addActor(button);
 
-
+        button.top().left();
     }
 
     @Override
