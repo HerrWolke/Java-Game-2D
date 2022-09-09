@@ -5,6 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import de.marcus.javagame.entities.Player;
 import de.marcus.javagame.graphics.ui.UI;
 
@@ -88,6 +90,26 @@ public class InputManager implements InputProcessor {
             //sonst
             p.block();
 
+        }
+
+        if(ui.getInventory().isVisible()) {
+            int moveX = 0;
+            int moveY = 0;
+            if(keycode == Input.Keys.LEFT) {
+                moveX += 1;
+            }
+            if(keycode == Input.Keys.RIGHT) {
+                moveX -= 1;
+            }
+            if(keycode == Input.Keys.DOWN) {
+              moveY += 1;
+            }
+            if(keycode == Input.Keys.UP) {
+                moveY -= 1;
+            }
+
+            System.out.println(moveX + " " + moveY);
+            ui.getInventory().moveSelector(moveX,moveY);
         }
 
         return true;

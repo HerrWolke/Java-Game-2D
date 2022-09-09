@@ -98,7 +98,6 @@ public class UI {
     public void changeInventoryShowState() {
         inventory.setVisible(!inventory.isVisible());
 
-        if(inventory.isVisible())
-            Gdx.input.setInputProcessor(stage);
+
     }
 }
