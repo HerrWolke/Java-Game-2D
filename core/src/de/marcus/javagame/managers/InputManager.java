@@ -108,8 +108,11 @@ public class InputManager implements InputProcessor {
                 moveY -= 1;
             }
 
-            System.out.println(moveX + " " + moveY);
             ui.getInventory().moveSelector(moveX,moveY);
+
+            if(keycode == Input.Keys.ENTER) {
+                ui.getInventory().toggleItemsOptionMenu();
+            }
         }
 
         return true;

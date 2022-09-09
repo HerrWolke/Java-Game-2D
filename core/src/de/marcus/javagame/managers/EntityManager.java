@@ -47,7 +47,6 @@ public class EntityManager extends Loadable {
         this.player = new Player(60, 80);
 
 
-        System.out.println("frames " + player.getAnimations().get(0).getKeyFrames().length);
 
 
     }
