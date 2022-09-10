@@ -142,6 +142,7 @@ public class Inventory extends Loadable {
             InventorySlot slot = inventory.get(selectedItem);
 
              hotbar.add(quickbarSlot,slot);
+             inventoryWindow.addToQuickbar(quickbarSlot,slot.getTexture());
         }
     }
 }

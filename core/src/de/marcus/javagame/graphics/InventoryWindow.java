@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -30,12 +29,13 @@ public class InventoryWindow extends Window {
     Group group;
 
     Group placeholders;
+
+    Group hotbar;
     int selectedItemOption;
 
     int selectedItem;
 
     Inventory inventory;
-
 
 
     //TODO: Make inventory picker moveable and not static and replace absolute with relative values
@@ -74,19 +74,28 @@ public class InventoryWindow extends Window {
         group.addActor(button3);
         group.setVisible(false);
 
+        hotbar = new Group();
+
         TextureRegionDrawable placeholder = new TextureRegionDrawable(new Texture("placeholder.png"));
         placeholder.setMinHeight((Gdx.graphics.getWidth() * 0.5f) / 11);
-        placeholder.setMinWidth((Gdx.graphics.getWidth() * 0.5f) / 11 );
+        placeholder.setMinWidth((Gdx.graphics.getWidth() * 0.5f) / 11);
         placeholders = new Group();
 
 
-        for (int x = 0; x<3;x++) {
-        for (int i = 1; i < 11; i++) {
+        for (int x = 0; x < 3; x++) {
+            for (int i = 1; i < 11; i++) {
+                Image image = new Image(placeholder);
+                image.setPosition(width - placeholder.getMinWidth() * i - width * (0.031f + 0.00325f * (i - 1)), -height * 0.24f - placeholder.getMinHeight() * x - height * (0.015f) * x);
+                placeholders.addActor(image);
+            }
+        }
+
+        for (int i = 1; i<11; i++) {
             Image image = new Image(placeholder);
-            image.setPosition(width - placeholder.getMinWidth() * i - width * (0.031f + 0.003f * i) , -height * 0.24f - placeholder.getMinHeight() * x - height * (0.015f) * x);
-            placeholders.addActor(image);
+            image.setPosition(width - placeholder.getMinWidth() * i - width * (0.031f + 0.00325f * (i - 1)), -height * 0.24f - placeholder.getMinHeight() * 3.5f - height * (0.015f) * 4.5f);
+            hotbar.addActor(image);
         }
-        }
+
 
 
         group.setDebug(true);
@@ -103,9 +112,8 @@ public class InventoryWindow extends Window {
         picker.setName("mover");
 
 
-
-
         getTitleTable().addActor(placeholders);
+        getTitleTable().addActor(hotbar);
         getTitleTable().addActor(group);
         getTitleTable().add(picker)
                 .width((Gdx.graphics.getWidth() * 0.63f) / 10)
@@ -168,7 +176,6 @@ public class InventoryWindow extends Window {
     }
 
     /**
-     *
      * @param x 0 = dont move, 1 = right, -1 = left
      * @param y 0 = dont move, 1 = up, -1 = down
      */
@@ -228,7 +235,7 @@ public class InventoryWindow extends Window {
                 currentSelected.setChecked(false);
 
                 //uses the y argument, as it's just 1 or -1
-                selectedItemOption-=y;
+                selectedItemOption -= y;
                 ImageTextButton child = (ImageTextButton) group.getChild(selectedItemOption);
                 child.setChecked(true);
             }
@@ -251,19 +258,31 @@ public class InventoryWindow extends Window {
 
         switch (String.valueOf(text)) {
             case DELETE_BUTTON_TEXT:
-                boolean b = inventory.removeItem(selectedItem,Inventory.MAX_ITEM_STACK);
-                if(!b)
-                    ui.displayNotification(2000,"This item can not be deleted!");
+                boolean b = inventory.removeItem(selectedItem, Inventory.MAX_ITEM_STACK);
+                if (!b)
+                    ui.displayNotification(2000, "This item can not be deleted!");
+                group.setVisible(false);
+                selectedItemOption = group.getChildren().size - 1;
                 break;
             case USE_BUTTON_TEXT:
                 boolean b1 = inventory.useItem(selectedItem);
-                ui.displayNotification(2000,"This item can not be used!");
+                if (!b1)
+                    ui.displayNotification(2000, "This item can not be used!");
+                group.setVisible(false);
+                selectedItemOption = group.getChildren().size - 1;
                 break;
             case QUICKBAR_BUTTON_TEXT:
-                inventory.moveItemToQuickbar(selectedItem,0);
+                inventory.moveItemToQuickbar(selectedItem, 0);
+                group.setVisible(false);
+                selectedItemOption = group.getChildren().size - 1;
                 break;
 
         }
+    }
+
+    public void addToQuickbar(int quickbarSlot, Texture texture) {
+        Image currentSelected = (Image) hotbar.getChild(Math.abs(quickbarSlot - (hotbar.getChildren().size - 1)));
+        currentSelected.setDrawable(new TextureRegionDrawable(texture));
     }
 
     public void setItemAtPosition(int i, Texture texture) {
