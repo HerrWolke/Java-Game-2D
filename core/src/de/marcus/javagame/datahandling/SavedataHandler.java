@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.marcus.javagame.datahandling.data.Inventory;
 import de.marcus.javagame.datahandling.data.InventoryItem;
 import de.marcus.javagame.datahandling.data.InventorySlot;
+import de.marcus.javagame.datahandling.data.TestInventoryDoNotTouch;
 import de.marcus.javagame.entities.Entity;
 import de.marcus.javagame.managers.EntityManager;
 
@@ -40,16 +41,15 @@ public class SavedataHandler {
         if(file.exists()) {
 
             try {
-
                 System.out.println("Loading data");
                 return mapper.readValue(file, toLoad);
-
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         } else {
             try {
                 System.out.println("File does not exist. Instantiating new object");
+                //gets the no args constructor and creates a new object to return
                 return toLoad.getConstructor().newInstance();
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                      NoSuchMethodException e) {
@@ -76,7 +76,6 @@ public class SavedataHandler {
         File file = new File(name + ".json");
 
         try {
-            //            EntityManager entityManager = mapper.readValue(entityData, EntityManager.class);
             mapper.writeValue(file, loadable);
 
         } catch (IOException e) {
@@ -84,7 +83,7 @@ public class SavedataHandler {
         }
     }
     public static void main(String[] args) {
-    __load();
+        __load();
     }
 
 
@@ -97,17 +96,17 @@ public class SavedataHandler {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         File file = new File("inventory.json");
-        File entityData = new File("entitymanager.json");
+//        File entityData = new File("entitymanager.json");
 
-        EntityManager entityManager = new EntityManager();
-        Entity entity = new Entity();
-        entity.setPosition(new Vector2(0, 0));
-        Entity entity2 = new Entity();
-        entity2.setPosition(new Vector2(3, 0));
+//        EntityManager entityManager = new EntityManager();
+//        Entity entity = new Entity();
+//        entity.setPosition(new Vector2(0, 0));
+//        Entity entity2 = new Entity();
+//        entity2.setPosition(new Vector2(3, 0));
+//
+//        entityManager.spawn(entity2, entity);
 
-        entityManager.spawn(entity2, entity);
-
-        Inventory inventory = new Inventory(
+        TestInventoryDoNotTouch inventory = new TestInventoryDoNotTouch(
                 //inventory
                 Arrays.asList(new InventorySlot(InventoryItem.COIN, 2), new InventorySlot(InventoryItem.COIN, 5)),
                 //hotbar
@@ -115,7 +114,7 @@ public class SavedataHandler {
         try {
 
             mapper.writeValue(file, inventory);
-            mapper.writeValue(entityData, entityManager);
+//            mapper.writeValue(entityData, entityManager);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -132,10 +131,10 @@ public class SavedataHandler {
         File entityData = new File("entitymanager.json");
 
         try {
-            Inventory inventory = mapper.readValue(file, Inventory.class);
-            EntityManager entityManager = mapper.readValue(entityData, EntityManager.class);
+            TestInventoryDoNotTouch inventory = mapper.readValue(file, TestInventoryDoNotTouch.class);
+//            EntityManager entityManager = mapper.readValue(entityData, EntityManager.class);
             System.out.println(inventory.toString());
-            System.out.println(entityManager.toString());
+//            System.out.println(entityManager.toString());
 
         } catch (IOException e) {
             throw new RuntimeException(e);

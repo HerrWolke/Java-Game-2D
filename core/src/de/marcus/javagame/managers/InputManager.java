@@ -24,7 +24,8 @@ public class InputManager implements InputProcessor {
         SETTINGS,
         ATTACK,
         BLOCK_SPEAK,
-        OPEN_INVENTORY
+        OPEN_INVENTORY,
+        CLOSE_DIALOG
 
     }
 
@@ -39,6 +40,7 @@ public class InputManager implements InputProcessor {
         settings.put(CONTROLS.ATTACK, Input.Keys.LEFT);
         settings.put(CONTROLS.BLOCK_SPEAK, Input.Keys.RIGHT);
         settings.put(CONTROLS.OPEN_INVENTORY, Input.Keys.E);
+        settings.put(CONTROLS.CLOSE_DIALOG, Input.Keys.BACKSPACE);
         p = player;
         this.ui = ui;
     }
@@ -68,7 +70,7 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-
+        System.out.println(keycode);
 
         if (keycode == settings.get(CONTROLS.SETTINGS)) {
             //new screen
@@ -111,7 +113,16 @@ public class InputManager implements InputProcessor {
             ui.getInventory().moveSelector(moveX,moveY);
 
             if(keycode == Input.Keys.ENTER) {
-                ui.getInventory().toggleItemsOptionMenu();
+                if(!ui.getInventory().isItemOptionOpen())
+                    ui.getInventory().toggleItemsOptionMenu(true);
+                else
+                    ui.getInventory().triggerItemAction();
+            }
+
+
+            if(keycode == settings.get(CONTROLS.CLOSE_DIALOG)) {
+                System.out.println("close dialog");
+                ui.getInventory().toggleItemsOptionMenu(false);
             }
         }
 

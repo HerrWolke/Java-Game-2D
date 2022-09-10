@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Marcus
@@ -83,11 +84,28 @@ public class Creature extends Entity {
          */
     }
 
+    public void update(float delta) {
+
+        List<StatusEffect> toRemove = new LinkedList<>();
+        for (StatusEffect statusEffect : effects) {
+            System.out.println(delta * 1000);
+            boolean b = statusEffect.decrementTimer(Math.round(delta * 1000), this);
+            if(b)
+            {
+                toRemove.add(statusEffect);
+            }
+        }
+
+        effects.removeAll(toRemove);
+    }
+
 
     public void render(SpriteBatch batch, float passedAnimationTime, float width, float height) {
+        update(Gdx.graphics.getDeltaTime());
         Animation<TextureRegion> textureRegionAnimation = animations.get(activeAnimation);
         TextureRegion keyFrame = textureRegionAnimation.getKeyFrame(passedAnimationTime, true);
 
+        //I don't know either
         if (mirrorAnimations && !keyFrame.isFlipX()) {
 //                System.out.println("flip!");
             keyFrame.flip(true, false);
@@ -102,7 +120,10 @@ public class Creature extends Entity {
 
     public void move(float x, float y) {
 
-
+        //sets the current animation depending on the players direction
+        // first check tries to find out if player is moving in y direction, but not in x direction
+        // if he is moving in x, it takes the x animation
+        // the second one checks if the player is moving in positiv or negative y direction
         activeAnimation = (y == 0 ?
                 (x == 0 ? 0 : 3)
                 : y > 0 ? 1 : 2);
@@ -110,6 +131,7 @@ public class Creature extends Entity {
         //Mirrors animation if the active animation is x movement and player is moving left
         mirrorAnimations = activeAnimation == 3 && (!(x > 0));
 //        System.out.println(mirrorAnimations);
+
 
         position.set(position.x + (Gdx.graphics.getDeltaTime() * (x * movementSpeed)), position.y + (Gdx.graphics.getDeltaTime() * (y * movementSpeed)));
     }

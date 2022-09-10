@@ -28,7 +28,7 @@ public class MoreUITests extends Game {
         table.setFillParent(true);
         table.setDebug(false);
         stage.addActor(table);
-        table.add(new InventoryWindow()).width(Gdx.graphics.getWidth() * 0.5f).height(Gdx.graphics.getHeight() * 0.45f);
+//        table.add(new InventoryWindow()).width(Gdx.graphics.getWidth() * 0.5f).height(Gdx.graphics.getHeight() * 0.45f);
 
 
     }

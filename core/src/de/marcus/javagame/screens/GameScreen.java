@@ -5,8 +5,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import de.marcus.javagame.EffectType;
 import de.marcus.javagame.datahandling.SavedataHandler;
 import de.marcus.javagame.datahandling.data.Inventory;
+import de.marcus.javagame.entities.StatusEffect;
 import de.marcus.javagame.graphics.ui.UI;
 import de.marcus.javagame.managers.EntityManager;
 import de.marcus.javagame.managers.InputManager;
@@ -41,14 +43,17 @@ public class GameScreen extends AbstractScreen {
     public GameScreen(LoadingScreen app, int profile) {
         super(app);
         //app.dispose();
-        ui = new UI(stage);
+
 
 
         entityManager = SavedataHandler.load(EntityManager.class);
-        Inventory inventory = SavedataHandler.load(Inventory.class);
+        ui = new UI(stage, entityManager.getPlayer());
+//        Inventory inventory = SavedataHandler.load(Inventory.class);
 
-        System.out.println(inventory.toString());
+
+//        System.out.println(inventory.toString());
         System.out.println(entityManager.toString());
+        entityManager.getPlayer().getEffects().add(new StatusEffect(EffectType.HEAL,1000));
 
 
         inputManager = new InputManager(entityManager.getPlayer(), ui);

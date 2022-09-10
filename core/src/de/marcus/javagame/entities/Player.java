@@ -3,6 +3,7 @@ package de.marcus.javagame.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.marcus.javagame.datahandling.SavedataHandler;
 import de.marcus.javagame.datahandling.data.Inventory;
 import de.marcus.javagame.datahandling.data.InventoryItem;
 import de.marcus.javagame.managers.TextureManager;
@@ -38,10 +39,15 @@ public class Player extends Creature {
                 TextureManager.getAnimation("running", true, 0.25f),
                 TextureManager.getAnimation("running", true, 0.25f)
         ));
-        inventory = new Inventory();
+        inventory = SavedataHandler.load(Inventory.class);
+        inventory.setPlayer(this);
         camera = initialiseCamera();
     }
 
+    /**
+     * Creates a camera based on the screen aspect ratio
+     * @return The cam
+     */
     private OrthographicCamera initialiseCamera() {
         //for aspect ratio
         float w = Gdx.graphics.getWidth();
@@ -83,5 +89,10 @@ public class Player extends Creature {
     }
 
     public void blockStop() {
+    }
+
+    public void useItem(InventoryItem item) {
+        StatusEffect effect = item.getEffect();
+
     }
 }

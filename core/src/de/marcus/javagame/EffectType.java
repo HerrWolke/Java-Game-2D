@@ -1,17 +1,24 @@
 package de.marcus.javagame;
 
-public enum EffectType {
-    POISON(EffectInfluence.DAMAGE, 0.5),
-    FIRE(EffectInfluence.DAMAGE, 1.0),
-    FROZEN(EffectInfluence.MOVEMENT, 0.0);
+import lombok.Getter;
 
-    EffectType(EffectInfluence influence, double damage) {
+@Getter
+public enum EffectType {
+    POISON(EffectInfluence.DAMAGE, 0.5,4),
+    FIRE(EffectInfluence.DAMAGE, 1.0,4),
+    FROZEN(EffectInfluence.MOVEMENT, 0.0,4),
+    HEAL(EffectInfluence.DAMAGE,-1.0,0.5);
+
+    EffectType(EffectInfluence influence, double damage,double applyTime) {
         this.influence = influence;
         this.damage = damage;
+        this.applyTime = applyTime;
     }
 
-    private EffectInfluence influence;
-    private double damage;
+    private final EffectInfluence influence;
+    private final double damage;
+
+    private final double applyTime;
 
     private enum EffectInfluence {
         /**

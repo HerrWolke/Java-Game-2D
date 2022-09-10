@@ -45,13 +45,11 @@ public class EntityManager extends Loadable {
         this.currentUsedEntities = new LinkedHashMap<>();
         this.memoryLoadedEntities = new LinkedHashMap<>();
         this.player = new Player(60, 80);
-
-
-
-
     }
 
+
     public void render(@NonNull SpriteBatch spriteBatch) {
+        //needed for animations to correctly work
         passedAnimTime += Gdx.graphics.getDeltaTime();
 
         spriteBatch.begin();

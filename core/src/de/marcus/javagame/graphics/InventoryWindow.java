@@ -11,22 +11,37 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import de.marcus.javagame.datahandling.data.Inventory;
 
 public class InventoryWindow extends Window {
+
+    private static final String DELETE_BUTTON_TEXT = "Löschen";
+    private static final String QUICKBAR_BUTTON_TEXT = "Schnellauswahl";
+    private static final String USE_BUTTON_TEXT = "Benutzen";
+
 
     Image picker;
     float width;
     float height;
 
+
     Group group;
 
     int selectedItemOption;
 
+    int selectedItem;
+
+    Inventory inventory;
+
+
 
     //TODO: Make inventory picker moveable and not static and replace absolute with relative values
 
-    public InventoryWindow() {
+    public InventoryWindow(Inventory inventory) {
+
         super("", new WindowStyle(new BitmapFont(), Color.WHITE, new TextureRegionDrawable(new Texture("inventory3.png"))));
+        this.inventory = inventory;
+        selectedItem = 0;
         width = Gdx.graphics.getWidth() * 0.5f;
         height = Gdx.graphics.getHeight() * 0.45f;
         selectedItemOption = 2;
@@ -37,9 +52,11 @@ public class InventoryWindow extends Window {
         TextureRegionDrawable itemOptionSelected = new TextureRegionDrawable(new Texture("item_option_selected.png"));
         itemOptionSelected.setMinHeight(height / 8f);
         itemOptionSelected.setMinWidth(width / 9f);
-        ImageTextButton button = new ImageTextButton("Use", new ImageTextButton.ImageTextButtonStyle(itemOption, itemOption, itemOptionSelected, new BitmapFont()));
-        ImageTextButton button2 = new ImageTextButton("Delete", new ImageTextButton.ImageTextButtonStyle(itemOption, itemOption, itemOptionSelected, new BitmapFont()));
-        ImageTextButton button3 = new ImageTextButton("Quickbar", new ImageTextButton.ImageTextButtonStyle(itemOption, itemOption, itemOptionSelected, new BitmapFont()));
+
+        ImageTextButton button = new ImageTextButton(USE_BUTTON_TEXT, new ImageTextButton.ImageTextButtonStyle(itemOption, itemOption, itemOptionSelected, new BitmapFont()));
+        ImageTextButton button2 = new ImageTextButton(DELETE_BUTTON_TEXT, new ImageTextButton.ImageTextButtonStyle(itemOption, itemOption, itemOptionSelected, new BitmapFont()));
+        ImageTextButton button3 = new ImageTextButton(QUICKBAR_BUTTON_TEXT, new ImageTextButton.ImageTextButtonStyle(itemOption, itemOption, itemOptionSelected, new BitmapFont()));
+
 
         button.setPosition(width - itemOption.getMinWidth() / 4f, -itemOption.getMinHeight() * 3 - height * 0.26f);
         button2.setPosition(width - itemOption.getMinWidth() / 4f, -itemOption.getMinHeight() * 2 - height * 0.26f);
@@ -131,11 +148,13 @@ public class InventoryWindow extends Window {
     }
 
     /**
+     *
      * @param x 0 = dont move, 1 = right, -1 = left
      * @param y 0 = dont move, 1 = up, -1 = down
      */
     public void moveSelector(int x, int y) {
 
+        //if the item actions group is visible, do not move cursor in inventory, but on action group
         if (!group.isVisible()) {
             Cell<Image> cell = getTitleTable().getCell(picker);
             float topPedding = cell.getPadTop();
@@ -145,6 +164,7 @@ public class InventoryWindow extends Window {
 
 
             if (x != 0) {
+                //very specific hand check values. Do not change
                 sidePadding += (width * 0.093f * x);
                 moveX = true;
             }
@@ -153,31 +173,41 @@ public class InventoryWindow extends Window {
                 moveY = true;
             }
 
-
+            //to keep picker inside of inventory
             if (moveY && topPedding > 0 && topPedding < (height * 0.38f * 3)) {
                 cell.padTop(topPedding);
+                //move the action menu with cursor to keep it at correct position underneath cursor
                 group.moveBy(0, -(Gdx.graphics.getWidth() * 0.48f) / 10 * y);
+                /*
+                Inventory slot starts at top right (0) underneath is the 10 slot etc.
+                 */
+                selectedItem += 10 * y;
                 System.out.println("top " + -(height * 0.38f * y));
             }
 
+            //same as above
             if (moveX && sidePadding < (width * 0.093f * 10) && sidePadding > 0) {
                 cell.padRight(sidePadding);
                 group.moveBy(-(width * 0.093f * x), 0);
+                selectedItem += x;
                 System.out.println("side " + (width * 0.093f * -x));
             }
 
+            System.out.println(selectedItem);
+            //you need to invalidate table positions otherwise cursor won't move
             getTitleTable().invalidate();
             getTitleTable().pack();
         } else {
             int size = group.getChildren().size;
 
 
-
+            //don't move the cursor out of bounds of group elements
             if (size != selectedItemOption - y && selectedItemOption - y > -1) {
 
                 ImageTextButton currentSelected = (ImageTextButton) group.getChild(selectedItemOption);
                 currentSelected.setChecked(false);
 
+                //uses the y argument, as it's just 1 or -1
                 selectedItemOption-=y;
                 ImageTextButton child = (ImageTextButton) group.getChild(selectedItemOption);
                 child.setChecked(true);
@@ -186,7 +216,30 @@ public class InventoryWindow extends Window {
         }
     }
 
-    public void toggleItemsOptionMenu() {
-        group.setVisible(!group.isVisible());
+
+    public void toggleItemsOptionMenu(boolean toggleState) {
+        group.setVisible(toggleState);
+    }
+
+    public boolean isItemOptionOpen() {
+        return group.isVisible();
+    }
+
+    public void triggerItemAction() {
+        ImageTextButton currentSelected = (ImageTextButton) group.getChild(selectedItemOption);
+        CharSequence text = currentSelected.getText();
+
+        switch (String.valueOf(text)) {
+            case DELETE_BUTTON_TEXT:
+                boolean b = inventory.removeItem(selectedItem,Inventory.MAX_ITEM_STACK);
+                break;
+            case USE_BUTTON_TEXT:
+                boolean b1 = inventory.useItem(selectedItem);
+                break;
+            case QUICKBAR_BUTTON_TEXT:
+                inventory.inventory.remove(selectedItem);
+                break;
+
+        }
     }
 }

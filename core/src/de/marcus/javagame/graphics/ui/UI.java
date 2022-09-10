@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
+import de.marcus.javagame.entities.Player;
 import de.marcus.javagame.graphics.InventoryWindow;
 import de.marcus.javagame.screens.InventoryScreen;
 import lombok.Getter;
@@ -30,10 +31,10 @@ public class UI {
 
     Stage stage;
 
-    public UI(Stage stage) {
+    public UI(Stage stage, Player player) {
         this.stage = stage;
         uiContainer = new Table();
-        inventory = new InventoryWindow();
+        inventory = new InventoryWindow(player.getInventory());
 
 
         TiledDrawable heartDrawable = new TiledDrawable(new TextureRegion(new Texture("hearts.png")));
@@ -43,6 +44,7 @@ public class UI {
         TiledDrawable chestplateDead = new TiledDrawable(new TextureRegion(new Texture("items/chestplate_dead.png")));
         chestplateDead.tint(Color.GREEN);
 
+        //yes this weird 0 width knob is needed, otherwise the health bar bugs out ¯\_(ツ)_/¯
         Drawable knob = getColoredDrawable(0, 32, Color.GREEN);
         healthBar = new ProgressBar(0.0f, 4.0f, 1.0f, false, new ProgressBar.ProgressBarStyle(dead, knob));
         healthBar.getStyle().knobBefore = heartDrawable;
@@ -62,6 +64,7 @@ public class UI {
         uiContainer.pad(Gdx.graphics.getWidth() * 0.01f);
         uiContainer.setFillParent(true);
         uiContainer.setDebug(false);
+        //needs to be 128 otherwise the texture adds another half heart idk why
         uiContainer.add(healthBar).width(128).padBottom(healthBar.getHeight() * 0.25f).left();
         uiContainer.row();
         uiContainer.add(armorBar).width(128).padBottom(healthBar.getHeight() * 0.25f).left();
@@ -74,6 +77,7 @@ public class UI {
 
 
     }
+
 
 
 

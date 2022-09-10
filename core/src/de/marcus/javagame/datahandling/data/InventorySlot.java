@@ -1,9 +1,13 @@
 package de.marcus.javagame.datahandling.data;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @NoArgsConstructor
+@Getter
+@Setter
 public class InventorySlot {
     private int itemCount;
     private InventoryItem item;
