@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.marcus.javagame.datahandling.SavedataHandler;
 import de.marcus.javagame.datahandling.data.Inventory;
 import de.marcus.javagame.datahandling.data.InventoryItem;
+import de.marcus.javagame.graphics.InventoryWindow;
+import de.marcus.javagame.graphics.ui.UI;
 import de.marcus.javagame.managers.TextureManager;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +32,10 @@ public class Player extends Creature {
     @JsonIgnore
     private OrthographicCamera camera;
 
+    @JsonIgnore
+    private UI ui;
+
+
 
 
     public Player(float posX, float posY) {
@@ -42,6 +48,10 @@ public class Player extends Creature {
         inventory = SavedataHandler.load(Inventory.class);
         inventory.setPlayer(this);
         camera = initialiseCamera();
+    }
+
+    public void setInventoryWindow(InventoryWindow window) {
+        inventory.setInventoryWindow(window);
     }
 
     /**

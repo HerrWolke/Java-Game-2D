@@ -116,7 +116,7 @@ public class InputManager implements InputProcessor {
                 if(!ui.getInventory().isItemOptionOpen())
                     ui.getInventory().toggleItemsOptionMenu(true);
                 else
-                    ui.getInventory().triggerItemAction();
+                    ui.getInventory().triggerItemAction(ui);
             }
 
 

@@ -88,7 +88,6 @@ public class Creature extends Entity {
 
         List<StatusEffect> toRemove = new LinkedList<>();
         for (StatusEffect statusEffect : effects) {
-            System.out.println(delta * 1000);
             boolean b = statusEffect.decrementTimer(Math.round(delta * 1000), this);
             if(b)
             {

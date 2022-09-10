@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import de.marcus.javagame.datahandling.data.Inventory;
+import de.marcus.javagame.graphics.ui.UI;
 
 public class InventoryWindow extends Window {
 
@@ -27,6 +29,7 @@ public class InventoryWindow extends Window {
 
     Group group;
 
+    Group placeholders;
     int selectedItemOption;
 
     int selectedItem;
@@ -71,25 +74,42 @@ public class InventoryWindow extends Window {
         group.addActor(button3);
         group.setVisible(false);
 
+        TextureRegionDrawable placeholder = new TextureRegionDrawable(new Texture("placeholder.png"));
+        placeholder.setMinHeight((Gdx.graphics.getWidth() * 0.5f) / 11);
+        placeholder.setMinWidth((Gdx.graphics.getWidth() * 0.5f) / 11 );
+        placeholders = new Group();
+
+
+        for (int x = 0; x<3;x++) {
+        for (int i = 1; i < 11; i++) {
+            Image image = new Image(placeholder);
+            image.setPosition(width - placeholder.getMinWidth() * i - width * (0.031f + 0.003f * i) , -height * 0.24f - placeholder.getMinHeight() * x - height * (0.015f) * x);
+            placeholders.addActor(image);
+        }
+        }
+
 
         group.setDebug(true);
 
 
         this.setPosition(
                 Gdx.graphics.getWidth() / 4.0f,
-                Gdx.graphics.getHeight() / 4.0f);
+                Gdx.graphics.getHeight() / 4.0f
+        );
 
 
         this.setSize(width, height);
         picker = new Image(new Texture("inventory_picker.png"));
         picker.setName("mover");
+
+
+
+
+        getTitleTable().addActor(placeholders);
+        getTitleTable().addActor(group);
         getTitleTable().add(picker)
                 .width((Gdx.graphics.getWidth() * 0.63f) / 10)
                 .height((Gdx.graphics.getWidth() * 0.55f) / 10).padRight((width * 0.02f)).padTop(height * 0.3f);
-
-
-        getTitleTable().getCell(picker);
-        getTitleTable().addActor(group);
 
 
         this.setModal(false);
@@ -225,21 +245,29 @@ public class InventoryWindow extends Window {
         return group.isVisible();
     }
 
-    public void triggerItemAction() {
+    public void triggerItemAction(UI ui) {
         ImageTextButton currentSelected = (ImageTextButton) group.getChild(selectedItemOption);
         CharSequence text = currentSelected.getText();
 
         switch (String.valueOf(text)) {
             case DELETE_BUTTON_TEXT:
                 boolean b = inventory.removeItem(selectedItem,Inventory.MAX_ITEM_STACK);
+                if(!b)
+                    ui.displayNotification(2000,"This item can not be deleted!");
                 break;
             case USE_BUTTON_TEXT:
                 boolean b1 = inventory.useItem(selectedItem);
+                ui.displayNotification(2000,"This item can not be used!");
                 break;
             case QUICKBAR_BUTTON_TEXT:
-                inventory.inventory.remove(selectedItem);
+                inventory.moveItemToQuickbar(selectedItem,0);
                 break;
 
         }
+    }
+
+    public void setItemAtPosition(int i, Texture texture) {
+        Image child = (Image) placeholders.getChild(i);
+        child.setDrawable(new TextureRegionDrawable(texture));
     }
 }

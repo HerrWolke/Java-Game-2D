@@ -1,1 +1,22 @@
-{"inventory_data":[{"itemCount":2,"item":"COIN"},{"itemCount":5,"item":"COIN"}],"hotbar_data":[{"itemCount":2,"item":"COIN"},{"itemCount":5,"item":"COIN"}]}
+{
+  "inventory_data": [
+    {
+      "itemCount": 1,
+      "item": "STARTER_SWORD"
+    },
+    {
+      "itemCount": 5,
+      "item": "COIN"
+    }
+  ],
+  "hotbar_data": [
+    {
+      "itemCount": 2,
+      "item": "COIN"
+    },
+    {
+      "itemCount": 5,
+      "item": "COIN"
+    }
+  ]
+}

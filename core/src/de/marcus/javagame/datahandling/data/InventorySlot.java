@@ -1,20 +1,35 @@
 package de.marcus.javagame.datahandling.data;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
-@NoArgsConstructor
+
 @Getter
 @Setter
 public class InventorySlot {
     private int itemCount;
     private InventoryItem item;
 
+    @JsonIgnore
+    private Texture texture;
+
     public InventorySlot(InventoryItem item, int itemCount) {
         this.itemCount = itemCount;
         this.item = item;
+    }
+
+    public InventorySlot() {
+
+    }
+
+    public void createTexture() {
+        System.out.println("items/"+item.name().toLowerCase());
+        texture = new Texture("items/"+item.name().toLowerCase()+".png");
     }
 
     public int getItemCount() {

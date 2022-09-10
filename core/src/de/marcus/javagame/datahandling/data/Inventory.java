@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.marcus.javagame.datahandling.Loadable;
 import de.marcus.javagame.entities.Player;
+import de.marcus.javagame.graphics.InventoryWindow;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,6 +33,8 @@ public class Inventory extends Loadable {
 
     @JsonProperty("hotbar_data")
     public List<InventorySlot> hotbar;
+     @JsonIgnore
+    private InventoryWindow inventoryWindow;
 
     public Inventory(List<InventorySlot> inventory, List<InventorySlot> hotbar) {
         this.inventory = inventory;
@@ -50,35 +53,43 @@ public class Inventory extends Loadable {
     }
 
     public boolean removeItem(int slot, int amount) {
-        InventorySlot remove = inventory.get(slot);
-        int itemsLeft = remove.getItemCount() - amount;
+        if (slot < inventory.size()) {
+            InventorySlot remove = inventory.get(slot);
+            int itemsLeft = remove.getItemCount() - amount;
 
-        if (remove.getItem().isDeletable()) {
-            if(itemsLeft < 0)
-                inventory.remove(remove);
-            else
-                remove.setItemCount(itemsLeft);
+            if (remove.getItem().isDeletable()) {
+                if (itemsLeft < 0)
+                    inventory.remove(remove);
+                else
+                    remove.setItemCount(itemsLeft);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
             return true;
         }
-        return false;
-
     }
 
     public boolean useItem(int selectedItem) {
-        InventorySlot slot = inventory.get(selectedItem);
-        int itemsLeft = slot.getItemCount() - 1;
+        if (selectedItem < inventory.size()) {
+            InventorySlot slot = inventory.get(selectedItem);
+            int itemsLeft = slot.getItemCount() - 1;
 
-        if (slot.getItem().isUsable()) {
-            if(itemsLeft < 0) {
-                inventory.remove(selectedItem);
+            if (slot.getItem().isUsable()) {
+                if (itemsLeft < 0) {
+                    inventory.remove(selectedItem);
+                } else {
+                    slot.setItemCount(itemsLeft);
+                }
+                p.useItem(slot.getItem());
+                return true;
             } else {
-                slot.setItemCount(itemsLeft);
+                return false;
             }
-            p.useItem(slot.getItem());
-            return true;
         }
 
-        return false;
+        return true;
 
     }
 
@@ -86,7 +97,6 @@ public class Inventory extends Loadable {
      * @return If the item was added
      */
     public boolean addItem(InventorySlot slot) {
-
         if (!inventory.isEmpty()) {
             for (InventorySlot inventorySlot : inventory) {
                 if (inventorySlot.getItem().equals(slot.getItem()) && (inventorySlot.getItemCount() + slot.getItemCount()) < inventorySlot.getItem().getMaxStackSize()) {
@@ -94,6 +104,7 @@ public class Inventory extends Loadable {
                     return true;
                 } else if (inventory.size() < INVENTORY_SIZE) {
                     inventory.add(slot);
+                    inventoryWindow.setItemAtPosition(inventory.size(),slot.getTexture());
                     return true;
                 } else {
                     return false;
@@ -105,7 +116,6 @@ public class Inventory extends Loadable {
             inventory.add(slot);
             return true;
         }
-
     }
 
     @Override
@@ -116,5 +126,22 @@ public class Inventory extends Loadable {
                 '}';
     }
 
+    @JsonIgnore
+    public void setInventoryWindow(InventoryWindow window) {
+        this.inventoryWindow = window;
 
+        for (int i = 0; i < inventory.size(); i++) {
+            InventorySlot inventorySlot = inventory.get(i);
+            inventorySlot.createTexture();
+            inventoryWindow.setItemAtPosition(i,inventorySlot.getTexture());
+        }
+    }
+
+    public void moveItemToQuickbar(int selectedItem,int quickbarSlot) {
+        if (selectedItem < inventory.size()) {
+            InventorySlot slot = inventory.get(selectedItem);
+
+             hotbar.add(quickbarSlot,slot);
+        }
+    }
 }

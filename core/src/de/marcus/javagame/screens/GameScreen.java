@@ -115,7 +115,6 @@ public class GameScreen extends AbstractScreen {
 
     @Override
     public void show() {
-        System.out.println("draw");
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
         Gdx.input.setInputProcessor(inputManager);
