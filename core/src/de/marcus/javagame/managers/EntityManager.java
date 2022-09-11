@@ -72,6 +72,7 @@ public class EntityManager extends Loadable {
 
     public void moveToMemory(@NonNull UUID @NotNull ... uuids) {
         HashMap<UUID, Entity> toMove = new HashMap<>();
+        System.out.println("test");
 
         for (UUID uuid : uuids) {
             toMove.put(uuid, currentUsedEntities.get(uuid));
