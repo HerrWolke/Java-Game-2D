@@ -1,5 +1,8 @@
 package de.marcus.javagame.screens;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 public class MenuScreen extends AbstractScreen {
     public MenuScreen(LoadingScreen app) {
         super(app);
