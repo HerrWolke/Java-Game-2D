@@ -52,14 +52,24 @@ public class GameScreen extends AbstractScreen {
         super(app);
         //app.dispose();
         world  = new World(new Vector2(0, 0), true);
-
+        FileHandle dirHandle;
+        if (Gdx.app.getType() == Application.ApplicationType.Android) {
+            dirHandle = Gdx.files.internal("some/directory");
+        } else {
+            // ApplicationType.Desktop ..
+            dirHandle = Gdx.files.internal("sfx/");
+        }
+        FileHandle internal = Gdx.files.internal("sfx");
+        System.out.println("es " + internal.exists());
+        for (FileHandle entry: internal.list()) {
+            System.out.println(entry.name());
+        }
 
         entityManager = SavedataHandler.load(EntityManager.class);
         entityManager.getPlayer().setUI(stage);
         this.ui = entityManager.getPlayer().getUi();
 //        Inventory inventory = SavedataHandler.load(Inventory.class);
         debugRenderer = new Box2DDebugRenderer();
-        System.out.println(debugRenderer);
         debugRenderer.render(world, entityManager.getPlayer().getCamera().combined);
 
 //        System.out.println(inventory.toString());

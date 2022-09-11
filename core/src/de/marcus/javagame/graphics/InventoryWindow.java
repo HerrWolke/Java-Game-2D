@@ -84,6 +84,7 @@ public class InventoryWindow extends Window {
     //TODO: Make inventory picker moveable and not static and replace absolute with relative values
 
     public InventoryWindow(Inventory inventory, Stage stage) {
+
         super("", new WindowStyle(new BitmapFont(), Color.WHITE, new TextureRegionDrawable(new Texture("inventory3.png"))));
         this.stage = stage;
         this.inventory = inventory;
@@ -95,7 +96,7 @@ public class InventoryWindow extends Window {
         selectedItemOption = 2;
 
         System.out.println(InventoryControlKey.NAV_KEYS.getControls());
-
+        System.out.println("screen width: " + screenWidth);
 
         TextureRegionDrawable itemOption = new TextureRegionDrawable(new Texture("item_option.png"));
         itemOption.setMinHeight(height / 8f);
