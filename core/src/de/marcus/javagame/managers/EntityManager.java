@@ -66,10 +66,6 @@ public class EntityManager extends Loadable {
         }
     }
 
-    public void load() {
-
-    }
-
     public void moveToMemory(@NonNull UUID @NotNull ... uuids) {
         HashMap<UUID, Entity> toMove = new HashMap<>();
         System.out.println("test");
