@@ -2,6 +2,7 @@ package de.marcus.javagame.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.marcus.javagame.datahandling.SavedataHandler;
@@ -25,7 +26,16 @@ import java.util.Arrays;
 @Getter
 @Setter
 public class Player extends Creature {
+
+
     private Inventory inventory;
+    InventoryItem currentItem;
+    //Collisions
+    BodyDef playerBodyDef;
+    Body playerBody;
+    CircleShape circle;
+    FixtureDef playerFixtureDef;
+    Fixture playerFixture;
     @JsonIgnore
     private OrthographicCamera camera;
 
@@ -42,10 +52,25 @@ public class Player extends Creature {
                 TextureManager.getAnimation("running", true, 0.25f),
                 TextureManager.getAnimation("running", true, 0.25f)
         ));
+        playerBodyDef = new BodyDef();
+        circle = new CircleShape();
+        playerFixtureDef = new FixtureDef();
+        playerBodyDef.type = BodyDef.BodyType.DynamicBody;
+
+        //TODO: Radius ist noch nicht richtig
+        circle.setRadius(6f);
+        //TODO: wahrscheinlich in Render
+        playerBodyDef.position.set(posX,posY);
+
+        playerFixtureDef.shape = circle;
+        playerFixtureDef.density = 100f;
+        playerFixtureDef.friction = 0.4f;
 
         inventory = SavedataHandler.load(Inventory.class);
         inventory.setPlayer(this);
         camera = initialiseCamera();
+
+
     }
 
     @Override

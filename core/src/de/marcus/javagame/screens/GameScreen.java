@@ -6,12 +6,16 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import de.marcus.javagame.EffectType;
 import de.marcus.javagame.datahandling.SavedataHandler;
 import de.marcus.javagame.datahandling.data.Inventory;
 import de.marcus.javagame.entities.StatusEffect;
 import de.marcus.javagame.graphics.ui.UI;
+import de.marcus.javagame.managers.ContactListenerExtern;
 import de.marcus.javagame.managers.EntityManager;
 import de.marcus.javagame.managers.InputManager;
 import de.marcus.javagame.managers.SoundManager;
@@ -21,13 +25,13 @@ public class GameScreen extends AbstractScreen {
 
 
     InputManager inputManager;
-
+    World world ;
 
 
     GameWorld gameWorld;
     Label label;
-
-
+   //testen
+   Box2DDebugRenderer debugRenderer;
     private final BitmapFont font;
     private final SpriteBatch batch;
 
@@ -65,7 +69,8 @@ public class GameScreen extends AbstractScreen {
         entityManager.getPlayer().setUI(stage);
         this.ui = entityManager.getPlayer().getUi();
 //        Inventory inventory = SavedataHandler.load(Inventory.class);
-
+        debugRenderer = new Box2DDebugRenderer();
+        debugRenderer.render(world, entityManager.getPlayer().getCamera().combined);
 
 //        System.out.println(inventory.toString());
         System.out.println(entityManager.toString());
@@ -82,6 +87,13 @@ public class GameScreen extends AbstractScreen {
         gameWorld = new GameWorld(entityManager.getPlayer().getCamera());
 
 
+        world  = new World(new Vector2(0, -10), true);
+        //TODO: Player body
+        //setzt Body in Player
+        entityManager.getPlayer().setPlayerBody(world.createBody(entityManager.getPlayer().getPlayerBodyDef())) ;
+        //setzt die fixture
+        entityManager.getPlayer().setPlayerFixture(entityManager.getPlayer().getPlayerBody().createFixture(entityManager.getPlayer().getPlayerFixtureDef()));
+        world.setContactListener(new ContactListenerExtern());
 
     }
 
@@ -90,6 +102,7 @@ public class GameScreen extends AbstractScreen {
         //story spawns etc
         inputManager.handleMovement();
         ui.update(entityManager.getPlayer().getPosition().x,entityManager.getPlayer().getPosition().y);
+        world.step(1/60f, 6, 2);
     }
 
     @Override
@@ -123,7 +136,7 @@ public class GameScreen extends AbstractScreen {
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-
+        world.step(1/60f, 6, 2);
     }
 
     @Override
