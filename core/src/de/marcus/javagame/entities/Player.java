@@ -2,6 +2,7 @@ package de.marcus.javagame.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.marcus.javagame.datahandling.SavedataHandler;
 import de.marcus.javagame.datahandling.data.Inventory;
@@ -24,11 +25,7 @@ import java.util.Arrays;
 @Getter
 @Setter
 public class Player extends Creature {
-
-
     private Inventory inventory;
-    InventoryItem currentItem;
-
     @JsonIgnore
     private OrthographicCamera camera;
 
@@ -45,9 +42,28 @@ public class Player extends Creature {
                 TextureManager.getAnimation("running", true, 0.25f),
                 TextureManager.getAnimation("running", true, 0.25f)
         ));
+
         inventory = SavedataHandler.load(Inventory.class);
         inventory.setPlayer(this);
         camera = initialiseCamera();
+    }
+
+    @Override
+    public void update(float delta) {
+        super.update(delta);
+        ui.update(this.getPosition().x,this.getPosition().y);
+    }
+
+    @Override
+    public void setHealth(int health) {
+        System.out.println("set health to " + health);
+        super.setHealth(health);
+        ui.getHealthBar().setValue(health);
+    }
+
+    @JsonIgnore
+    public void setUI(Stage stage) {
+        this.ui = new UI(stage,this);
     }
 
     public void setInventoryWindow(InventoryWindow window) {
@@ -102,7 +118,16 @@ public class Player extends Creature {
     }
 
     public void useItem(InventoryItem item) {
-        StatusEffect effect = item.getEffect();
+        System.out.println("using the item");
+        StatusEffect effect = null;
+        try {
+            effect = (StatusEffect) item.getEffect().clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
 
+        applyEffect(effect);
     }
+
+
 }

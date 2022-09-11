@@ -1,6 +1,8 @@
 package de.marcus.javagame.screens;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,6 +14,7 @@ import de.marcus.javagame.entities.StatusEffect;
 import de.marcus.javagame.graphics.ui.UI;
 import de.marcus.javagame.managers.EntityManager;
 import de.marcus.javagame.managers.InputManager;
+import de.marcus.javagame.managers.SoundManager;
 import de.marcus.javagame.world.GameWorld;
 
 public class GameScreen extends AbstractScreen {
@@ -29,8 +32,9 @@ public class GameScreen extends AbstractScreen {
     private final SpriteBatch batch;
 
     EntityManager entityManager;
-
     UI ui;
+
+
 
     boolean yes = true;
 
@@ -44,16 +48,28 @@ public class GameScreen extends AbstractScreen {
         super(app);
         //app.dispose();
 
-
+        FileHandle dirHandle;
+        if (Gdx.app.getType() == Application.ApplicationType.Android) {
+            dirHandle = Gdx.files.internal("some/directory");
+        } else {
+            // ApplicationType.Desktop ..
+            dirHandle = Gdx.files.internal("sfx/");
+        }
+        FileHandle internal = Gdx.files.internal("sfx");
+        System.out.println("es " + internal.exists());
+        for (FileHandle entry: internal.list()) {
+            System.out.println(entry.name());
+        }
 
         entityManager = SavedataHandler.load(EntityManager.class);
-        ui = new UI(stage, entityManager.getPlayer());
+        entityManager.getPlayer().setUI(stage);
+        this.ui = entityManager.getPlayer().getUi();
 //        Inventory inventory = SavedataHandler.load(Inventory.class);
 
 
 //        System.out.println(inventory.toString());
         System.out.println(entityManager.toString());
-        entityManager.getPlayer().getEffects().add(new StatusEffect(EffectType.HEAL,1000));
+//        entityManager.getPlayer().getEffects().add(new StatusEffect(EffectType.HEAL,1000));
 
 
         inputManager = new InputManager(entityManager.getPlayer(), ui);
@@ -63,8 +79,9 @@ public class GameScreen extends AbstractScreen {
         batch = new SpriteBatch();
         batch.setProjectionMatrix(entityManager.getPlayer().getCamera().combined);
 
-        stage.addActor(ui.getUiContainer());
         gameWorld = new GameWorld(entityManager.getPlayer().getCamera());
+
+
 
     }
 
@@ -87,11 +104,7 @@ public class GameScreen extends AbstractScreen {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if (yes) {
-            ui.getHealthBar().setValue(3.0f);
-            ui.getArmorBar().setValue(3.0f);
-            yes = false;
-        }
+
 
 
         batch.setProjectionMatrix(entityManager.getPlayer().getCamera().combined);

@@ -2,25 +2,66 @@ package de.marcus.javagame.graphics;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import de.marcus.javagame.datahandling.data.Inventory;
 import de.marcus.javagame.graphics.ui.UI;
+import de.marcus.javagame.misc.Util;
+import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class InventoryWindow extends Window {
+
+    @Getter
+    public enum InventoryControlKey {
+        CLOSE_MENU(Input.Keys.BACKSPACE, Input.Keys.ESCAPE),
+
+        CLOSE_INVENTORY(Input.Keys.E),
+        CHOOSE_OPTION(Input.Keys.ENTER, Input.Keys.SPACE),
+
+        NAV_LEFT(Input.Keys.LEFT),
+        NAV_RIGHT(Input.Keys.RIGHT),
+        NAV_UP(Input.Keys.UP),
+        NAV_DOWN(Input.Keys.DOWN),
+        NAV_KEYS(NAV_LEFT, NAV_RIGHT, NAV_DOWN, NAV_UP);
+
+
+
+
+        InventoryControlKey(Integer... ints) {
+            this.controls = Arrays.asList(ints);
+        }
+
+        InventoryControlKey(InventoryControlKey... key) {
+            this.controls = new ArrayList<>();
+            Arrays.stream(key).forEach(inventoryControlKey -> controls.addAll(inventoryControlKey.getControls()));
+        }
+
+        public boolean contains(int keycode) {
+            return controls.contains(keycode);
+        }
+
+        private final List<Integer> controls;
+
+    }
 
     private static final String DELETE_BUTTON_TEXT = "Löschen";
     private static final String QUICKBAR_BUTTON_TEXT = "Schnellauswahl";
     private static final String USE_BUTTON_TEXT = "Benutzen";
 
+    private boolean waitingForSlotSelection;
 
+    private Stage stage;
     Image picker;
     float width;
     float height;
@@ -29,8 +70,10 @@ public class InventoryWindow extends Window {
     Group group;
 
     Group placeholders;
+    Group placeholderNumbers;
 
     Group hotbar;
+    Group hotbarNumbers;
     int selectedItemOption;
 
     int selectedItem;
@@ -40,14 +83,19 @@ public class InventoryWindow extends Window {
 
     //TODO: Make inventory picker moveable and not static and replace absolute with relative values
 
-    public InventoryWindow(Inventory inventory) {
-
+    public InventoryWindow(Inventory inventory, Stage stage) {
         super("", new WindowStyle(new BitmapFont(), Color.WHITE, new TextureRegionDrawable(new Texture("inventory3.png"))));
+        this.stage = stage;
         this.inventory = inventory;
         selectedItem = 0;
-        width = Gdx.graphics.getWidth() * 0.5f;
-        height = Gdx.graphics.getHeight() * 0.45f;
+        float screenWidth = Util.getScreenWidth(stage);
+        float screenHeight = Util.getScreenHeight(stage);
+        width = screenWidth * 0.5f;
+        height = screenHeight * 0.45f;
         selectedItemOption = 2;
+
+        System.out.println(InventoryControlKey.NAV_KEYS.getControls());
+
 
         TextureRegionDrawable itemOption = new TextureRegionDrawable(new Texture("item_option.png"));
         itemOption.setMinHeight(height / 8f);
@@ -75,35 +123,52 @@ public class InventoryWindow extends Window {
         group.setVisible(false);
 
         hotbar = new Group();
+        hotbarNumbers = new Group();
 
         TextureRegionDrawable placeholder = new TextureRegionDrawable(new Texture("placeholder.png"));
-        placeholder.setMinHeight((Gdx.graphics.getWidth() * 0.5f) / 11);
-        placeholder.setMinWidth((Gdx.graphics.getWidth() * 0.5f) / 11);
+        placeholder.setMinHeight((screenWidth * 0.5f) / 11);
+        placeholder.setMinWidth((screenWidth * 0.5f) / 11);
         placeholders = new Group();
+        placeholderNumbers = new Group();
 
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("sans_bold_semi.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 15;
+        parameter.borderColor = Color.BLACK;
+        parameter.borderWidth = 1;
+        parameter.padLeft = 40;
+        BitmapFont font12 = generator.generateFont(parameter); // font size 12 pixels
 
         for (int x = 0; x < 3; x++) {
             for (int i = 1; i < 11; i++) {
                 Image image = new Image(placeholder);
                 image.setPosition(width - placeholder.getMinWidth() * i - width * (0.031f + 0.00325f * (i - 1)), -height * 0.24f - placeholder.getMinHeight() * x - height * (0.015f) * x);
+                Label label = new Label("", new Label.LabelStyle(font12, null));
+                label.setPosition(width - placeholder.getMinWidth() * i - width * (0.031f + 0.00325f * (i - 1)), -height * 0.24f - placeholder.getMinHeight() * x - height * (0.015f) * x);
+
                 placeholders.addActor(image);
+                placeholderNumbers.addActor(label);
             }
         }
 
-        for (int i = 1; i<11; i++) {
+        for (int i = 1; i < 11; i++) {
             Image image = new Image(placeholder);
             image.setPosition(width - placeholder.getMinWidth() * i - width * (0.031f + 0.00325f * (i - 1)), -height * 0.24f - placeholder.getMinHeight() * 3.5f - height * (0.015f) * 4.5f);
-            hotbar.addActor(image);
-        }
+            Label label = new Label("" + Math.abs(i - 11), new Label.LabelStyle(font12, null));
+            label.setPosition(width - placeholder.getMinWidth() * i - width * (0.031f + 0.00325f * (i - 1)), -height * 0.24f - placeholder.getMinHeight() * 3.5f - height * (0.015f) * 4.5f);
 
+
+            hotbar.addActor(image);
+            hotbarNumbers.addActor(label);
+        }
 
 
         group.setDebug(true);
 
 
         this.setPosition(
-                Gdx.graphics.getWidth() / 4.0f,
-                Gdx.graphics.getHeight() / 4.0f
+                screenWidth / 4.0f,
+                screenHeight / 4.0f
         );
 
 
@@ -113,11 +178,13 @@ public class InventoryWindow extends Window {
 
 
         getTitleTable().addActor(placeholders);
+        getTitleTable().addActor(placeholderNumbers);
         getTitleTable().addActor(hotbar);
+        getTitleTable().addActor(hotbarNumbers);
         getTitleTable().addActor(group);
         getTitleTable().add(picker)
-                .width((Gdx.graphics.getWidth() * 0.63f) / 10)
-                .height((Gdx.graphics.getWidth() * 0.55f) / 10).padRight((width * 0.02f)).padTop(height * 0.3f);
+                .width((screenWidth * 0.63f) / 10)
+                .height((screenWidth * 0.55f) / 10).padRight((width * 0.02f)).padTop(height * 0.3f);
 
 
         this.setModal(false);
@@ -125,54 +192,50 @@ public class InventoryWindow extends Window {
         this.setMovable(true);
         this.setDebug(true);
 
-//        this.addListener(new InputListener() {
-//            @Override
-//            public boolean keyDown(InputEvent event, int keycode) {
-//                if(keycode == Input.Keys.LEFT) {
-//                    Cell<Image> cell = getTitleTable().getCell(picker);
-//                    float padding = cell.getPadRight() + (width * 0.093f);
-//
-//                    if(padding < (width * 0.093f * 10)) {
-//                        cell.padRight(padding);
-//                        getTitleTable().invalidate();
-//                        getTitleTable().pack();
-//                    }
-//                } else if(keycode == Input.Keys.RIGHT) {
-//                    Cell<Image> cell = getTitleTable().getCell(picker);
-//                    float padding = cell.getPadRight() - (width * 0.093f);
-//
-//
-//                    if(padding > 0) {
-//                        cell.padRight(padding);
-//                        getTitleTable().invalidate();
-//                        getTitleTable().pack();
-//                    }
-//
-//                } else if(keycode == Input.Keys.DOWN) {
-//                    Cell<Image> cell = getTitleTable().getCell(picker);
-//                    float padding = cell.getPadTop() + (height * 0.38f);
-//
-//                    if(padding < (height * 0.38f *3)) {
-//                        cell.padTop(padding);
-//                        getTitleTable().invalidate();
-//                        getTitleTable().pack();
-//                    }
-//                } else if(keycode == Input.Keys.UP) {
-//                    Cell<Image> cell = getTitleTable().getCell(picker);
-//
-//                    float padding = cell.getPadTop() - (height * 0.38f);
-//                    if(padding > 0) {
-//                        cell.padTop(padding);
-//                        getTitleTable().invalidate();
-//                        getTitleTable().pack();
-//                    }
-//
-//                }
-//                return false;
-//            }
-//        });
+
+    }
 
 
+    public void handleInput(int keycode, UI ui) {
+        if (InventoryControlKey.NAV_KEYS.contains(keycode)) {
+            int moveX = 0;
+            int moveY = 0;
+            if (InventoryControlKey.NAV_UP.contains(keycode)) {
+                moveY -= 1;
+            } else if (InventoryControlKey.NAV_LEFT.contains(keycode)) {
+                moveX += 1;
+            } else if (InventoryControlKey.NAV_RIGHT.contains(keycode)) {
+                moveX -= 1;
+            } else {
+                moveY += 1;
+            }
+
+            moveSelector(moveX, moveY);
+        } else if (InventoryControlKey.CLOSE_MENU.contains(keycode)) {
+            if (isItemOptionOpen()) {
+                waitingForSlotSelection = false;
+                resetItemOptionGroup();
+            } else {
+                waitingForSlotSelection = false;
+                setVisible(false);
+            }
+        } else if (InventoryControlKey.CHOOSE_OPTION.contains(keycode)) {
+            chooseOption(ui);
+        } else if (Input.Keys.NUM_0 <= keycode && keycode <= Input.Keys.NUM_9 && waitingForSlotSelection) {
+            waitingForSlotSelection = false;
+            if(keycode != Input.Keys.NUM_0)
+                inventory.moveItemToQuickbar(selectedItem, Math.abs(keycode - 8));
+            else
+                inventory.moveItemToQuickbar(selectedItem, 9);
+
+        }
+    }
+
+    private void chooseOption(UI ui) {
+        if (!isItemOptionOpen())
+            toggleItemsOptionMenu(true);
+        else
+            triggerItemAction(ui);
     }
 
     /**
@@ -204,7 +267,7 @@ public class InventoryWindow extends Window {
             if (moveY && topPedding > 0 && topPedding < (height * 0.38f * 3)) {
                 cell.padTop(topPedding);
                 //move the action menu with cursor to keep it at correct position underneath cursor
-                group.moveBy(0, -(Gdx.graphics.getWidth() * 0.48f) / 10 * y);
+                group.moveBy(0, -(Util.getScreenWidth(stage) * 0.48f) / 10 * y);
                 /*
                 Inventory slot starts at top right (0) underneath is the 10 slot etc.
                  */
@@ -217,10 +280,8 @@ public class InventoryWindow extends Window {
                 cell.padRight(sidePadding);
                 group.moveBy(-(width * 0.093f * x), 0);
                 selectedItem += x;
-                System.out.println("side " + (width * 0.093f * -x));
             }
 
-            System.out.println(selectedItem);
             //you need to invalidate table positions otherwise cursor won't move
             getTitleTable().invalidate();
             getTitleTable().pack();
@@ -260,24 +321,38 @@ public class InventoryWindow extends Window {
             case DELETE_BUTTON_TEXT:
                 boolean b = inventory.removeItem(selectedItem, Inventory.MAX_ITEM_STACK);
                 if (!b)
-                    ui.displayNotification(2000, "This item can not be deleted!");
-                group.setVisible(false);
-                selectedItemOption = group.getChildren().size - 1;
+                    ui.displayNotification(2000, "Du kannst dies nicht löschen!");
+                resetItemOptionGroup();
                 break;
             case USE_BUTTON_TEXT:
                 boolean b1 = inventory.useItem(selectedItem);
                 if (!b1)
-                    ui.displayNotification(2000, "This item can not be used!");
-                group.setVisible(false);
-                selectedItemOption = group.getChildren().size - 1;
+                    ui.displayNotification(2000, "Du kannst das nicht benutzen!");
+                resetItemOptionGroup();
                 break;
             case QUICKBAR_BUTTON_TEXT:
-                inventory.moveItemToQuickbar(selectedItem, 0);
-                group.setVisible(false);
-                selectedItemOption = group.getChildren().size - 1;
+                if (inventory.isItemEquitable(selectedItem)) {
+                    waitingForSlotSelection = true;
+                    ui.displayNotification(8000, "Drücke eine Zahl zwischen 1 - 0 (10)");
+                } else {
+                    ui.displayNotification(2000, "Du kannst das nicht ausrüsten!");
+                }
+                resetItemOptionGroup();
                 break;
 
         }
+    }
+
+    public void resetItemOptionGroup() {
+        group.setVisible(false);
+        for (int i = 0; i < group.getChildren().size; i++) {
+            ImageTextButton button = (ImageTextButton) group.getChild(i);
+            button.setChecked(false);
+        }
+
+        selectedItemOption = group.getChildren().size - 1;
+        ImageTextButton startButton = (ImageTextButton) group.getChild(selectedItemOption);
+        startButton.setChecked(true);
     }
 
     public void addToQuickbar(int quickbarSlot, Texture texture) {
@@ -285,8 +360,24 @@ public class InventoryWindow extends Window {
         currentSelected.setDrawable(new TextureRegionDrawable(texture));
     }
 
-    public void setItemAtPosition(int i, Texture texture) {
+    public void setItemAtPosition(int i, Texture texture, int itemCount) {
         Image child = (Image) placeholders.getChild(i);
-        child.setDrawable(new TextureRegionDrawable(texture));
+        Label label = (Label) placeholderNumbers.getChild(i);
+        if (texture != null) {
+            child.setDrawable(new TextureRegionDrawable(texture));
+            label.setText(itemCount);
+        } else {
+            child.setDrawable(new TextureRegionDrawable(new Texture("placeholder.png")));
+            label.setText("");
+        }
+    }
+
+    public void setItemIntoHotbar(int i, Texture texture, int itemCount) {
+        Image child = (Image) hotbar.getChild(i);
+        if (texture != null) {
+            child.setDrawable(new TextureRegionDrawable(texture));
+        } else {
+            child.setDrawable(new TextureRegionDrawable(new Texture("placeholder.png")));
+        }
     }
 }

@@ -3,6 +3,7 @@ package de.marcus.javagame.entities;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,12 +24,16 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Entity {
     protected Vector2 position;
+
+    @JsonIgnore
     protected Texture texture;
 
     public Entity(float posX, float posY, Texture texture) {
         position = new Vector2(posX, posY);
         this.texture = texture;
     }
+
+
 
 
     public void render(SpriteBatch batch) {

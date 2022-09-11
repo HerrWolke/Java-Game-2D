@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import de.marcus.javagame.entities.logging.LoggingSystem;
+import de.marcus.javagame.logging.LoggingSystem;
 import de.marcus.javagame.managers.GameScreenManager;
 
 
@@ -20,9 +20,6 @@ public class LoadingScreen extends Game {
 
     @Override
     public void create() {
-
-        long l = System.currentTimeMillis();
-        System.out.println(l);
         loggingSystem = new LoggingSystem();
 
 
@@ -30,8 +27,6 @@ public class LoadingScreen extends Game {
 
 
         loaded = true;
-        long l1 = (System.currentTimeMillis());
-        System.out.println(l1);
     }
 
     @Override

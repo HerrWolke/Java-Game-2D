@@ -7,16 +7,52 @@
     {
       "itemCount": 5,
       "item": "COIN"
+    },
+    {
+      "itemCount": 63,
+      "item": "HEAL_POTION"
     }
   ],
   "hotbar_data": [
     {
-      "itemCount": 2,
-      "item": "COIN"
+      "itemCount": 0,
+      "item": null
     },
     {
-      "itemCount": 5,
-      "item": "COIN"
+      "itemCount": 0,
+      "item": null
+    },
+    {
+      "itemCount": 0,
+      "item": null
+    },
+    {
+      "itemCount": 0,
+      "item": null
+    },
+    {
+      "itemCount": 0,
+      "item": null
+    },
+    {
+      "itemCount": 0,
+      "item": null
+    },
+    {
+      "itemCount": 0,
+      "item": null
+    },
+    {
+      "itemCount": 0,
+      "item": null
+    },
+    {
+      "itemCount": 0,
+      "item": null
+    },
+    {
+      "itemCount": 0,
+      "item": null
     }
   ]
 }

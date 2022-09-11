@@ -5,29 +5,38 @@ import de.marcus.javagame.entities.StatusEffect;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * When creating an item with an effect, the duration is set in ms not seconds (seconds * 1000)
+ * <p>
+ * <b>Items have to have same name as texture (Texture has to be .png)</b>
+ */
 @Getter
 public enum InventoryItem {
 
     COIN(Inventory.MAX_ITEM_STACK,false,false),
-    MAP(Inventory.MAX_WEAPON_STACK,false,true),
-    STARTER_SWORD(Inventory.MAX_WEAPON_STACK,false,false),
-    HEALTH_POTION(Inventory.MAX_POTION_STACK,true,true,new StatusEffect(EffectType.HEAL,1));
+    MAP(Inventory.MAX_WEAPON_STACK,false,false),
+    STARTER_SWORD(Inventory.MAX_WEAPON_STACK,false,true),
+    HEAL_POTION(Inventory.MAX_POTION_STACK,true,true,new StatusEffect(EffectType.HEAL,1000));
 
-    InventoryItem(int maxStackSize, boolean deletable, boolean usable) {
+    InventoryItem(int maxStackSize, boolean deletable, boolean hotbarSelectable) {
         this.maxStackSize = maxStackSize;
         this.deletable = deletable;
-        this.usable = usable;
         this.effect = null;
+        this.usable = false;
+        this.hotbarSelectable = hotbarSelectable;
     }
 
-    InventoryItem(int maxStackSize, boolean deletable, boolean usable, StatusEffect effect) {
+    InventoryItem(int maxStackSize, boolean deletable, boolean hotbarSelectable,  StatusEffect effect) {
         this.maxStackSize = maxStackSize;
         this.deletable = deletable;
-        this.usable = usable;
+        this.usable = true;
         this.effect = effect;
+        this.hotbarSelectable = hotbarSelectable;
     }
 
     private final int maxStackSize;
+
+    private final boolean hotbarSelectable;
     private final boolean deletable;
 
     private final boolean usable;
@@ -46,4 +55,6 @@ public enum InventoryItem {
                 "maxStackSize=" + maxStackSize +
                 '}';
     }
+
+    
 }

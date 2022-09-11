@@ -1,7 +1,9 @@
 package de.marcus.javagame.datahandling.data;
 
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import de.marcus.javagame.datahandling.Loadable;
 import de.marcus.javagame.entities.Player;
 import de.marcus.javagame.graphics.InventoryWindow;
@@ -9,7 +11,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
@@ -28,40 +29,58 @@ public class Inventory extends Loadable {
     Player p;
 
     @JsonProperty("inventory_data")
-    public List<InventorySlot> inventory;
+    public ArrayList<InventorySlot> inventory;
 
 
     @JsonProperty("hotbar_data")
-    public List<InventorySlot> hotbar;
-     @JsonIgnore
+    public ArrayList<InventorySlot> hotbar;
+
+    @JsonIgnore
     private InventoryWindow inventoryWindow;
 
-    public Inventory(List<InventorySlot> inventory, List<InventorySlot> hotbar) {
+    public Inventory(ArrayList<InventorySlot> inventory, ArrayList<InventorySlot> hotbar) {
         this.inventory = inventory;
         this.hotbar = hotbar;
     }
 
+
+    @JsonSetter
+    public void setHotbar(ArrayList<InventorySlot> hotbar) {
+        ArrayList<InventorySlot> list = new ArrayList<>(10);
+        list.addAll(hotbar);
+        this.hotbar = list;
+        System.out.println("size " + hotbar.size());
+    }
+
     public Inventory() {
+        System.out.println("Called constructor");
         this.inventory = new ArrayList<>();
-        this.hotbar = new ArrayList<>();
+        this.hotbar = new ArrayList<>(10);
+
         p = null;
     }
 
     @JsonIgnore
     public void setPlayer(Player player) {
         this.p = player;
+
     }
 
     public boolean removeItem(int slot, int amount) {
         if (slot < inventory.size()) {
             InventorySlot remove = inventory.get(slot);
             int itemsLeft = remove.getItemCount() - amount;
+            System.out.println("items left " + itemsLeft);
 
             if (remove.getItem().isDeletable()) {
-                if (itemsLeft < 0)
+                if (itemsLeft <= 0) {
                     inventory.remove(remove);
-                else
+                    System.out.println("resetting texture at " + slot);
+                    inventoryWindow.setItemAtPosition(slot, null, 0);
+                } else {
+                    System.out.println("what?");
                     remove.setItemCount(itemsLeft);
+                }
                 return true;
             } else {
                 return false;
@@ -79,8 +98,10 @@ public class Inventory extends Loadable {
             if (slot.getItem().isUsable()) {
                 if (itemsLeft < 0) {
                     inventory.remove(selectedItem);
+
                 } else {
                     slot.setItemCount(itemsLeft);
+                    inventoryWindow.setItemAtPosition(selectedItem, slot.getTexture(), itemsLeft);
                 }
                 p.useItem(slot.getItem());
                 return true;
@@ -104,7 +125,7 @@ public class Inventory extends Loadable {
                     return true;
                 } else if (inventory.size() < INVENTORY_SIZE) {
                     inventory.add(slot);
-                    inventoryWindow.setItemAtPosition(inventory.size(),slot.getTexture());
+                    inventoryWindow.setItemAtPosition(inventory.size(), slot.getTexture(), slot.getItemCount());
                     return true;
                 } else {
                     return false;
@@ -133,16 +154,44 @@ public class Inventory extends Loadable {
         for (int i = 0; i < inventory.size(); i++) {
             InventorySlot inventorySlot = inventory.get(i);
             inventorySlot.createTexture();
-            inventoryWindow.setItemAtPosition(i,inventorySlot.getTexture());
+            inventoryWindow.setItemAtPosition(i, inventorySlot.getTexture(), inventorySlot.getItemCount());
+        }
+
+        for (int i = 0; i < hotbar.size(); i++) {
+            InventorySlot inventorySlot = hotbar.get(i);
+
+            if(inventorySlot.getItem() != null) {
+                inventorySlot.createTexture();
+                inventoryWindow.setItemIntoHotbar(i, inventorySlot.getTexture(), inventorySlot.getItemCount());
+            }
         }
     }
 
-    public void moveItemToQuickbar(int selectedItem,int quickbarSlot) {
+    public boolean isItemEquitable(int selectedItem) {
+        if (selectedItem < inventory.size()) {
+            boolean usable = inventory.get(selectedItem).getItem().isHotbarSelectable();
+            System.out.println("use " + usable);
+            return usable;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean moveItemToQuickbar(int selectedItem, int quickbarSlot) {
         if (selectedItem < inventory.size()) {
             InventorySlot slot = inventory.get(selectedItem);
+            System.out.println(hotbar.size());
 
-             hotbar.add(quickbarSlot,slot);
-             inventoryWindow.addToQuickbar(quickbarSlot,slot.getTexture());
+            if (slot.getItem().isHotbarSelectable()) {
+                System.out.println("slot " + quickbarSlot);
+                hotbar.set(quickbarSlot, slot);
+                inventoryWindow.addToQuickbar(quickbarSlot, slot.getTexture());
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
         }
     }
 }

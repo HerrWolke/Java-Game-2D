@@ -7,6 +7,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import de.marcus.javagame.datahandling.SavedataHandler;
 import de.marcus.javagame.entities.Player;
 import de.marcus.javagame.graphics.ui.UI;
 
@@ -70,7 +71,6 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        System.out.println(keycode);
 
         if (keycode == settings.get(CONTROLS.SETTINGS)) {
             //new screen
@@ -94,36 +94,20 @@ public class InputManager implements InputProcessor {
 
         }
 
+        if(keycode == Input.Keys.NUM_5) {
+            p.setHealth(p.getHealth() - 1);
+        }
+
+        if(keycode == Input.Keys.NUM_7) {
+            SavedataHandler.save(p.getInventory());
+        }
+
+        if(keycode == Input.Keys.NUM_6) {
+            p.setHealth(p.getHealth() + 1);
+        }
+
         if(ui.getInventory().isVisible()) {
-            int moveX = 0;
-            int moveY = 0;
-            if(keycode == Input.Keys.LEFT) {
-                moveX += 1;
-            }
-            if(keycode == Input.Keys.RIGHT) {
-                moveX -= 1;
-            }
-            if(keycode == Input.Keys.DOWN) {
-              moveY += 1;
-            }
-            if(keycode == Input.Keys.UP) {
-                moveY -= 1;
-            }
-
-            ui.getInventory().moveSelector(moveX,moveY);
-
-            if(keycode == Input.Keys.ENTER) {
-                if(!ui.getInventory().isItemOptionOpen())
-                    ui.getInventory().toggleItemsOptionMenu(true);
-                else
-                    ui.getInventory().triggerItemAction(ui);
-            }
-
-
-            if(keycode == settings.get(CONTROLS.CLOSE_DIALOG)) {
-                System.out.println("close dialog");
-                ui.getInventory().toggleItemsOptionMenu(false);
-            }
+            ui.getInventory().handleInput(keycode,ui);
         }
 
         return true;

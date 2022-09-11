@@ -8,16 +8,21 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 import com.badlogic.gdx.utils.Align;
 import de.marcus.javagame.entities.Player;
 import de.marcus.javagame.graphics.InventoryWindow;
+import de.marcus.javagame.managers.SoundManager;
+import de.marcus.javagame.misc.Util;
 import de.marcus.javagame.screens.InventoryScreen;
 import lombok.Getter;
 
@@ -33,6 +38,7 @@ public class UI {
     Label fps;
 
     Label notification;
+    Group notificationSystem;
 
     InventoryWindow inventory;
 
@@ -47,12 +53,19 @@ public class UI {
         this.stage = stage;
         uiContainer = new Table();
         Table table = new Table();
-        inventory = new InventoryWindow(player.getInventory());
+        uiContainer.setFillParent(true);
+        inventory = new InventoryWindow(player.getInventory(),stage);
         player.setInventoryWindow(inventory);
+        stage.addActor(inventory);
+        stage.addActor(uiContainer);
+        notificationSystem = new Group();
+
 
 
         TiledDrawable heartDrawable = new TiledDrawable(new TextureRegion(new Texture("hearts.png")));
         TiledDrawable dead = new TiledDrawable(new TextureRegion(new Texture("hearts_dead.png")));
+
+
 
         TiledDrawable chestplateDrawable = new TiledDrawable(new TextureRegion(new Texture("items/chestplate.png")));
         TiledDrawable chestplateDead = new TiledDrawable(new TextureRegion(new Texture("items/chestplate_dead.png")));
@@ -80,18 +93,22 @@ public class UI {
         parameter.padLeft = 40;
         BitmapFont font12 = generator.generateFont(parameter); // font size 12 pixels
         generator.dispose();
+
         notification = new Label("Default Text", new Label.LabelStyle(font12,Color.WHITE));
         notification.getStyle().background = new TextureRegionDrawable(new TextureRegion(new Texture("notification.png")));
         notification.setAlignment(Align.center);
         notification.setVisible(false);
 
+        float aspectRatio = Util.getAspectRatio(stage);
+        notification.setSize(notification.getWidth()  * aspectRatio * 2f,notification.getHeight() * aspectRatio * 4f);
+        notification.setPosition(stage.getCamera().viewportWidth - notification.getWidth(),stage.getCamera().viewportHeight - notification.getHeight());
+        notificationSystem.setVisible(true);
 
+        float screenHeight = Util.getScreenHeight(stage);
+        float screenWidth = Util.getScreenWidth(stage);
+        uiContainer.pad(screenHeight * 0.001f,screenWidth*0.002f,screenHeight*0.001f,screenWidth*0.002f);
 
-
-        System.out.println(healthBar.getX());
-        System.out.println(healthBar.getY());
-        uiContainer.pad(Gdx.graphics.getWidth() * 0.01f);
-
+        //needs to be 128 otherwise the texture adds another half heart idk
         uiContainer.add(healthBar).width(128).padBottom(healthBar.getHeight() * 0.25f).left().top();
         uiContainer.row();
         uiContainer.add(armorBar).width(128).padBottom(healthBar.getHeight() * 0.25f).left().top();
@@ -100,16 +117,17 @@ public class UI {
         uiContainer.row();
         uiContainer.add(fps).left();
         uiContainer.add(table).growX().top().right();
-        table.add(notification).width(Gdx.graphics.getWidth() * 0.25f).height(Gdx.graphics.getHeight() * 0.175f).top();
-        uiContainer.setFillParent(true);
+        notificationSystem.addActor(notification);
+
         uiContainer.setDebug(true);
-        //needs to be 128 otherwise the texture adds another half heart idk
+        uiContainer.addActor(notificationSystem);
+
 
 
 
 
         uiContainer.left().top();
-        stage.addActor(inventory);
+
 
 
     }
@@ -134,6 +152,7 @@ public class UI {
         position.setText(String.format("X: %s | Y: %s",Math.round(x * 100.0) / 100.0,Math.round(y * 100.0) / 100.0));
         fps.setText(String.format("FPS: %s",Gdx.graphics.getFramesPerSecond()));
 
+
         if(notification.isVisible()) {
             displayTime -= (long) (Gdx.graphics.getDeltaTime() * 1000);
             if(displayTime <= 0) {
@@ -145,13 +164,14 @@ public class UI {
 
     public void changeInventoryShowState() {
         inventory.setVisible(!inventory.isVisible());
-
+        inventory.resetItemOptionGroup();
 
     }
 
     public void displayNotification(long displayTime,String text) {
         notification.setText(text);
         notification.setVisible(true);
+        SoundManager.playSoundEffect(SoundManager.SoundEffects.NOTIFICATION,false);
         this.displayTime = displayTime;
     }
 }

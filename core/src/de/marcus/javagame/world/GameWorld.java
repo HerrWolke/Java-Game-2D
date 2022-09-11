@@ -14,9 +14,12 @@ public class GameWorld {
 
     public GameWorld(OrthographicCamera camera) {
         tiledMap = new TmxMapLoader().load("word_tmx/Tilemap.tmx");
+
         renderer = new OrthogonalTiledMapRenderer(tiledMap, UNIT_SCALE);
         renderer.setView(camera);
     }
+
+
 
     public void render(OrthographicCamera camera) {
         renderer.setView(camera);

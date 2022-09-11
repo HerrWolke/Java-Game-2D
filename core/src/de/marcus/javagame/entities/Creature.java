@@ -5,7 +5,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.LinkedList;
@@ -22,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class Creature extends Entity {
     LinkedList<StatusEffect> effects;
 
@@ -38,6 +41,7 @@ public class Creature extends Entity {
     private int maxThirst;
 
 
+    @JsonIgnore
     List<Animation<TextureRegion>> animations;
     /**
      * Animations
@@ -47,11 +51,17 @@ public class Creature extends Entity {
      * 3 = x movement
      * Rest doesn't matter
      */
+
+    @JsonIgnore
     private int activeAnimation;
+
+    @JsonIgnore
     private boolean mirrorAnimations;
 
 
     private float movementSpeed;
+
+    @JsonIgnore
     private boolean isDead;
 
     //TODO: ADD SOMETHING FOR DROPS
@@ -73,6 +83,10 @@ public class Creature extends Entity {
         this.maxHunger = maxHunger;
         this.maxArmor = maxArmor;
         this.maxThirst = maxThirst;
+        health = maxHealth;
+        hunger = maxHunger;
+        armor = maxArmor;
+        thirst = maxThirst;
         this.movementSpeed = movementSpeed;
         effects = new LinkedList<>();
         this.animations = animations;
@@ -115,6 +129,10 @@ public class Creature extends Entity {
 
 //            System.out.println("flip " + keyFrame.isFlipX() + " cause " + mirrorAnimations);
         batch.draw(keyFrame, position.x, position.y, width, height);
+    }
+
+    public void applyEffect(StatusEffect effect) {
+        effects.add(effect);
     }
 
     public void move(float x, float y) {
