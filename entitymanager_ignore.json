@@ -1,0 +1,23 @@
+{
+  "active_entities": {
+    "f42048e6-3ff7-4ad5-afae-0afded3a7af1": {
+      "position": {
+        "x": 3.0,
+        "y": 0.0,
+        "zero": false,
+        "unit": false
+      },
+      "texture": null
+    },
+    "bec6e05b-9e93-4561-b97e-3014143bc58d": {
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "zero": true,
+        "unit": false
+      },
+      "texture": null
+    }
+  },
+  "loaded_entities": {}
+}

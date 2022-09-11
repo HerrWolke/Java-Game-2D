@@ -1,6 +1,5 @@
 package de.marcus.javagame.managers;
 
-import de.marcus.javagame.entities.logging.Logger;
 import de.marcus.javagame.questing.Quest;
 
 import java.util.LinkedHashMap;
@@ -15,12 +14,12 @@ public class QuestingManager {
         activeQuests = new LinkedHashMap<>();
     }
 
-    public void setActiveQuest(Quest.QuestType type, Quest activeMainQuest) {
+    public void setActiveQuest(Quest.QuestType type, Quest questActivate) {
         Quest quest = activeQuests.get(type);
         if (quest == null) {
-            activeQuests.replace(type, activeMainQuest);
+            activeQuests.replace(type, questActivate);
         } else {
-            //loggingSystem.getLogger().log(Logger.LoggerLevel.ERROR, "Tried to set a quest, but the quest " + quest.name() + " is currently active. The quest to be set was " + activeMainQuest.name());
+            //loggingSystem.getLogger().log(Logger.LoggerLevel.ERROR, "Tried to set a quest, but the quest " + quest.name() + " is currently active. The quest to be set was " + questActivate.name());
         }
     }
 

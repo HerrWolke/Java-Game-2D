@@ -117,3 +117,6 @@ gradlew
 gradlew.bat
 /entity_data.json
 /inventory.json
+
+
+.gitignore

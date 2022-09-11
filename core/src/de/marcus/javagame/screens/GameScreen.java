@@ -1,19 +1,43 @@
 package de.marcus.javagame.screens;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import de.marcus.javagame.entities.Player;
-import de.marcus.javagame.managers.GameScreenManager;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import de.marcus.javagame.EffectType;
+import de.marcus.javagame.datahandling.SavedataHandler;
+import de.marcus.javagame.datahandling.data.Inventory;
+import de.marcus.javagame.entities.StatusEffect;
+import de.marcus.javagame.graphics.ui.UI;
+import de.marcus.javagame.managers.EntityManager;
 import de.marcus.javagame.managers.InputManager;
+import de.marcus.javagame.managers.SoundManager;
+import de.marcus.javagame.world.GameWorld;
 
 public class GameScreen extends AbstractScreen {
-    Player mainCharacter;
-    //Map map;
+
+
     InputManager inputManager;
+
+
+
+    GameWorld gameWorld;
+    Label label;
+
+
+    private final BitmapFont font;
+    private final SpriteBatch batch;
+
+    EntityManager entityManager;
+    UI ui;
+
+
+
+    boolean yes = true;
+
 
     // StoryHandler sthandler;
     //LoadWorld loader;
@@ -24,37 +48,89 @@ public class GameScreen extends AbstractScreen {
         super(app);
         //app.dispose();
 
-        mainCharacter = new Player(0,0,new Texture("badlogic.jpg"),10,10,10,10,1f);
+        FileHandle dirHandle;
+        if (Gdx.app.getType() == Application.ApplicationType.Android) {
+            dirHandle = Gdx.files.internal("some/directory");
+        } else {
+            // ApplicationType.Desktop ..
+            dirHandle = Gdx.files.internal("sfx/");
+        }
+        FileHandle internal = Gdx.files.internal("sfx");
+        System.out.println("es " + internal.exists());
+        for (FileHandle entry: internal.list()) {
+            System.out.println(entry.name());
+        }
 
-        inputManager = new InputManager(mainCharacter);
+        entityManager = SavedataHandler.load(EntityManager.class);
+        entityManager.getPlayer().setUI(stage);
+        this.ui = entityManager.getPlayer().getUi();
+//        Inventory inventory = SavedataHandler.load(Inventory.class);
 
-//        TmxMapLoader load = new TmxMapLoader();
-//        TiledMap load1 = load.load("map.tmx");
-//        OrthogonalTiledMapRenderer tiledMapRenderer = new OrthogonalTiledMapRenderer(load1);
+
+//        System.out.println(inventory.toString());
+        System.out.println(entityManager.toString());
+//        entityManager.getPlayer().getEffects().add(new StatusEffect(EffectType.HEAL,1000));
+
+
+        inputManager = new InputManager(entityManager.getPlayer(), ui);
+
+
+        font = new BitmapFont();
+        batch = new SpriteBatch();
+        batch.setProjectionMatrix(entityManager.getPlayer().getCamera().combined);
+
+        gameWorld = new GameWorld(entityManager.getPlayer().getCamera());
+
+
 
     }
 
     @Override
     public void update(float delta) {
         //story spawns etc
-        //inputmanager.keyDown()
+        inputManager.handleMovement();
+        ui.update(entityManager.getPlayer().getPosition().x,entityManager.getPlayer().getPosition().y);
+    }
 
-
+    @Override
+    public void resize(int width, int height) {
+        super.resize(width, height);
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
     public void render(float delta) {
-        super.render(delta);
+        update(delta);
+        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+
+
+
+        batch.setProjectionMatrix(entityManager.getPlayer().getCamera().combined);
+        gameWorld.render(entityManager.getPlayer().getCamera());
+        entityManager.render(batch);
+
+
+//        font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 20);
+
+
+//        label.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
+
+//        label.setPosition(Gdx.graphics.getWidth()-(Gdx.graphics.getWidth()-5f),Gdx.graphics.getHeight()-(0.1f * Gdx.graphics.getHeight()));
+//        label.pack();
+
+
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
+
     }
 
     @Override
     public void show() {
-        //nur ein Test
-        //t = new Texture(Gdx.files.internal("items.png"));
-        //  batch.begin();
-        //   batch.draw(t, 0, 0);
-        //  batch.end();
-//        super.app.g.setScreen(GameScreenManager.SCREENS.INVENTORY);
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
+        Gdx.input.setInputProcessor(inputManager);
     }
 
     @Override

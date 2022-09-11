@@ -9,7 +9,7 @@ public class Enemy extends Creature {
     private float range;
 
     public Enemy(float posX, float posY, Texture texture, int maxHealth, int maxHunger, int maxArmor, int maxThirst, float movementSpeed, int damage, double attackSpeed, float range) {
-        super(posX, posY, texture, maxHealth, maxHunger, maxArmor, maxThirst, movementSpeed);
+        super(posX, posY, texture, maxHealth, maxHunger, maxArmor, maxThirst, movementSpeed, null);
         this.damage = damage;
         this.attackSpeed = attackSpeed;
         this.range = range;
