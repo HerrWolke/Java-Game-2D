@@ -66,7 +66,7 @@ public class InputManager implements InputProcessor {
 
 //        System.out.printf("x: %s, y: %s",posCam.x,posCam.y);
 
-        p.move(posCam.x, posCam.y);
+            p.move(posCam.x, posCam.y,true);
     }
 
     @Override
@@ -113,8 +113,14 @@ public class InputManager implements InputProcessor {
             ui.getInventory().handleInput(keycode, ui);
         }
 
-        if(ui.getDialog().isVisible() && ui.getDialog().areDialogButtonsVisible()) {
-            ui.getDialog().handleInput(keycode);
+        if(ui.getDialog().isVisible()) {
+            if(ui.getDialog().areDialogButtonsVisible()) {
+                ui.getDialog().handleInput(keycode);
+            } else {
+                if(!ui.getDialog().getDialogHandler().isDialogActive()) {
+                    ui.getDialog().setVisible(false);
+                }
+            }
         }
 
         return true;

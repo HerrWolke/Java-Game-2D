@@ -31,6 +31,7 @@ public class DialogHandler {
     }
 
     public void setCurrentDialog(Dialogs currentDialog) {
+        isDialogActive = true;
         this.currentDialog = currentDialog.dialog;
         window.setVisible(true);
         window.setDialogMenuOptions(currentDialog.dialog);

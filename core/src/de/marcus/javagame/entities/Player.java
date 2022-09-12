@@ -2,6 +2,7 @@ package de.marcus.javagame.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,14 +64,15 @@ public class Player extends Creature {
         playerFixtureDef = new FixtureDef();
         playerBodyDef.type = BodyDef.BodyType.DynamicBody;
 
+
         //TODO: Radius ist noch nicht richtig
-        circle.setRadius(0.5f);
+        circle.setRadius(5f);
         //TODO: wahrscheinlich in Render
         playerBodyDef.position.set(position.x,position.y);
 
         playerFixtureDef.shape = circle;
-        playerFixtureDef.density = 100f;
-        playerFixtureDef.friction = 0.4f;
+        playerFixtureDef.density = 0f;
+        playerFixtureDef.friction = 0.0f;
 
         swordShape = new CircleShape();
         swordBodyDef = new BodyDef();
@@ -106,9 +108,9 @@ public class Player extends Creature {
     }
 
     @Override
-    public void move(float x, float y, boolean attack) {
+    public void move(float x, float y, boolean attack1) {
         super.move(x, y, attack);
-        playerBodyDef.position.set(position.x,position.y);
+        playerBody.applyLinearImpulse(new Vector2(Gdx.graphics.getDeltaTime() * (x * getMovementSpeed()),Gdx.graphics.getDeltaTime() * (y * getMovementSpeed())),new Vector2(position.x,position.y),true);
     }
 
 

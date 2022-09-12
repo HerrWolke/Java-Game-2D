@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Align;
 import com.rafaskoberg.gdx.typinglabel.TypingAdapter;
 import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 import de.marcus.javagame.datahandling.data.dialog.Dialog;
+import de.marcus.javagame.graphics.ui.UI;
 import de.marcus.javagame.handlers.DialogHandler;
 import de.marcus.javagame.misc.Util;
 import lombok.Getter;
@@ -32,8 +33,11 @@ public class DialogWindow extends Window {
 
     DialogHandler dialogHandler;
 
-    public DialogWindow(Stage stage) {
+    UI ui;
+
+    public DialogWindow(Stage stage, UI ui) {
         super("", new WindowStyle(new BitmapFont(), Color.WHITE, new TextureRegionDrawable(new Texture("dialog.png"))));
+        this.ui = ui;
         postion = new Group();
         otherElements = new Group();
         dialogHandler = new DialogHandler(this);
@@ -63,11 +67,14 @@ public class DialogWindow extends Window {
             public void end() {
                 for (int i = 0; i < postion.getChildren().size; i++) {
                     ImageTextButton imageTextButton = (ImageTextButton) postion.getChild(i);
-                    if(!String.valueOf(imageTextButton.getText()).equalsIgnoreCase("")) {
+                    if (!String.valueOf(imageTextButton.getText()).equalsIgnoreCase("")) {
                         imageTextButton.setVisible(true);
                         imageTextButton.setChecked(i == 0);
                     }
                 }
+
+                if(dialogHandler.isDialogFinished())
+                    ui.displayNotification(3000,"Drücke eine beliebige Taste um fortzufahren...");
             }
         });
 
@@ -138,9 +145,9 @@ public class DialogWindow extends Window {
             }
 
             moveSelector(moveY);
-        } else if(InventoryWindow.InventoryControlKey.CHOOSE_OPTION.contains(keycode)) {
+        } else if (InventoryWindow.InventoryControlKey.CHOOSE_OPTION.contains(keycode)) {
             Dialog retrievedDialog = dialogHandler.dialogButtonPressed(currentSelectedOption);
-            if(retrievedDialog != null) {
+            if (retrievedDialog != null) {
                 setDialogMenuOptions(retrievedDialog);
             }
         }
@@ -162,6 +169,7 @@ public class DialogWindow extends Window {
     public boolean setDialogMenuOptions(String menuTitle, String dialogText, String... texts) {
         if (menuTitle.length() < 18 && dialogText.length() < 280 && texts.length == 3) {
             label.setText(menuTitle);
+
             dialog.setText("{SLOWER}{EASE=1;1;true}" + dialogText);
             for (int i = 0; i < postion.getChildren().size; i++) {
                 ImageTextButton imageTextButton = (ImageTextButton) postion.getChild(i);

@@ -52,7 +52,7 @@ public class UI {
         Table table = new Table();
         uiContainer.setFillParent(true);
         inventory = new InventoryWindow(player.getInventory(),stage);
-        dialog = new DialogWindow(stage);
+        dialog = new DialogWindow(stage,this);
         player.setInventoryWindow(inventory);
         stage.addActor(dialog);
         stage.addActor(inventory);
