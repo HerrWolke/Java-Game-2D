@@ -135,21 +135,30 @@ public class Creature extends Entity {
         effects.add(effect);
     }
 
-    public void move(float x, float y) {
+    public void move(float x, float y,boolean attack) {
 
         //sets the current animation depending on the players direction
         // first check tries to find out if player is moving in y direction, but not in x direction
         // if he is moving in x, it takes the x animation
         // the second one checks if the player is moving in positiv or negative y direction
-        activeAnimation = (y == 0 ?
-                (x == 0 ? 0 : 3)
-                : y > 0 ? 1 : 2);
+        if(!attack) {
 
-        //Mirrors animation if the active animation is x movement and player is moving left
-        mirrorAnimations = activeAnimation == 3 && (!(x > 0));
+
+            activeAnimation = (y == 0 ?
+                    (x == 0 ? 0 : 3)
+                    : y > 0 ? 1 : 2);
+
+            //Mirrors animation if the active animation is x movement and player is moving left
+            mirrorAnimations = activeAnimation == 3 && (!(x > 0));
 //        System.out.println(mirrorAnimations);
-
+        }else{
+            activeAnimation = (y == 0 ?
+                    (x == 0 ? 4 : 5)
+                    : y > 0 ? 6 : 7);
+            mirrorAnimations = activeAnimation == 5 && (!(x > 0));
+        }
 
         position.set(position.x + (Gdx.graphics.getDeltaTime() * (x * movementSpeed)), position.y + (Gdx.graphics.getDeltaTime() * (y * movementSpeed)));
     }
+
 }

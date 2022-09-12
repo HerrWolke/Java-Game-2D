@@ -19,10 +19,10 @@ public class GameWorld {
 
     public GameWorld(OrthographicCamera camera) {
         tiledMap = new TmxMapLoader().load("word_tmx/Tilemap.tmx");
-      //  dungeonEingang = new TmxMapLoader().load("world_tmx/EingangDungeon.tmx");
-      //  boss = new TmxMapLoader().load("world_tmx/Boss.tmx");
-       // dungeonRechts = new TmxMapLoader().load("world_tmx/rechtsDungeon.tmx");
-       // dungeonLinks = new TmxMapLoader().load("world_tmx/linksDungeon.tmx");
+        dungeonEingang = new TmxMapLoader().load("word_tmx/EingangDungeon.tmx");
+        boss = new TmxMapLoader().load("word_tmx/Boss.tmx");
+        dungeonRechts = new TmxMapLoader().load("word_tmx/rechtsDungeon.tmx");
+        dungeonLinks = new TmxMapLoader().load("word_tmx/linksDungeon.tmx");
         renderer = new OrthogonalTiledMapRenderer(tiledMap, UNIT_SCALE);
         renderer.setView(camera);
     }

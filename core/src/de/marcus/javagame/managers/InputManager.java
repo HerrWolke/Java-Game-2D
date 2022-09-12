@@ -10,8 +10,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import de.marcus.javagame.datahandling.SavedataHandler;
 import de.marcus.javagame.entities.Player;
 import de.marcus.javagame.graphics.ui.UI;
+import net.java.games.input.Component;
 
 import java.util.HashMap;
+
+import static jdk.internal.org.jline.terminal.Terminal.MouseTracking.Button;
 
 public class InputManager implements InputProcessor {
     Player p;
@@ -38,7 +41,7 @@ public class InputManager implements InputProcessor {
         settings.put(CONTROLS.RUN_LEFT, Input.Keys.A);
         settings.put(CONTROLS.RUN_RIGHT, Input.Keys.D);
         settings.put(CONTROLS.SETTINGS, Input.Keys.ESCAPE);
-        settings.put(CONTROLS.ATTACK, Input.Keys.LEFT);
+        settings.put(CONTROLS.ATTACK, Input.Buttons.LEFT);
         settings.put(CONTROLS.BLOCK_SPEAK, Input.Keys.RIGHT);
         settings.put(CONTROLS.OPEN_INVENTORY, Input.Keys.E);
         settings.put(CONTROLS.CLOSE_DIALOG, Input.Keys.BACKSPACE);
@@ -77,10 +80,6 @@ public class InputManager implements InputProcessor {
 
         }
 
-        if (keycode == settings.get(CONTROLS.ATTACK)) {
-            p.attack();
-
-        }
 
         if(keycode == settings.get(CONTROLS.OPEN_INVENTORY)) {
             ui.changeInventoryShowState();
@@ -142,12 +141,19 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        //attack block
+        if(button == (settings.get(CONTROLS.ATTACK))){
+            p.attack();
+            return true;
+        }
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        if(button == settings.get(CONTROLS.ATTACK)){
+            p.attackStop();
+            return true;
+        }
         return false;
     }
 

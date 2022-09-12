@@ -31,6 +31,12 @@ public class Player extends Creature {
     private Inventory inventory;
     InventoryItem currentItem;
     //Collisions
+    BodyDef swordBodyDef;
+    Body swordBody;
+    CircleShape swordShape;
+    FixtureDef swordFixtureDef;
+    Fixture swordFixture;
+
     BodyDef playerBodyDef;
     Body playerBody;
     CircleShape circle;
@@ -38,7 +44,7 @@ public class Player extends Creature {
     Fixture playerFixture;
     @JsonIgnore
     private OrthographicCamera camera;
-
+    boolean attack;
     @JsonIgnore
     private UI ui;
 
@@ -66,13 +72,33 @@ public class Player extends Creature {
         playerFixtureDef.density = 100f;
         playerFixtureDef.friction = 0.4f;
 
+        swordShape = new CircleShape();
+        swordBodyDef = new BodyDef();
+        swordFixtureDef = new FixtureDef();
+        swordBodyDef.type = BodyDef.BodyType.DynamicBody;
+        setSwordPosition();
+        swordShape.setRadius(6f);
+
+        swordFixtureDef.shape = swordShape;
+        swordFixtureDef.density = 2f;
+        swordFixtureDef.friction = 0.2f;
         inventory = SavedataHandler.load(Inventory.class);
         inventory.setPlayer(this);
         camera = initialiseCamera();
 
 
     }
-
+    public void setSwordPosition(){
+              if(super.getActiveAnimation() == 0 || super.getActiveAnimation() == 4){
+                  swordBodyDef.position.set(position.x +6f, position.y );
+              }else if(super.getActiveAnimation() == 3 || super.getActiveAnimation() == 5){
+                  swordBodyDef.position.set(position.x -6f, position.y );
+              }else if(super.getActiveAnimation() == 1 || super.getActiveAnimation() == 6){
+                  swordBodyDef.position.set(position.x , position.y +6f);
+              }else{
+                  swordBodyDef.position.set(position.x , position.y -6f);
+              }
+    }
     @Override
     public void update(float delta) {
         super.update(delta);
@@ -113,15 +139,16 @@ public class Player extends Creature {
         return camera;
     }
 
-    @Override
+
     public void move(float x, float y) {
         //updates the player position which is then used to move the camera
-        super.move(x, y);
+        super.move(x, y,attack);
         camera.position.set(position.x, position.y, 0);
         camera.update();
     }
 
     public void attack() {
+        attack = true;
 
     }
 
@@ -134,6 +161,8 @@ public class Player extends Creature {
     }
 
     public void attackStop() {
+        attack = false;
+
     }
 
     public void interactStop() {

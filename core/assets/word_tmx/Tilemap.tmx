@@ -5,7 +5,6 @@
  <tileset firstgid="513" source="Dorf.tsx"/>
  <tileset firstgid="769" source="Town.tsx"/>
  <tileset firstgid="1025" source="Forest_and_Stairs_flipped.tsx"/>
- <tileset firstgid="1281" source="Mine128x128.tsx"/>
  <tileset firstgid="1537" source="water_and_sandwater.tsx"/>
  <layer id="9" name="rip" width="79" height="72">
   <data encoding="csv">

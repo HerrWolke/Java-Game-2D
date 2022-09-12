@@ -35,7 +35,7 @@ public class GameScreen extends AbstractScreen {
     private final BitmapFont font;
     private final SpriteBatch batch;
 
-    EntityManager entityManager;
+    public EntityManager entityManager;
     UI ui;
 
 
@@ -93,7 +93,9 @@ public class GameScreen extends AbstractScreen {
         entityManager.getPlayer().setPlayerBody(world.createBody(entityManager.getPlayer().getPlayerBodyDef())) ;
         //setzt die fixture
         entityManager.getPlayer().setPlayerFixture(entityManager.getPlayer().getPlayerBody().createFixture(entityManager.getPlayer().getPlayerFixtureDef()));
-        world.setContactListener(new ContactListenerExtern());
+        entityManager.getPlayer().setSwordBody((world.createBody(entityManager.getPlayer().getSwordBodyDef()))) ;
+        entityManager.getPlayer().setSwordFixture(entityManager.getPlayer().getSwordBody().createFixture(entityManager.getPlayer().getSwordFixtureDef()));
+        world.setContactListener(new ContactListenerExtern(this));
 
     }
 
