@@ -50,17 +50,19 @@ public class JavaGame extends Game {
     @Override
     public void render() {
         super.render();
-        renderer.setView(camera);
-        renderer.render();
-        batch.begin();
+        Gdx.gl.glClearColor(0, 0, 0, 0);
+        Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT | GL30.GL_DEPTH_BUFFER_BIT);
         camera.update();
 
 
-        camera.position.set(new Vector3(0,0,0));
+        camera.position.set(new Vector3(43,71,0));
+        renderer.setView(camera);
+        renderer.render();
+        batch.begin();
 
 
-        Gdx.gl.glClearColor(0, 0, 0, 0);
-        Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT | GL30.GL_DEPTH_BUFFER_BIT);
+
+
 
         batch.end();
 
