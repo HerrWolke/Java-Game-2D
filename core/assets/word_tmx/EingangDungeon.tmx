@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="128" tileheight="128" infinite="1" nextlayerid="9" nextobjectid="21">
  <tileset firstgid="1" name="Dungeon 2 Color2@128x128" tilewidth="128" tileheight="128" tilecount="256" columns="16">
-  <image source="../../../../../../My project (1)/Assets/2D Hand Painted Tilesets/2D Hand Painted - Dungeon Tileset/Sprites/Tilesets 128x128/Dungeon 2 Color2@128x128.png" width="2048" height="2048"/>
+  <image source="Tilesets 128x128/Dungeon 2 Color2@128x128.png" width="2048" height="2048"/>
  </tileset>
  <tileset firstgid="257" source="Dungeon 2 Color3@128x128.tsx"/>
  <tileset firstgid="513" source="Dungeon 2@128x128.tsx"/>
  <tileset firstgid="769" source="Dungeon Color2@128x128.tsx"/>
  <tileset firstgid="1025" source="Dungeon Color3@128x128.tsx"/>
  <tileset firstgid="1281" source="Dungeon @128x128.tsx"/>
- <tileset firstgid="1537" source="../Flame@128x128.tsx"/>
+ <tileset firstgid="1537" source="Flame@128x128.tsx"/>
  <layer id="5" name="Kachelebene 5" width="50" height="50">
   <data encoding="csv"/>
  </layer>
