@@ -80,6 +80,7 @@ public class GameScreen extends AbstractScreen {
         entityManager.getPlayer().setSwordBody((world.createBody(entityManager.getPlayer().getSwordBodyDef()))) ;
         entityManager.getPlayer().setSwordFixture(entityManager.getPlayer().getSwordBody().createFixture(entityManager.getPlayer().getSwordFixtureDef()));
         world.setContactListener(new ContactListenerExtern(this));
+        gameWorld.setMap(2);
 
     }
 
@@ -88,6 +89,9 @@ public class GameScreen extends AbstractScreen {
         //story spawns etc
         inputManager.handleMovement();
         ui.update(entityManager.getPlayer().getPosition().x,entityManager.getPlayer().getPosition().y);
+        if(gameWorld.load2){
+            gameWorld.load2 = false;
+        }
         world.step(1/60f, 6, 2);
     }
 

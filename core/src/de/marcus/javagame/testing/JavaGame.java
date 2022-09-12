@@ -32,25 +32,30 @@ public class JavaGame extends Game {
     OrthographicCamera camera;
     Viewport viewport;
     Texture texture;
-
-
-
+    TiledMap map;
+    OrthogonalTiledMapRenderer renderer;
+    public static final float UNIT_SCALE = 1f / 96f;
     @Override
     public void create() {
         viewport = new ScreenViewport();
         camera = new OrthographicCamera(50,50);
         batch = new SpriteBatch();
-        this.texture = new Texture("badlogic.jpg");
+
+        TmxMapLoader tmxMapLoader = new TmxMapLoader();
+        map = tmxMapLoader.load("word_tmx/Boss.tmx");
+        renderer = new OrthogonalTiledMapRenderer(map, UNIT_SCALE);
+        renderer.setView(camera);
     }
 
     @Override
     public void render() {
         super.render();
-
+        renderer.setView(camera);
+        renderer.render();
         batch.begin();
         camera.update();
 
-        batch.draw(texture,0,0);
+
         camera.position.set(new Vector3(0,0,0));
 
 
@@ -73,7 +78,7 @@ public class JavaGame extends Game {
 
     @Override
     public void dispose() {
-
+       map.dispose();
     }
 
 }

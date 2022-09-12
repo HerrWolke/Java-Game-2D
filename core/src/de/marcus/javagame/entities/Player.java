@@ -64,9 +64,9 @@ public class Player extends Creature {
         playerBodyDef.type = BodyDef.BodyType.DynamicBody;
 
         //TODO: Radius ist noch nicht richtig
-        circle.setRadius(6f);
+        circle.setRadius(0.5f);
         //TODO: wahrscheinlich in Render
-        playerBodyDef.position.set(posX,posY);
+        playerBodyDef.position.set(position.x,position.y);
 
         playerFixtureDef.shape = circle;
         playerFixtureDef.density = 100f;
@@ -77,7 +77,7 @@ public class Player extends Creature {
         swordFixtureDef = new FixtureDef();
         swordBodyDef.type = BodyDef.BodyType.DynamicBody;
         setSwordPosition();
-        swordShape.setRadius(6f);
+        swordShape.setRadius(0.5f);
 
         swordFixtureDef.shape = swordShape;
         swordFixtureDef.density = 2f;
@@ -104,6 +104,14 @@ public class Player extends Creature {
         super.update(delta);
         ui.update(this.getPosition().x,this.getPosition().y);
     }
+
+    @Override
+    public void move(float x, float y, boolean attack) {
+        super.move(x, y, attack);
+        playerBodyDef.position.set(position.x,position.y);
+    }
+
+
 
     @Override
     public void setHealth(int health) {
