@@ -16,7 +16,7 @@ public class DesktopLauncher {
 		config.title = "Rising Mage";
 		config.addIcon("items/starter_sword.png", Files.FileType.Internal);
 		config.forceExit = true;
-		new LwjglApplication(new JavaGame(), config);
+		new LwjglApplication(new LoadingScreen(), config);
 	}
 
 

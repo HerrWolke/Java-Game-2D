@@ -54,7 +54,7 @@ public class GameScreen extends AbstractScreen {
         this.ui = entityManager.getPlayer().getUi();
 //        Inventory inventory = SavedataHandler.load(Inventory.class);
         debugRenderer = new Box2DDebugRenderer();
-        debugRenderer.render(world, entityManager.getPlayer().getCamera().combined);
+
 
 //        System.out.println(inventory.toString());
         System.out.println(entityManager.toString());
@@ -113,7 +113,7 @@ public class GameScreen extends AbstractScreen {
         batch.setProjectionMatrix(entityManager.getPlayer().getCamera().combined);
         gameWorld.render(entityManager.getPlayer().getCamera());
         entityManager.render(batch);
-
+        debugRenderer.render(world, entityManager.getPlayer().getCamera().combined);
 
 //        font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 20);
 
