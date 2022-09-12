@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.9" tiledversion="1.9.1" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="128" infinite="1" nextlayerid="5" nextobjectid="1">
  <tileset firstgid="1" name="Einrichtung" tilewidth="128" tileheight="128" tilecount="256" columns="16">
-  <image source="../Download/ExtraObjects@128x128.png" width="2048" height="2048"/>
+  <image source="ExtraObjects@128x128.png" width="2048" height="2048"/>
  </tileset>
  <tileset firstgid="257" name="Innen" tilewidth="128" tileheight="128" tilecount="256" columns="16">
-  <image source="../Download/2D Hand Painted - Interior Tileset-20220906T203738Z-001/2D Hand Painted - Interior Tileset/Sprites/Tilesets 128x128/Interior Color 2@128x128.png" width="2048" height="2048"/>
+  <image source="Interior Color 2@128x128.png" width="2048" height="2048"/>
  </tileset>
  <tileset firstgid="513" name="Interior Color 3@128x128" tilewidth="128" tileheight="128" tilecount="256" columns="16">
-  <image source="../Download/2D Hand Painted - Interior Tileset-20220906T203738Z-001/2D Hand Painted - Interior Tileset/Sprites/Tilesets 128x128/Interior Color 3@128x128.png" width="2048" height="2048"/>
+  <image source="Interior Color 3@128x128.png" width="2048" height="2048"/>
  </tileset>
  <tileset firstgid="769" name="Interior@128x128" tilewidth="128" tileheight="128" tilecount="256" columns="16">
-  <image source="../Download/2D Hand Painted - Interior Tileset-20220906T203738Z-001/2D Hand Painted - Interior Tileset/Sprites/Tilesets 128x128/Interior@128x128.png" width="2048" height="2048"/>
+  <image source="Interior@128x128.png" width="2048" height="2048"/>
  </tileset>
  <tileset firstgid="1025" name="Interior 2 Color 2@128x128" tilewidth="128" tileheight="128" tilecount="256" columns="16">
-  <image source="../Download/2D Hand Painted - Interior Tileset-20220906T203738Z-001/2D Hand Painted - Interior Tileset/Sprites/Tilesets 128x128/Interior 2 Color 2@128x128.png" width="2048" height="2048"/>
+  <image source="Interior 2 Color 2@128x128.png" width="2048" height="2048"/>
  </tileset>
  <layer id="1" name="Boden/Wand" width="30" height="20">
   <data encoding="csv">
