@@ -4,7 +4,7 @@
   <image source="../Download/2D Hand Painted - Interior Tileset-20220906T203738Z-001/2D Hand Painted - Interior Tileset/Sprites/Tilesets 128x128/Interior 2 Color 2@128x128.png" width="2048" height="2048"/>
  </tileset>
  <tileset firstgid="257" name="Interior 2 Color 3@128x128" tilewidth="128" tileheight="128" tilecount="256" columns="16">
-  <image source="../Download/2D Hand Painted - Interior Tileset-20220906T203738Z-001/2D Hand Painted - Interior Tileset/Sprites/Tilesets 128x128/Interior 2 Color 3@128x128.png" width="2048" height="2048"/>
+  <image source="Interior 2 Color 3@128x128.png" width="2048" height="2048"/>
  </tileset>
  <tileset firstgid="513" name="Interior 2@128x128" tilewidth="128" tileheight="128" tilecount="256" columns="16">
   <image source="../Download/2D Hand Painted - Interior Tileset-20220906T203738Z-001/2D Hand Painted - Interior Tileset/Sprites/Tilesets 128x128/Interior 2@128x128.png" width="2048" height="2048"/>
