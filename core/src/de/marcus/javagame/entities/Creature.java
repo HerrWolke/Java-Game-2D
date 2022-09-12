@@ -151,12 +151,13 @@ public class Creature extends Entity {
             //Mirrors animation if the active animation is x movement and player is moving left
             mirrorAnimations = activeAnimation == 3 && (!(x > 0));
 //        System.out.println(mirrorAnimations);
-        }else{
-            activeAnimation = (y == 0 ?
-                    (x == 0 ? 4 : 5)
-                    : y > 0 ? 6 : 7);
-            mirrorAnimations = activeAnimation == 5 && (!(x > 0));
         }
+//        else{
+//            activeAnimation = (y == 0 ?
+//                    (x == 0 ? 4 : 5)
+//                    : y > 0 ? 6 : 7);
+//            mirrorAnimations = activeAnimation == 5 && (!(x > 0));
+//        }
 
         position.set(position.x + (Gdx.graphics.getDeltaTime() * (x * movementSpeed)), position.y + (Gdx.graphics.getDeltaTime() * (y * movementSpeed)));
     }

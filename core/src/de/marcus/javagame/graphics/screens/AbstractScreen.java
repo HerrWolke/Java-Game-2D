@@ -1,4 +1,4 @@
-package de.marcus.javagame.screens;
+package de.marcus.javagame.graphics.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;

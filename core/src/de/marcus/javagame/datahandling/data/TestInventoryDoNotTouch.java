@@ -3,6 +3,7 @@ package de.marcus.javagame.datahandling.data;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.marcus.javagame.datahandling.Loadable;
+import de.marcus.javagame.datahandling.data.inventory.InventorySlot;
 import de.marcus.javagame.entities.Player;
 
 import java.util.ArrayList;

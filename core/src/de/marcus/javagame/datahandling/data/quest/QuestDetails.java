@@ -1,8 +1,12 @@
-package de.marcus.javagame.questing;
+package de.marcus.javagame.datahandling.data.quest;
+
+import de.marcus.javagame.io.logging.Logger;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static de.marcus.javagame.graphics.screens.GameScreen.loggingSystem;
 
 //import static de.marcus.javagame.screens.LoadingScreen.loggingSystem;
 
@@ -23,8 +27,8 @@ public class QuestDetails {
         this.stageTexts = Arrays.stream(stageTexts).collect(Collectors.toList());
         currentStage = 1;
         currentStageText = stageTexts[0];
-        if (maxStage > stageTexts.length) {
-            // loggingSystem.getLogger().log(Logger.LoggerLevel.INFO, "Questing Error. A quest was initialised with less stage info than stages. Max stages: " + maxStage + ", provided Info: " + stageTexts.length);
+        if (maxStage > stageTexts.length || maxStage < stageTexts.length) {
+             loggingSystem.getLogger().log(Logger.LoggerLevel.INFO, "Questing Error. A quest was initialised with less stage info than stages. Max stages: " + maxStage + ", provided Info: " + stageTexts.length);
             System.exit(0);
         }
 

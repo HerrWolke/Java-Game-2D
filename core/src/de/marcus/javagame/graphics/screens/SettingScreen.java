@@ -1,4 +1,4 @@
-package de.marcus.javagame.screens;
+package de.marcus.javagame.graphics.screens;
 
 public class SettingScreen extends AbstractScreen {
     public SettingScreen(LoadingScreen app) {

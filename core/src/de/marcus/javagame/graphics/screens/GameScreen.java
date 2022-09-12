@@ -1,8 +1,6 @@
-package de.marcus.javagame.screens;
+package de.marcus.javagame.graphics.screens;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,15 +8,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import de.marcus.javagame.EffectType;
-import de.marcus.javagame.datahandling.SavedataHandler;
-import de.marcus.javagame.datahandling.data.Inventory;
-import de.marcus.javagame.entities.StatusEffect;
+import de.marcus.javagame.datahandling.data.datahandling.SavedataHandler;
 import de.marcus.javagame.graphics.ui.UI;
+import de.marcus.javagame.io.logging.LoggingSystem;
 import de.marcus.javagame.managers.ContactListenerExtern;
 import de.marcus.javagame.managers.EntityManager;
 import de.marcus.javagame.managers.InputManager;
-import de.marcus.javagame.managers.SoundManager;
 import de.marcus.javagame.world.GameWorld;
 
 public class GameScreen extends AbstractScreen {
@@ -38,6 +33,7 @@ public class GameScreen extends AbstractScreen {
     public EntityManager entityManager;
     UI ui;
 
+    public static LoggingSystem loggingSystem = new LoggingSystem();
 
 
     boolean yes = true;
@@ -52,18 +48,6 @@ public class GameScreen extends AbstractScreen {
         super(app);
         //app.dispose();
         world  = new World(new Vector2(0, 0), true);
-        FileHandle dirHandle;
-        if (Gdx.app.getType() == Application.ApplicationType.Android) {
-            dirHandle = Gdx.files.internal("some/directory");
-        } else {
-            // ApplicationType.Desktop ..
-            dirHandle = Gdx.files.internal("sfx/");
-        }
-        FileHandle internal = Gdx.files.internal("sfx");
-        System.out.println("es " + internal.exists());
-        for (FileHandle entry: internal.list()) {
-            System.out.println(entry.name());
-        }
 
         entityManager = SavedataHandler.load(EntityManager.class);
         entityManager.getPlayer().setUI(stage);
@@ -146,6 +130,13 @@ public class GameScreen extends AbstractScreen {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
         Gdx.input.setInputProcessor(inputManager);
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        SavedataHandler.save(entityManager.getPlayer().getInventory());
+        SavedataHandler.save(entityManager);
     }
 
     @Override

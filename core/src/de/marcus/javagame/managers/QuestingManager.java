@@ -1,6 +1,6 @@
 package de.marcus.javagame.managers;
 
-import de.marcus.javagame.questing.Quest;
+import de.marcus.javagame.datahandling.data.quest.Quest;
 
 import java.util.LinkedHashMap;
 

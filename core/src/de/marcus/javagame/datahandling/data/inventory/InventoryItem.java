@@ -1,9 +1,8 @@
-package de.marcus.javagame.datahandling.data;
+package de.marcus.javagame.datahandling.data.inventory;
 
 import de.marcus.javagame.EffectType;
 import de.marcus.javagame.entities.StatusEffect;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * When creating an item with an effect, the duration is set in ms not seconds (seconds * 1000)

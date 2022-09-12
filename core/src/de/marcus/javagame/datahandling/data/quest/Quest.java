@@ -1,4 +1,4 @@
-package de.marcus.javagame.questing;
+package de.marcus.javagame.datahandling.data.quest;
 
 /**
  * All Quests have to have the same number of stageTexts as the maxStage
@@ -6,7 +6,7 @@ package de.marcus.javagame.questing;
 public enum Quest {
     //Main Quests
     TAKAYAMA_VILLAGE
-            (QuestType.MAIN, new QuestDetails(3, "Suche den Kartographen des Dorfes auf", "Hole die Kopie der Abenteurerkarte deines Vaters ab", "Tritt deine Reise an")),
+            (QuestType.MAIN, new QuestDetails(2, "Suche den Kartographen des Dorfes auf", "Hole die Kopie der Abenteurerkarte deines Vaters ab", "Tritt deine Reise an")),
     WATER_TEMPLE
             (QuestType.MAIN, new QuestDetails(0, "")),
     ICE_CITY

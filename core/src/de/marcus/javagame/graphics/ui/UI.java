@@ -7,26 +7,21 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 import com.badlogic.gdx.utils.Align;
 import de.marcus.javagame.entities.Player;
-import de.marcus.javagame.graphics.InventoryWindow;
+import de.marcus.javagame.graphics.ui.windows.DialogWindow;
+import de.marcus.javagame.graphics.ui.windows.InventoryWindow;
 import de.marcus.javagame.managers.SoundManager;
 import de.marcus.javagame.misc.Util;
-import de.marcus.javagame.screens.InventoryScreen;
 import lombok.Getter;
-
-import javax.swing.*;
 
 @Getter
 public class UI {
@@ -46,6 +41,8 @@ public class UI {
 
     long displayTime;
 
+    DialogWindow dialog;
+
 
 
 
@@ -55,7 +52,9 @@ public class UI {
         Table table = new Table();
         uiContainer.setFillParent(true);
         inventory = new InventoryWindow(player.getInventory(),stage);
+        dialog = new DialogWindow(stage);
         player.setInventoryWindow(inventory);
+        stage.addActor(dialog);
         stage.addActor(inventory);
         stage.addActor(uiContainer);
         notificationSystem = new Group();
@@ -166,6 +165,10 @@ public class UI {
         inventory.setVisible(!inventory.isVisible());
         inventory.resetItemOptionGroup();
 
+    }
+
+    public boolean isPlayerAllowedToMove() {
+        return !dialog.isVisible();
     }
 
     public void displayNotification(long displayTime,String text) {

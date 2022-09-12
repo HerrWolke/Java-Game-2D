@@ -1,13 +1,11 @@
-package de.marcus.javagame.datahandling;
+package de.marcus.javagame.datahandling.data.datahandling;
 
-import com.badlogic.gdx.math.Vector2;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.marcus.javagame.datahandling.data.Inventory;
-import de.marcus.javagame.datahandling.data.InventoryItem;
-import de.marcus.javagame.datahandling.data.InventorySlot;
+import de.marcus.javagame.datahandling.Loadable;
+import de.marcus.javagame.datahandling.data.inventory.InventoryItem;
+import de.marcus.javagame.datahandling.data.inventory.InventorySlot;
 import de.marcus.javagame.datahandling.data.TestInventoryDoNotTouch;
-import de.marcus.javagame.entities.Entity;
 import de.marcus.javagame.managers.EntityManager;
 
 import java.io.File;

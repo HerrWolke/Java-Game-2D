@@ -5,12 +5,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import de.marcus.javagame.datahandling.SavedataHandler;
+import de.marcus.javagame.datahandling.data.datahandling.SavedataHandler;
 import de.marcus.javagame.entities.Player;
 import de.marcus.javagame.graphics.ui.UI;
-import net.java.games.input.Component;
+import de.marcus.javagame.handlers.DialogHandler;
 
 import java.util.HashMap;
 
@@ -51,18 +49,19 @@ public class InputManager implements InputProcessor {
     public void handleMovement() {
         Vector3 posCam = new Vector3(0, 0, 0);
 
-        if (Gdx.input.isKeyPressed(settings.get(CONTROLS.RUN_LEFT)))
-            posCam.x -= 1;
+        if (ui.isPlayerAllowedToMove()) {
+            if (Gdx.input.isKeyPressed(settings.get(CONTROLS.RUN_LEFT)))
+                posCam.x -= 1;
 
-        if (Gdx.input.isKeyPressed(settings.get(CONTROLS.RUN_RIGHT)))
-            posCam.x += 1;
+            if (Gdx.input.isKeyPressed(settings.get(CONTROLS.RUN_RIGHT)))
+                posCam.x += 1;
 
-        if (Gdx.input.isKeyPressed(settings.get(CONTROLS.RUN_FORWARD)))
-            posCam.y += 1;
+            if (Gdx.input.isKeyPressed(settings.get(CONTROLS.RUN_FORWARD)))
+                posCam.y += 1;
 
-        if (Gdx.input.isKeyPressed(settings.get(CONTROLS.RUN_BACKWARD)))
-            posCam.y -= 1;
-
+            if (Gdx.input.isKeyPressed(settings.get(CONTROLS.RUN_BACKWARD)))
+                posCam.y -= 1;
+        }
 
 
 //        System.out.printf("x: %s, y: %s",posCam.x,posCam.y);
@@ -79,8 +78,10 @@ public class InputManager implements InputProcessor {
         }
 
 
-        if(keycode == settings.get(CONTROLS.OPEN_INVENTORY)) {
-            ui.changeInventoryShowState();
+        if (keycode == settings.get(CONTROLS.OPEN_INVENTORY)) {
+            if(ui.isPlayerAllowedToMove()) {
+                ui.changeInventoryShowState();
+            }
         }
 
         if (keycode == settings.get(CONTROLS.BLOCK_SPEAK)) {
@@ -91,20 +92,29 @@ public class InputManager implements InputProcessor {
 
         }
 
-        if(keycode == Input.Keys.NUM_5) {
+        if (keycode == Input.Keys.NUM_5) {
             p.setHealth(p.getHealth() - 1);
         }
 
-        if(keycode == Input.Keys.NUM_7) {
+        if (keycode == Input.Keys.NUM_7) {
             SavedataHandler.save(p.getInventory());
         }
 
-        if(keycode == Input.Keys.NUM_6) {
+        if (keycode == Input.Keys.NUM_6) {
             p.setHealth(p.getHealth() + 1);
         }
 
-        if(ui.getInventory().isVisible()) {
-            ui.getInventory().handleInput(keycode,ui);
+        if (keycode == Input.Keys.NUMPAD_9) {
+            System.out.println("hit the key");
+           ui.getDialog().getDialogHandler().setCurrentDialog(DialogHandler.Dialogs.TEST_DIALOG);
+        }
+
+        if (ui.getInventory().isVisible()) {
+            ui.getInventory().handleInput(keycode, ui);
+        }
+
+        if(ui.getDialog().isVisible() && ui.getDialog().areDialogButtonsVisible()) {
+            ui.getDialog().handleInput(keycode);
         }
 
         return true;
@@ -139,7 +149,7 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if(button == (settings.get(CONTROLS.ATTACK))){
+        if (button == (settings.get(CONTROLS.ATTACK))) {
             p.attack();
             return true;
         }
@@ -148,7 +158,7 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if(button == settings.get(CONTROLS.ATTACK)){
+        if (button == settings.get(CONTROLS.ATTACK)) {
             p.attackStop();
             return true;
         }

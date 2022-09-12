@@ -1,10 +1,8 @@
-package de.marcus.javagame.datahandling.data;
+package de.marcus.javagame.datahandling.data.inventory;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 

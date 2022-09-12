@@ -1,6 +1,6 @@
 package de.marcus.javagame.managers;
 
-import de.marcus.javagame.screens.*;
+import de.marcus.javagame.graphics.screens.*;
 
 import java.util.HashMap;
 
@@ -33,7 +33,6 @@ public class GameScreenManager {
         this.screens.put(SCREENS.START_MENU, new StartMenuScreen(app));
         this.screens.put(SCREENS.MENU, new MenuScreen(app));
         this.screens.put(SCREENS.SELECT_PROFILE, new SelectProfileScreen(app));
-        this.screens.put(SCREENS.INVENTORY, new InventoryScreen(app));
         this.screens.put(SCREENS.GAME1, new GameScreen(app, 1));
         this.screens.put(SCREENS.GAME2, new GameScreen(app, 2));
         this.screens.put(SCREENS.GAME3, new GameScreen(app, 3));

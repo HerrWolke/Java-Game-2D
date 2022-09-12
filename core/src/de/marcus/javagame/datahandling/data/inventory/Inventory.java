@@ -1,12 +1,11 @@
-package de.marcus.javagame.datahandling.data;
+package de.marcus.javagame.datahandling.data.inventory;
 
-import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import de.marcus.javagame.datahandling.Loadable;
 import de.marcus.javagame.entities.Player;
-import de.marcus.javagame.graphics.InventoryWindow;
+import de.marcus.javagame.graphics.ui.windows.InventoryWindow;
 import lombok.Getter;
 import lombok.Setter;
 

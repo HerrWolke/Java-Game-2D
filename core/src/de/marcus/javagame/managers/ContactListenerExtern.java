@@ -4,7 +4,7 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
-import de.marcus.javagame.screens.GameScreen;
+import de.marcus.javagame.graphics.screens.GameScreen;
 
 public class ContactListenerExtern implements ContactListener {
     GameScreen g;

@@ -1,7 +1,7 @@
-package de.marcus.javagame.screens;
+package de.marcus.javagame.graphics.screens;
 
-public class InventoryScreen extends AbstractScreen {
-    public InventoryScreen(LoadingScreen app) {
+public class MenuScreen extends AbstractScreen {
+    public MenuScreen(LoadingScreen app) {
         super(app);
     }
 

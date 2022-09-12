@@ -1,4 +1,4 @@
-package de.marcus.javagame.logging;
+package de.marcus.javagame.io.logging;
 
 import java.lang.annotation.*;
 

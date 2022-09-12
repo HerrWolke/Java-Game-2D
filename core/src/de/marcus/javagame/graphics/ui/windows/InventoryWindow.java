@@ -1,4 +1,4 @@
-package de.marcus.javagame.graphics;
+package de.marcus.javagame.graphics.ui.windows;
 
 
 import com.badlogic.gdx.Gdx;
@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import de.marcus.javagame.datahandling.data.Inventory;
+import de.marcus.javagame.datahandling.data.inventory.Inventory;
 import de.marcus.javagame.graphics.ui.UI;
 import de.marcus.javagame.misc.Util;
 import lombok.Getter;
