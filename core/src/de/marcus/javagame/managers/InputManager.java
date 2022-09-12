@@ -14,8 +14,6 @@ import net.java.games.input.Component;
 
 import java.util.HashMap;
 
-import static jdk.internal.org.jline.terminal.Terminal.MouseTracking.Button;
-
 public class InputManager implements InputProcessor {
     Player p;
     UI ui;
