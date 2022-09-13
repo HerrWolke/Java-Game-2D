@@ -2,10 +2,12 @@ package de.marcus.javagame.testing;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -13,8 +15,13 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
+import javax.swing.*;
 
 public class JavaGame extends Game {
     Batch batch;
@@ -27,8 +34,54 @@ public class JavaGame extends Game {
     public static final float UNIT_SCALE = 1f / 96f;
     World world;
 
+    Stage stage;
+
     @Override
     public void create() {
+        stage = new Stage(new ScreenViewport());
+        stage.setDebugAll(true);
+        Table table = new Table();
+        Label label = new Label("text",new Label.LabelStyle(new BitmapFont(),null));
+        Label label2 = new Label("text",new Label.LabelStyle(new BitmapFont(),null));
+        Label label3 = new Label("text",new Label.LabelStyle(new BitmapFont(),null));
+        Label label4 = new Label("text",new Label.LabelStyle(new BitmapFont(),null));
+        Label label5 = new Label("text",new Label.LabelStyle(new BitmapFont(),null));
+
+        List list = new List(new List.ListStyle(new BitmapFont(), Color.WHITE,Color.BLACK,new TextureRegionDrawable(new Texture("dialog_option.png"))));
+
+        TextureRegionDrawable itemOption = new TextureRegionDrawable(new Texture("item_option.png"));
+        TextureRegionDrawable itemOptionSelected = new TextureRegionDrawable(new Texture("item_option_selected.png"));
+        list.setItems(new Texture("badlogic.jpg"));
+        TextureRegionDrawable drawable = new TextureRegionDrawable(new Texture("shop.png"));
+        ScrollPane pane = new ScrollPane(list,new ScrollPane.ScrollPaneStyle(drawable,null,null,null,null));
+
+        stage.setScrollFocus(pane);
+        pane.setSize(100,100);
+        pane.setPosition(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
+        table.setFillParent(true);
+        table.pad(100f);
+
+        table.row();
+        table.add(label2).right();
+        table.add(label3).right().expandX();
+        table.add(label).right().expandX().pad(30).right();
+        table.row();
+        table.add(label4);
+        table.add(label5);
+        table.add(pane).height(100);
+        Gdx.input.setInputProcessor(stage);
+
+
+
+
+
+
+
+
+        stage.addActor(table);
+
+//        table.addActor(label);
+
         world = new World(new Vector2(0, 0), true);
         debugRenderer = new Box2DDebugRenderer();
         viewport = new ScreenViewport();
@@ -106,6 +159,8 @@ public class JavaGame extends Game {
         renderer.setView(camera);
         renderer.render();
         debugRenderer.render(world, camera.combined);
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
 //        batch.begin();
 //
 //

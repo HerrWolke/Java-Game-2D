@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -32,6 +33,8 @@ public class UI {
     Label position;
     Label fps;
 
+    Image image;
+
     Label notification;
     Group notificationSystem;
 
@@ -49,10 +52,10 @@ public class UI {
     public UI(Stage stage, Player player) {
         this.stage = stage;
         uiContainer = new Table();
-        Table table = new Table();
         uiContainer.setFillParent(true);
         inventory = new InventoryWindow(player.getInventory(),stage);
         dialog = new DialogWindow(stage,this);
+        Table testTable = new Table();
         player.setInventoryWindow(inventory);
         stage.addActor(dialog);
         stage.addActor(inventory);
@@ -64,7 +67,7 @@ public class UI {
         TiledDrawable heartDrawable = new TiledDrawable(new TextureRegion(new Texture("hearts.png")));
         TiledDrawable dead = new TiledDrawable(new TextureRegion(new Texture("hearts_dead.png")));
 
-
+        image = new Image(new Texture("hotbar_slot.png"));
 
         TiledDrawable chestplateDrawable = new TiledDrawable(new TextureRegion(new Texture("items/chestplate.png")));
         TiledDrawable chestplateDead = new TiledDrawable(new TextureRegion(new Texture("items/chestplate_dead.png")));
@@ -107,15 +110,16 @@ public class UI {
         float screenWidth = Util.getScreenWidth(stage);
         uiContainer.pad(screenHeight * 0.001f,screenWidth*0.002f,screenHeight*0.001f,screenWidth*0.002f);
 
+
         //needs to be 128 otherwise the texture adds another half heart idk
-        uiContainer.add(healthBar).width(128).padBottom(healthBar.getHeight() * 0.25f).left().top();
+        uiContainer.add(healthBar).width(128).padBottom(healthBar.getHeight() * 0.25f).left().top().expandX();
+        uiContainer.add(image).size(128,128).top().right();
         uiContainer.row();
         uiContainer.add(armorBar).width(128).padBottom(healthBar.getHeight() * 0.25f).left().top();
         uiContainer.row();
         uiContainer.add(position).padBottom(healthBar.getHeight() * 0.25f).left();
         uiContainer.row();
         uiContainer.add(fps).left();
-        uiContainer.add(table).growX().top().right();
         notificationSystem.addActor(notification);
 
         uiContainer.setDebug(true);

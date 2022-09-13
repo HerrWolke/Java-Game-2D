@@ -1,6 +1,8 @@
 package de.marcus.javagame.graphics.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,6 +17,8 @@ import de.marcus.javagame.managers.ContactListenerExtern;
 import de.marcus.javagame.managers.EntityManager;
 import de.marcus.javagame.managers.InputManager;
 import de.marcus.javagame.world.GameWorld;
+
+import java.util.Map;
 
 public class GameScreen extends AbstractScreen {
 

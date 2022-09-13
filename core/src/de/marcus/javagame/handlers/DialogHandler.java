@@ -47,8 +47,8 @@ public class DialogHandler {
     public enum Dialogs {
         TEST_DIALOG(
                 new DialogBuilder()
-                        .setDialogTitle("Sghir")
-                        .setDialogText("Text")
+                        .setDialogTitle("NPC1")
+                        .setDialogText("Ich bin ein tolles NPC und ich esse Katzen")
                         .setButtonTexts("Text2", "test3", "test4")
                         .setNextDialogs(
                                 new DialogBuilder().
@@ -57,12 +57,10 @@ public class DialogHandler {
                                         createDialog(),
                                 new DialogBuilder().
                                         setDialogText("Cat text because why not?2").
-                                        setButtonTexts("test", "fett", "bett").
                                         setDialogTitle("Title").
                                         createDialog(),
                                 new DialogBuilder().
                                         setDialogText("Cat text because why not?3").
-                                        setButtonTexts("test", "fett", "bett").
                                         setDialogTitle("Title").
                                         createDialog()
                         )

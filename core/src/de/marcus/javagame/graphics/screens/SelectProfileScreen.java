@@ -91,7 +91,7 @@ public class SelectProfileScreen extends AbstractScreen {
                 Gdx.gl.glClearColor(0, 0, 0, 1);
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
                 dispose();
-                app.g.setScreen(GameScreenManager.SCREENS.GAME2);
+                app.g.setScreen(GameScreenManager.SCREENS.GAME1);
             }
 
             ;

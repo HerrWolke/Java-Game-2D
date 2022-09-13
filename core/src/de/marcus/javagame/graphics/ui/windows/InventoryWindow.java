@@ -22,38 +22,7 @@ import java.util.List;
 
 public class InventoryWindow extends Window {
 
-    @Getter
-    public enum InventoryControlKey {
-        CLOSE_MENU(Input.Keys.BACKSPACE, Input.Keys.ESCAPE),
 
-        CLOSE_INVENTORY(Input.Keys.E),
-        CHOOSE_OPTION(Input.Keys.ENTER, Input.Keys.SPACE),
-
-        NAV_LEFT(Input.Keys.LEFT),
-        NAV_RIGHT(Input.Keys.RIGHT),
-        NAV_UP(Input.Keys.UP),
-        NAV_DOWN(Input.Keys.DOWN),
-        NAV_KEYS(NAV_LEFT, NAV_RIGHT, NAV_DOWN, NAV_UP);
-
-
-
-
-        InventoryControlKey(Integer... ints) {
-            this.controls = Arrays.asList(ints);
-        }
-
-        InventoryControlKey(InventoryControlKey... key) {
-            this.controls = new ArrayList<>();
-            Arrays.stream(key).forEach(inventoryControlKey -> controls.addAll(inventoryControlKey.getControls()));
-        }
-
-        public boolean contains(int keycode) {
-            return controls.contains(keycode);
-        }
-
-        private final List<Integer> controls;
-
-    }
 
     private static final String DELETE_BUTTON_TEXT = "Löschen";
     private static final String QUICKBAR_BUTTON_TEXT = "Schnellauswahl";
@@ -380,5 +349,38 @@ public class InventoryWindow extends Window {
         } else {
             child.setDrawable(new TextureRegionDrawable(new Texture("placeholder.png")));
         }
+    }
+
+    @Getter
+    public enum InventoryControlKey {
+        CLOSE_MENU(Input.Keys.BACKSPACE, Input.Keys.ESCAPE),
+
+        CLOSE_INVENTORY(Input.Keys.E),
+        CHOOSE_OPTION(Input.Keys.ENTER, Input.Keys.SPACE),
+
+        NAV_LEFT(Input.Keys.LEFT),
+        NAV_RIGHT(Input.Keys.RIGHT),
+        NAV_UP(Input.Keys.UP),
+        NAV_DOWN(Input.Keys.DOWN),
+        NAV_KEYS(NAV_LEFT, NAV_RIGHT, NAV_DOWN, NAV_UP);
+
+
+
+
+        InventoryControlKey(Integer... ints) {
+            this.controls = Arrays.asList(ints);
+        }
+
+        InventoryControlKey(InventoryControlKey... key) {
+            this.controls = new ArrayList<>();
+            Arrays.stream(key).forEach(inventoryControlKey -> controls.addAll(inventoryControlKey.getControls()));
+        }
+
+        public boolean contains(int keycode) {
+            return controls.contains(keycode);
+        }
+
+        private final List<Integer> controls;
+
     }
 }

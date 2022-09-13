@@ -26,12 +26,11 @@ public class StatusEffect implements Cloneable {
         //The next call time is the duration divided into segments by ApplyTime of the given effect
         //TODO: Maybe don't keep duration > 0 but idk yet
         if(duration <= nextCallTime && duration > 0) {
-            if(creature.getHealth() + (int) effectType.getDamage() < creature.getMaxHealth() ) {
-                creature.setHealth(creature.getHealth() + (int) effectType.getDamage());
-                // apply time is in seconds, nextCallTime in ms
-            } else {
-                creature.setHealth(creature.getMaxHealth());
-            }
+
+            creature.setHealth(Math.min(creature.getHealth() + (int) effectType.getDamage(), creature.getMaxHealth()));
+
+
+            // apply time is in seconds, nextCallTime in ms
             nextCallTime -= effectType.getApplyTime() * 1000;
         }
 

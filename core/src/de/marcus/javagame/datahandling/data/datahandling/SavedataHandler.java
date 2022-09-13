@@ -1,5 +1,7 @@
 package de.marcus.javagame.datahandling.data.datahandling;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.marcus.javagame.datahandling.Loadable;
@@ -12,13 +14,16 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.Map;
 
 /**
  * Currently testing code only until final decisions on data locations etc.
  * Only needs to input data from correct data location
  */
 public class SavedataHandler {
-
+    public static String settingsFilePath = "Rising Mage/Settings/game.settings";
+    public static String dataPath = "RisingMage/Data/";
+    private static Preferences preferences;
 
     /**
      *  <p>Loads a class based of the parameter value.</p> <br>
@@ -80,6 +85,19 @@ public class SavedataHandler {
             throw new RuntimeException(e);
         }
     }
+
+    public static Preferences getPreferences() {
+        if(preferences == null)
+            preferences = Gdx.app.getPreferences(settingsFilePath);
+        return preferences;
+    }
+
+    public static void setPreference(Map<String, ?> map) {
+        preferences.put(map).flush();
+    }
+
+
+
     public static void main(String[] args) {
         __load();
     }

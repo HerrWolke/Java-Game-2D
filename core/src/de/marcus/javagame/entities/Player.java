@@ -111,6 +111,8 @@ public class Player extends Creature {
     public void move(float x, float y, boolean attack1) {
         super.move(x, y, attack);
         playerBody.applyLinearImpulse(new Vector2(Gdx.graphics.getDeltaTime() * (x * getMovementSpeed()),Gdx.graphics.getDeltaTime() * (y * getMovementSpeed())),new Vector2(position.x,position.y),true);
+        camera.position.set(position.x, position.y, 0);
+        camera.update();
     }
 
 
@@ -147,14 +149,6 @@ public class Player extends Creature {
 
 
         return camera;
-    }
-
-
-    public void move(float x, float y) {
-        //updates the player position which is then used to move the camera
-        super.move(x, y,attack);
-        camera.position.set(position.x, position.y, 0);
-        camera.update();
     }
 
     public void attack() {
