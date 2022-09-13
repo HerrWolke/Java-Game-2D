@@ -47,6 +47,11 @@ public class UI {
     DialogWindow dialog;
 
 
+    Table mainUIContainer;
+    Table playerInfoUIContainer;
+    Table debugUI;
+
+
 
 
     public UI(Stage stage, Player player) {
@@ -55,7 +60,7 @@ public class UI {
         uiContainer.setFillParent(true);
         inventory = new InventoryWindow(player.getInventory(),stage);
         dialog = new DialogWindow(stage,this);
-        Table testTable = new Table();
+
         player.setInventoryWindow(inventory);
         stage.addActor(dialog);
         stage.addActor(inventory);
@@ -109,7 +114,6 @@ public class UI {
         float screenHeight = Util.getScreenHeight(stage);
         float screenWidth = Util.getScreenWidth(stage);
         uiContainer.pad(screenHeight * 0.001f,screenWidth*0.002f,screenHeight*0.001f,screenWidth*0.002f);
-
 
         //needs to be 128 otherwise the texture adds another half heart idk
         uiContainer.add(healthBar).width(128).padBottom(healthBar.getHeight() * 0.25f).left().top().expandX();

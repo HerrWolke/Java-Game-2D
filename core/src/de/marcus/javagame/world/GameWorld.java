@@ -36,7 +36,7 @@ public class GameWorld {
         boss = tmxMapLoader.load("word_tmx/Boss.tmx");
         dungeonRechts = tmxMapLoader.load("word_tmx/rechtsDungeon.tmx");
         dungeonLinks = tmxMapLoader.load("word_tmx/linksDungeon.tmx");
-        renderer = new OrthogonalTiledMapRenderer(boss, UNIT_SCALE);
+        renderer = new OrthogonalTiledMapRenderer(tiledMap, UNIT_SCALE);
         renderer.setView(camera);
     }
 

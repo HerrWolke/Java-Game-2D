@@ -6,6 +6,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import de.marcus.javagame.graphics.screens.GameScreen;
 import de.marcus.javagame.graphics.screens.LoadingScreen;
 import de.marcus.javagame.testing.JavaGame;
+import de.marcus.javagame.testing.LibgGDXUITests;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {

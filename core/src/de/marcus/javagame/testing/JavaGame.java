@@ -18,6 +18,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -41,8 +42,8 @@ public class JavaGame extends Game {
         stage = new Stage(new ScreenViewport());
         stage.setDebugAll(true);
         Table table = new Table();
-        Label label = new Label("text",new Label.LabelStyle(new BitmapFont(),null));
-        Label label2 = new Label("text",new Label.LabelStyle(new BitmapFont(),null));
+        Label label = new Label("sdfasdfafasfasdfasdfasdfadsf",new Label.LabelStyle(new BitmapFont(),null));
+        Label label2 = new Label("asdfasdfadfadfasdfasdfasdfadsfadsfasdfasdfadfasdfasdfasdfasdf1111111",new Label.LabelStyle(new BitmapFont(),null));
         Label label3 = new Label("text",new Label.LabelStyle(new BitmapFont(),null));
         Label label4 = new Label("text",new Label.LabelStyle(new BitmapFont(),null));
         Label label5 = new Label("text",new Label.LabelStyle(new BitmapFont(),null));
@@ -54,21 +55,26 @@ public class JavaGame extends Game {
         list.setItems(new Texture("badlogic.jpg"));
         TextureRegionDrawable drawable = new TextureRegionDrawable(new Texture("shop.png"));
         ScrollPane pane = new ScrollPane(list,new ScrollPane.ScrollPaneStyle(drawable,null,null,null,null));
+        Table leftTopTable = new Table();
+
+        leftTopTable.add(label2);
+        leftTopTable.row();
+        leftTopTable.add(label);
+        leftTopTable.pack();
+        leftTopTable.setPosition(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), Align.right);
 
         stage.setScrollFocus(pane);
         pane.setSize(100,100);
         pane.setPosition(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
         table.setFillParent(true);
-        table.pad(100f);
 
         table.row();
-        table.add(label2).right();
-        table.add(label3).right().expandX();
         table.add(label).right().expandX().pad(30).right();
         table.row();
         table.add(label4);
         table.add(label5);
         table.add(pane).height(100);
+        table.addActor(leftTopTable);
         Gdx.input.setInputProcessor(stage);
 
 
@@ -150,12 +156,6 @@ public class JavaGame extends Game {
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT | GL30.GL_DEPTH_BUFFER_BIT);
 
-
-
-
-
-
-
         renderer.setView(camera);
         renderer.render();
         debugRenderer.render(world, camera.combined);
@@ -176,7 +176,7 @@ public class JavaGame extends Game {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
-
+        stage.getViewport().update(width,height);
     }
 
     @Override
