@@ -17,19 +17,19 @@ public class Util {
 
     public static Vector2 getScreenCenter(Stage stage) {
         Camera camera = stage.getCamera();
-        return new Vector2(camera.viewportWidth / 2.0f,camera.viewportHeight / 2.0f);
+        return new Vector2(camera.viewportWidth / 2.0f, camera.viewportHeight / 2.0f);
     }
 
     /**
      * Generates a font for the screen size passed
      *
-     * @param stage The stage to get the screen size from
+     * @param stage      The stage to get the screen size from
      * @param parameters This can be null. Will use default variables
      * @return The font
      */
     public static BitmapFont getFontForScreenSize(Stage stage, @Nullable FreeTypeFontGenerator.FreeTypeFontParameter parameters) {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("sans_bold_semi.ttf"));
-        if(parameters == null) {
+        if (parameters == null) {
             parameters = new FreeTypeFontGenerator.FreeTypeFontParameter();
             parameters.size = (int) (15 * 1920 / getScreenWidth(stage));
             parameters.borderColor = Color.BLACK;

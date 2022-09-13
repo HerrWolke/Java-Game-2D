@@ -66,7 +66,7 @@ public class InputManager implements InputProcessor {
 
 //        System.out.printf("x: %s, y: %s",posCam.x,posCam.y);
 
-            p.move(posCam.x, posCam.y,true);
+        p.move(posCam.x, posCam.y, true);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class InputManager implements InputProcessor {
 
 
         if (keycode == settings.get(CONTROLS.OPEN_INVENTORY)) {
-            if(ui.isPlayerAllowedToMove()) {
+            if (ui.isPlayerAllowedToMove()) {
                 ui.changeInventoryShowState();
             }
         }
@@ -106,18 +106,18 @@ public class InputManager implements InputProcessor {
 
         if (keycode == Input.Keys.NUMPAD_9) {
             System.out.println("hit the key");
-           ui.getDialog().getDialogHandler().setCurrentDialog(DialogHandler.Dialogs.TEST_DIALOG);
+            ui.getDialog().getDialogHandler().setCurrentDialog(DialogHandler.Dialogs.TEST_DIALOG);
         }
 
         if (ui.getInventory().isVisible()) {
             ui.getInventory().handleInput(keycode, ui);
         }
 
-        if(ui.getDialog().isVisible()) {
-            if(ui.getDialog().areDialogButtonsVisible()) {
+        if (ui.getDialog().isVisible()) {
+            if (ui.getDialog().areDialogButtonsVisible()) {
                 ui.getDialog().handleInput(keycode);
             } else {
-                if(!ui.getDialog().getDialogHandler().isDialogActive()) {
+                if (!ui.getDialog().getDialogHandler().isDialogActive()) {
                     ui.getDialog().setVisible(false);
                 }
             }

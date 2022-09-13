@@ -16,13 +16,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
-import javax.swing.*;
 
 public class JavaGame extends Game {
     Batch batch;
@@ -42,29 +43,29 @@ public class JavaGame extends Game {
         stage = new Stage(new ScreenViewport());
         stage.setDebugAll(true);
         Table table = new Table();
-        Label label = new Label("sdfasdfafasfasdfasdfasdfadsf",new Label.LabelStyle(new BitmapFont(),null));
-        Label label2 = new Label("asdfasdfadfadfasdfasdfasdfadsfadsfasdfasdfadfasdfasdfasdfasdf1111111",new Label.LabelStyle(new BitmapFont(),null));
-        Label label3 = new Label("text",new Label.LabelStyle(new BitmapFont(),null));
-        Label label4 = new Label("text",new Label.LabelStyle(new BitmapFont(),null));
-        Label label5 = new Label("text",new Label.LabelStyle(new BitmapFont(),null));
+        Label label = new Label("sdfasdfafasfasdfasdfasdfadsf", new Label.LabelStyle(new BitmapFont(), null));
+        Label label2 = new Label("asdfasdfadfadfasdfasdfasdfadsfadsfasdfasdfadfasdfasdfasdfasdf1111111", new Label.LabelStyle(new BitmapFont(), null));
+        Label label3 = new Label("text", new Label.LabelStyle(new BitmapFont(), null));
+        Label label4 = new Label("text", new Label.LabelStyle(new BitmapFont(), null));
+        Label label5 = new Label("text", new Label.LabelStyle(new BitmapFont(), null));
 
-        List list = new List(new List.ListStyle(new BitmapFont(), Color.WHITE,Color.BLACK,new TextureRegionDrawable(new Texture("dialog_option.png"))));
+        List list = new List(new List.ListStyle(new BitmapFont(), Color.WHITE, Color.BLACK, new TextureRegionDrawable(new Texture("dialog_option.png"))));
 
         TextureRegionDrawable itemOption = new TextureRegionDrawable(new Texture("item_option.png"));
         TextureRegionDrawable itemOptionSelected = new TextureRegionDrawable(new Texture("item_option_selected.png"));
         list.setItems(new Texture("badlogic.jpg"));
         TextureRegionDrawable drawable = new TextureRegionDrawable(new Texture("shop.png"));
-        ScrollPane pane = new ScrollPane(list,new ScrollPane.ScrollPaneStyle(drawable,null,null,null,null));
+        ScrollPane pane = new ScrollPane(list, new ScrollPane.ScrollPaneStyle(drawable, null, null, null, null));
         Table leftTopTable = new Table();
 
         leftTopTable.add(label2);
         leftTopTable.row();
         leftTopTable.add(label);
         leftTopTable.pack();
-        leftTopTable.setPosition(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), Align.right);
+        leftTopTable.setPosition(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Align.right);
 
         stage.setScrollFocus(pane);
-        pane.setSize(100,100);
+        pane.setSize(100, 100);
         pane.setPosition(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
         table.setFillParent(true);
 
@@ -76,12 +77,6 @@ public class JavaGame extends Game {
         table.add(pane).height(100);
         table.addActor(leftTopTable);
         Gdx.input.setInputProcessor(stage);
-
-
-
-
-
-
 
 
         stage.addActor(table);
@@ -166,7 +161,7 @@ public class JavaGame extends Game {
 //
 //        batch.end();
 
-        world.step(1/60f, 6, 2);
+        world.step(1 / 60f, 6, 2);
     }
 
     public void update() {
@@ -176,7 +171,7 @@ public class JavaGame extends Game {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
-        stage.getViewport().update(width,height);
+        stage.getViewport().update(width, height);
     }
 
     @Override

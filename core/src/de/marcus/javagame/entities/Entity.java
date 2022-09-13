@@ -34,8 +34,6 @@ public class Entity {
     }
 
 
-
-
     public void render(SpriteBatch batch) {
         batch.draw(texture, position.x, position.y);
     }

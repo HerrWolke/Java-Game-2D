@@ -159,7 +159,7 @@ public class Inventory extends Loadable {
         for (int i = 0; i < hotbar.size(); i++) {
             InventorySlot inventorySlot = hotbar.get(i);
 
-            if(inventorySlot.getItem() != null) {
+            if (inventorySlot.getItem() != null) {
                 inventorySlot.createTexture();
                 inventoryWindow.setItemIntoHotbar(i, inventorySlot.getTexture(), inventorySlot.getItemCount());
             }

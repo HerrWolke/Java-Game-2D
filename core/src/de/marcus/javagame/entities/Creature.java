@@ -12,7 +12,6 @@ import lombok.Setter;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author Marcus
@@ -103,8 +102,7 @@ public class Creature extends Entity {
         List<StatusEffect> toRemove = new LinkedList<>();
         for (StatusEffect statusEffect : effects) {
             boolean b = statusEffect.decrementTimer(Math.round(delta * 1000), this);
-            if(b)
-            {
+            if (b) {
                 toRemove.add(statusEffect);
             }
         }
@@ -135,13 +133,13 @@ public class Creature extends Entity {
         effects.add(effect);
     }
 
-    public void move(float x, float y,boolean attack) {
+    public void move(float x, float y, boolean attack) {
 
         //sets the current animation depending on the players direction
         // first check tries to find out if player is moving in y direction, but not in x direction
         // if he is moving in x, it takes the x animation
         // the second one checks if the player is moving in positiv or negative y direction
-        if(!attack) {
+        if (!attack) {
 
 
             activeAnimation = (y == 0 ?

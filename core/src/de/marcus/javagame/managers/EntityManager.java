@@ -29,7 +29,7 @@ import java.util.UUID;
 
 public class EntityManager extends Loadable {
     @JsonProperty("active_entities")
-    private  LinkedHashMap<UUID, Entity> currentUsedEntities;
+    private LinkedHashMap<UUID, Entity> currentUsedEntities;
 
     @JsonProperty("loaded_entities")
     private LinkedHashMap<UUID, Entity> memoryLoadedEntities;

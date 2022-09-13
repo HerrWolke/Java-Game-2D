@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 
-
 @Getter
 @Setter
 public class InventorySlot {
@@ -26,8 +25,8 @@ public class InventorySlot {
     }
 
     public void createTexture() {
-        System.out.println("items/"+item.name().toLowerCase());
-        texture = new Texture("items/"+item.name().toLowerCase()+".png");
+        System.out.println("items/" + item.name().toLowerCase());
+        texture = new Texture("items/" + item.name().toLowerCase() + ".png");
     }
 
     public int getItemCount() {

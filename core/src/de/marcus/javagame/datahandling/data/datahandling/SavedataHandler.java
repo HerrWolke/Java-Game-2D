@@ -5,9 +5,9 @@ import com.badlogic.gdx.Preferences;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.marcus.javagame.datahandling.Loadable;
+import de.marcus.javagame.datahandling.data.TestInventoryDoNotTouch;
 import de.marcus.javagame.datahandling.data.inventory.InventoryItem;
 import de.marcus.javagame.datahandling.data.inventory.InventorySlot;
-import de.marcus.javagame.datahandling.data.TestInventoryDoNotTouch;
 import de.marcus.javagame.managers.EntityManager;
 
 import java.io.File;
@@ -26,9 +26,9 @@ public class SavedataHandler {
     private static Preferences preferences;
 
     /**
-     *  <p>Loads a class based of the parameter value.</p> <br>
+     * <p>Loads a class based of the parameter value.</p> <br>
      * In order to load a class it has to extend {@link Loadable}. <br> <br>
-     *
+     * <p>
      * If there has never been a save of the data, it will create a new instance based on the a no args constructor (p. e. @{@link lombok.NoArgsConstructor}
      *
      * @param toLoad The class to load <b>Requires no args constructor</b>
@@ -41,7 +41,7 @@ public class SavedataHandler {
         System.out.println(name + ".json");
         File file = new File(name + ".json");
 
-        if(file.exists()) {
+        if (file.exists()) {
 
             try {
                 System.out.println("Loading data");
@@ -66,7 +66,7 @@ public class SavedataHandler {
      * Would recommend to annotate attributes that should not be set with {@link com.fasterxml.jackson.annotation.JsonIgnore}
      * and those that should be saved with @{@link com.fasterxml.jackson.annotation.JsonProperty} and give it a custom name
      * <br> <br>
-     *<u> <b>For examples, see {@link EntityManager} </b> </u>
+     * <u> <b>For examples, see {@link EntityManager} </b> </u>
      *
      * @param loadable The class to save
      */
@@ -87,7 +87,7 @@ public class SavedataHandler {
     }
 
     public static Preferences getPreferences() {
-        if(preferences == null)
+        if (preferences == null)
             preferences = Gdx.app.getPreferences(settingsFilePath);
         return preferences;
     }
@@ -97,12 +97,9 @@ public class SavedataHandler {
     }
 
 
-
     public static void main(String[] args) {
         __load();
     }
-
-
 
 
     /**

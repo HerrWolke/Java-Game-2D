@@ -28,7 +28,7 @@ public class QuestDetails {
         currentStage = 1;
         currentStageText = stageTexts[0];
         if (maxStage > stageTexts.length || maxStage < stageTexts.length) {
-             loggingSystem.getLogger().log(Logger.LoggerLevel.INFO, "Questing Error. A quest was initialised with less stage info than stages. Max stages: " + maxStage + ", provided Info: " + stageTexts.length);
+            loggingSystem.getLogger().log(Logger.LoggerLevel.INFO, "Questing Error. A quest was initialised with less stage info than stages. Max stages: " + maxStage + ", provided Info: " + stageTexts.length);
             System.exit(0);
         }
 

@@ -1,8 +1,6 @@
 package de.marcus.javagame.graphics.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -18,19 +16,17 @@ import de.marcus.javagame.managers.EntityManager;
 import de.marcus.javagame.managers.InputManager;
 import de.marcus.javagame.world.GameWorld;
 
-import java.util.Map;
-
 public class GameScreen extends AbstractScreen {
 
 
     InputManager inputManager;
-    World world ;
+    World world;
 
 
     GameWorld gameWorld;
     Label label;
-   //testen
-   Box2DDebugRenderer debugRenderer;
+    //testen
+    Box2DDebugRenderer debugRenderer;
     private final BitmapFont font;
     private final SpriteBatch batch;
 
@@ -51,7 +47,7 @@ public class GameScreen extends AbstractScreen {
     public GameScreen(LoadingScreen app, int profile) {
         super(app);
         //app.dispose();
-        world  = new World(new Vector2(0, 0), true);
+        world = new World(new Vector2(0, 0), true);
 
         entityManager = SavedataHandler.load(EntityManager.class);
         entityManager.getPlayer().setUI(stage);
@@ -75,13 +71,12 @@ public class GameScreen extends AbstractScreen {
         gameWorld = new GameWorld(entityManager.getPlayer().getCamera());
 
 
-
         //TODO: Player body
         //setzt Body in Player
-        entityManager.getPlayer().setPlayerBody(world.createBody(entityManager.getPlayer().getPlayerBodyDef())) ;
+        entityManager.getPlayer().setPlayerBody(world.createBody(entityManager.getPlayer().getPlayerBodyDef()));
         //setzt die fixture
         entityManager.getPlayer().setPlayerFixture(entityManager.getPlayer().getPlayerBody().createFixture(entityManager.getPlayer().getPlayerFixtureDef()));
-        entityManager.getPlayer().setSwordBody((world.createBody(entityManager.getPlayer().getSwordBodyDef()))) ;
+        entityManager.getPlayer().setSwordBody((world.createBody(entityManager.getPlayer().getSwordBodyDef())));
         entityManager.getPlayer().setSwordFixture(entityManager.getPlayer().getSwordBody().createFixture(entityManager.getPlayer().getSwordFixtureDef()));
         world.setContactListener(new ContactListenerExtern(this));
         gameWorld.setMap(0);
@@ -92,11 +87,11 @@ public class GameScreen extends AbstractScreen {
     public void update(float delta) {
         //story spawns etc
         inputManager.handleMovement();
-        ui.update(entityManager.getPlayer().getPosition().x,entityManager.getPlayer().getPosition().y);
-        if(gameWorld.load2){
+        ui.update(entityManager.getPlayer().getPosition().x, entityManager.getPlayer().getPosition().y);
+        if (gameWorld.load2) {
             gameWorld.load2 = false;
         }
-        world.step(1/60f, 6, 2);
+        world.step(1 / 60f, 6, 2);
     }
 
     @Override
@@ -110,8 +105,6 @@ public class GameScreen extends AbstractScreen {
         update(delta);
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-
 
 
         batch.setProjectionMatrix(entityManager.getPlayer().getCamera().combined);
@@ -130,7 +123,7 @@ public class GameScreen extends AbstractScreen {
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-        world.step(1/60f, 6, 2);
+        world.step(1 / 60f, 6, 2);
     }
 
     @Override

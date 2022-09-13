@@ -30,6 +30,6 @@ public class DialogBuilder {
     }
 
     public Dialog createDialog() {
-        return new Dialog(dialogTitel,dialogText, buttonTexts, nextDialogs);
+        return new Dialog(dialogTitel, dialogText, buttonTexts, nextDialogs);
     }
 }

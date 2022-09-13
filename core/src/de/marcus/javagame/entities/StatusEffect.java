@@ -21,11 +21,11 @@ public class StatusEffect implements Cloneable {
         decrementTimer(deltaTime, creature);
     }
 
-    public boolean decrementTimer(long decrement,Creature creature) {
+    public boolean decrementTimer(long decrement, Creature creature) {
         duration -= decrement;
         //The next call time is the duration divided into segments by ApplyTime of the given effect
         //TODO: Maybe don't keep duration > 0 but idk yet
-        if(duration <= nextCallTime && duration > 0) {
+        if (duration <= nextCallTime && duration > 0) {
 
             creature.setHealth(Math.min(creature.getHealth() + (int) effectType.getDamage(), creature.getMaxHealth()));
 

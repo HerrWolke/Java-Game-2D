@@ -73,8 +73,8 @@ public class DialogWindow extends Window {
                     }
                 }
 
-                if(dialogHandler.isDialogFinished())
-                    ui.displayNotification(3000,"Drücke eine beliebige Taste um fortzufahren...");
+                if (dialogHandler.isDialogFinished())
+                    ui.displayNotification(3000, "Drücke eine beliebige Taste um fortzufahren...");
             }
         });
 

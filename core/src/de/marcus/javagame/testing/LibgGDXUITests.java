@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class LibgGDXUITests extends Game {
@@ -60,11 +59,10 @@ public class LibgGDXUITests extends Game {
         //END TABLES
 
 
-
-        Label label = new Label("TOP TEXT",new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-        Label label1 = new Label("NOTIFICATION",new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-        Label label2 = new Label("DEBUG",new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-        Label label3 = new Label("BOTTOM",new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        Label label = new Label("TOP TEXT", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        Label label1 = new Label("NOTIFICATION", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        Label label2 = new Label("DEBUG", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        Label label3 = new Label("BOTTOM", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
 
 
         //TOP LEFT PLAYER UI INIT
@@ -114,7 +112,7 @@ public class LibgGDXUITests extends Game {
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width,height,true);
+        stage.getViewport().update(width, height, true);
 
     }
 

@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.marcus.javagame.datahandling.data.datahandling.SavedataHandler;
 import de.marcus.javagame.datahandling.data.inventory.Inventory;
 import de.marcus.javagame.datahandling.data.inventory.InventoryItem;
-import de.marcus.javagame.graphics.ui.windows.InventoryWindow;
 import de.marcus.javagame.graphics.ui.UI;
+import de.marcus.javagame.graphics.ui.windows.InventoryWindow;
 import de.marcus.javagame.managers.TextureManager;
 import lombok.Getter;
 import lombok.Setter;
@@ -50,8 +50,6 @@ public class Player extends Creature {
     private UI ui;
 
 
-
-
     public Player(float posX, float posY) {
         super(posX, posY, null, 4, 4, 4, 4, 5.0f, Arrays.asList(
                 TextureManager.getAnimation("standing_character", true, 0.25f),
@@ -68,7 +66,7 @@ public class Player extends Creature {
         //TODO: Radius ist noch nicht richtig
         circle.setRadius(5f);
         //TODO: wahrscheinlich in Render
-        playerBodyDef.position.set(position.x,position.y);
+        playerBodyDef.position.set(position.x, position.y);
 
         playerFixtureDef.shape = circle;
         playerFixtureDef.density = 0f;
@@ -90,31 +88,32 @@ public class Player extends Creature {
 
 
     }
-    public void setSwordPosition(){
-              if(super.getActiveAnimation() == 0 || super.getActiveAnimation() == 4){
-                  swordBodyDef.position.set(position.x +6f, position.y );
-              }else if(super.getActiveAnimation() == 3 || super.getActiveAnimation() == 5){
-                  swordBodyDef.position.set(position.x -6f, position.y );
-              }else if(super.getActiveAnimation() == 1 || super.getActiveAnimation() == 6){
-                  swordBodyDef.position.set(position.x , position.y +6f);
-              }else{
-                  swordBodyDef.position.set(position.x , position.y -6f);
-              }
+
+    public void setSwordPosition() {
+        if (super.getActiveAnimation() == 0 || super.getActiveAnimation() == 4) {
+            swordBodyDef.position.set(position.x + 6f, position.y);
+        } else if (super.getActiveAnimation() == 3 || super.getActiveAnimation() == 5) {
+            swordBodyDef.position.set(position.x - 6f, position.y);
+        } else if (super.getActiveAnimation() == 1 || super.getActiveAnimation() == 6) {
+            swordBodyDef.position.set(position.x, position.y + 6f);
+        } else {
+            swordBodyDef.position.set(position.x, position.y - 6f);
+        }
     }
+
     @Override
     public void update(float delta) {
         super.update(delta);
-        ui.update(this.getPosition().x,this.getPosition().y);
+        ui.update(this.getPosition().x, this.getPosition().y);
     }
 
     @Override
     public void move(float x, float y, boolean attack1) {
         super.move(x, y, attack);
-        playerBody.applyLinearImpulse(new Vector2(Gdx.graphics.getDeltaTime() * (x * getMovementSpeed()),Gdx.graphics.getDeltaTime() * (y * getMovementSpeed())),new Vector2(position.x,position.y),true);
+        playerBody.applyLinearImpulse(new Vector2(Gdx.graphics.getDeltaTime() * (x * getMovementSpeed()), Gdx.graphics.getDeltaTime() * (y * getMovementSpeed())), new Vector2(position.x, position.y), true);
         camera.position.set(position.x, position.y, 0);
         camera.update();
     }
-
 
 
     @Override
@@ -126,7 +125,7 @@ public class Player extends Creature {
 
     @JsonIgnore
     public void setUI(Stage stage) {
-        this.ui = new UI(stage,this);
+        this.ui = new UI(stage, this);
     }
 
     public void setInventoryWindow(InventoryWindow window) {
@@ -135,6 +134,7 @@ public class Player extends Creature {
 
     /**
      * Creates a camera based on the screen aspect ratio
+     *
      * @return The cam
      */
     private OrthographicCamera initialiseCamera() {

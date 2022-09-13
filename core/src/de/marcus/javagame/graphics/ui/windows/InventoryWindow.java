@@ -23,7 +23,6 @@ import java.util.List;
 public class InventoryWindow extends Window {
 
 
-
     private static final String DELETE_BUTTON_TEXT = "Löschen";
     private static final String QUICKBAR_BUTTON_TEXT = "Schnellauswahl";
     private static final String USE_BUTTON_TEXT = "Benutzen";
@@ -193,7 +192,7 @@ public class InventoryWindow extends Window {
             chooseOption(ui);
         } else if (Input.Keys.NUM_0 <= keycode && keycode <= Input.Keys.NUM_9 && waitingForSlotSelection) {
             waitingForSlotSelection = false;
-            if(keycode != Input.Keys.NUM_0)
+            if (keycode != Input.Keys.NUM_0)
                 inventory.moveItemToQuickbar(selectedItem, Math.abs(keycode - 8));
             else
                 inventory.moveItemToQuickbar(selectedItem, 9);
@@ -363,8 +362,6 @@ public class InventoryWindow extends Window {
         NAV_UP(Input.Keys.UP),
         NAV_DOWN(Input.Keys.DOWN),
         NAV_KEYS(NAV_LEFT, NAV_RIGHT, NAV_DOWN, NAV_UP);
-
-
 
 
         InventoryControlKey(Integer... ints) {
