@@ -106,19 +106,19 @@ public class InputManager implements InputProcessor {
 
         if (keycode == Input.Keys.NUMPAD_9) {
             System.out.println("hit the key");
-            ui.getDialog().getDialogHandler().setCurrentDialog(DialogHandler.Dialogs.TEST_DIALOG);
+            ui.getDialogWindow().getDialogHandler().setCurrentDialog(DialogHandler.Dialogs.TEST_DIALOG);
         }
 
-        if (ui.getInventory().isVisible()) {
-            ui.getInventory().handleInput(keycode, ui);
+        if (ui.getInventoryWindow().isVisible()) {
+            ui.getInventoryWindow().handleInput(keycode, ui);
         }
 
-        if (ui.getDialog().isVisible()) {
-            if (ui.getDialog().areDialogButtonsVisible()) {
-                ui.getDialog().handleInput(keycode);
+        if (ui.getDialogWindow().isVisible()) {
+            if (ui.getDialogWindow().areDialogButtonsVisible()) {
+                ui.getDialogWindow().handleInput(keycode);
             } else {
-                if (!ui.getDialog().getDialogHandler().isDialogActive()) {
-                    ui.getDialog().setVisible(false);
+                if (!ui.getDialogWindow().getDialogHandler().isDialogActive()) {
+                    ui.getDialogWindow().setVisible(false);
                 }
             }
         }

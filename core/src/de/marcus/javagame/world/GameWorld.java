@@ -1,9 +1,16 @@
 package de.marcus.javagame.world;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.PolygonMapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -28,13 +35,14 @@ public class GameWorld {
     public GameWorld(OrthographicCamera camera) {
 
         TmxMapLoader tmxMapLoader = new TmxMapLoader();
-        tiledMap = tmxMapLoader.load("word_tmx/Tilemap.tmx");
+//        tiledMap = tmxMapLoader.load("word_tmx/Tilemap.tmx");
         dungeonEingang = tmxMapLoader.load("word_tmx/EingangDungeon.tmx");
         boss = tmxMapLoader.load("word_tmx/Boss.tmx");
         dungeonRechts = tmxMapLoader.load("word_tmx/rechtsDungeon.tmx");
         dungeonLinks = tmxMapLoader.load("word_tmx/linksDungeon.tmx");
-        renderer = new OrthogonalTiledMapRenderer(tiledMap, UNIT_SCALE);
+        renderer = new OrthogonalTiledMapRenderer(boss, UNIT_SCALE);
         renderer.setView(camera);
+
     }
 
     public void render(OrthographicCamera camera) {
