@@ -46,7 +46,7 @@ public class Util {
      * @return The TiledDrawable
      */
     public static TiledDrawable generateTiledDrawable(Texture texture) {
-        return   new TiledDrawable(new TextureRegion(texture));
+        return new TiledDrawable(new TextureRegion(texture));
     }
 
     /**
@@ -60,11 +60,11 @@ public class Util {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("sans_bold_semi.ttf"));
         if (parameters == null) {
             parameters = new FreeTypeFontGenerator.FreeTypeFontParameter();
-            parameters.size = (int) (15 * 1920 / getScreenWidth(stage));
+            parameters.size = (int) (15 * getScreenWidth(stage) / 1920);
             parameters.borderColor = Color.BLACK;
             parameters.borderWidth = 1;
         }
-        parameters.size = (int) (parameters.size * 1920 / getScreenWidth(stage));
+        parameters.size = (int) (parameters.size * getScreenWidth(stage) / 1920);
         return generator.generateFont(parameters);
     }
 
@@ -72,6 +72,17 @@ public class Util {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("sans_bold_semi.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameters = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameters.size = (int) (size * getScreenWidth(stage) / 1920);
+        parameters.borderColor = Color.BLACK;
+        parameters.borderWidth = 1;
+
+        return generator.generateFont(parameters);
+    }
+
+    public static BitmapFont getFontForScreenSize(Stage stage, int size, int padLeft) {
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("sans_bold_semi.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameters = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameters.size = (int) (size * getScreenWidth(stage) / 1920);
+        parameters.padLeft = (int) (padLeft * getScreenWidth(stage) / 1920);
         parameters.borderColor = Color.BLACK;
         parameters.borderWidth = 1;
 
