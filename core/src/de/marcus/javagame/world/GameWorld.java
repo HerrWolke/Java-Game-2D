@@ -1,5 +1,6 @@
 package de.marcus.javagame.world;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
@@ -27,6 +28,7 @@ public class GameWorld {
     TiledMap boss;
     TiledMap dungeonRechts;
     TiledMap dungeonLinks;
+    TiledMap mine;
     int screen = 0;
     OrthogonalTiledMapRenderer renderer;
 
@@ -34,13 +36,15 @@ public class GameWorld {
 
     public GameWorld(OrthographicCamera camera) {
 
+
         TmxMapLoader tmxMapLoader = new TmxMapLoader();
 //        tiledMap = tmxMapLoader.load("word_tmx/Tilemap.tmx");
-        dungeonEingang = tmxMapLoader.load("word_tmx/EingangDungeon.tmx");
-        boss = tmxMapLoader.load("word_tmx/Boss.tmx");
+//        dungeonEingang = tmxMapLoader.load("word_tmx/EingangDungeon.tmx");
+//        boss = tmxMapLoader.load("word_tmx/Boss.tmx");
         dungeonRechts = tmxMapLoader.load("word_tmx/rechtsDungeon.tmx");
-        dungeonLinks = tmxMapLoader.load("word_tmx/linksDungeon.tmx");
-        renderer = new OrthogonalTiledMapRenderer(boss, UNIT_SCALE);
+//        dungeonLinks = tmxMapLoader.load("word_tmx/linksDungeon.tmx");
+//        mine = tmxMapLoader.load("word_tmx/Innenraum1.tmx");
+        renderer = new OrthogonalTiledMapRenderer(dungeonRechts, UNIT_SCALE);
         renderer.setView(camera);
 
     }
@@ -77,6 +81,10 @@ public class GameWorld {
         } else if (i == 5) {
             if (screen != i) {
                 renderer.setMap(dungeonLinks);
+            }
+        } else if (i == 6) {
+            if (screen != i) {
+                renderer.setMap(mine);
             }
         }
     }

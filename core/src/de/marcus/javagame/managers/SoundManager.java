@@ -57,7 +57,8 @@ public class SoundManager {
     @Getter
     public enum SoundEffects {
         INVALID("invalid.wav"),
-        NOTIFICATION("notification.wav");
+        NOTIFICATION("notification.wav"),
+        DRINK("drink.mp3");
 
         SoundEffects(String effectName) {
             this.effectName = effectName;

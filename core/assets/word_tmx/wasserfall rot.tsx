@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset version="1.9" tiledversion="1.9.1" name="wasserfall rot" tilewidth="128" tileheight="128" tilecount="96" columns="16">
- <image source="../2D Hand Painted Tilesets/2D Hand Painted - Grassland Tileset/Sprites/Tilesets 128x128/Waterfall Fall@128x128.png" width="2048" height="768"/>
+ <image source="Waterfall Fall@128x128.png" width="2048" height="768"/>
  <tile id="0">
   <animation>
    <frame tileid="0" duration="100"/>

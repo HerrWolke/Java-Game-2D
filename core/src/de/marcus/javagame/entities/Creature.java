@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.marcus.javagame.managers.SoundManager;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -131,6 +132,7 @@ public class Creature extends Entity {
 
     public void applyEffect(StatusEffect effect) {
         effects.add(effect);
+        SoundManager.playSoundEffect(SoundManager.SoundEffects.DRINK,false);
     }
 
     public void move(float x, float y, boolean attack) {
