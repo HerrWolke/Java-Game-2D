@@ -51,7 +51,7 @@ public class Player extends Creature {
 
 
     public Player(float posX, float posY) {
-        super(posX, posY, null, 4, 4, 4, 4, 5.0f, Arrays.asList(
+        super(posX, posY, null, 4, 4, 4, 4, 15.0f, Arrays.asList(
                 TextureManager.getAnimation("standing_character", true, 0.25f),
                 TextureManager.getAnimation("running", true, 0.25f),
                 TextureManager.getAnimation("running", true, 0.25f),

@@ -62,6 +62,7 @@ public class InventoryWindow extends Window {
         width = screenWidth * 0.5f;
         height = screenHeight * 0.45f;
         selectedItemOption = 2;
+        this.setResizable(true);
 
         System.out.println(InventoryControlKey.NAV_KEYS.getControls());
         System.out.println("screen width: " + screenWidth);

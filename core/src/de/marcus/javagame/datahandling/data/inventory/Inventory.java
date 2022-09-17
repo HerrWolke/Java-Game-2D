@@ -24,6 +24,10 @@ public class Inventory extends Loadable {
     public static final int INVENTORY_SIZE = 30;
     @JsonIgnore
     public static final int HOTBAR_SIZE = 10;
+
+    @JsonIgnore
+    public static final int INFINITE_STACK = Integer.MAX_VALUE;
+
     @JsonIgnore
     Player p;
 

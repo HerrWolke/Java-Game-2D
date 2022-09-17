@@ -155,9 +155,10 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        System.out.println("touch down");
         if (button == (settings.get(CONTROLS.ATTACK))) {
             p.attack();
-            return true;
+            return false;
         }
         return false;
     }
@@ -166,10 +167,11 @@ public class InputManager implements InputProcessor {
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         if (button == settings.get(CONTROLS.ATTACK)) {
             p.attackStop();
-            return true;
+            return false;
         }
         return false;
     }
+
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
@@ -189,4 +191,6 @@ public class InputManager implements InputProcessor {
     public void setNewSetting(CONTROLS control, int keycode) {
         settings.put(control, keycode);
     }
+
+
 }

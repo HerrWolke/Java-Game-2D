@@ -33,6 +33,7 @@ public class LoadingScreen extends Game {
     public void render() {
 
         super.render();
+        System.out.println("renderingt");
         //ScreenUtils.clear(1, 0, 0, 1);
         if (loaded) {
 
