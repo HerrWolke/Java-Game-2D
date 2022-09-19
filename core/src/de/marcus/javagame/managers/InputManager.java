@@ -150,19 +150,19 @@ public class InputManager implements InputProcessor {
             return false;
         }
         if(keycode == settings.get(CONTROLS.RUN_LEFT) ) {
-            p.movementStop(3);
+
            return false;
         }
         if( keycode == settings.get(CONTROLS.RUN_RIGHT) ){
-           p.movementStop(2);
+
             return false;
         }
         if(keycode  == settings.get(CONTROLS.RUN_FORWARD)){
-           p.movementStop(0);
+
             return false;
         }
         if(keycode == settings.get(CONTROLS.RUN_BACKWARD)){
-              p.movementStop(1);
+
             return false;
         }
 
@@ -178,7 +178,7 @@ public class InputManager implements InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (button == (settings.get(CONTROLS.ATTACK))) {
             p.attack();
-            return true;
+            return false;
         }
         return false;
     }

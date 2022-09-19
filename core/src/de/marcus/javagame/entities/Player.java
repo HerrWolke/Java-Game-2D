@@ -68,7 +68,7 @@ public class Player extends Creature {
 
 
         //TODO: Radius ist noch nicht richtig
-        circle.setRadius(5f);
+        circle.setRadius(1f);
         //TODO: wahrscheinlich in Render
         playerBodyDef.position.set(position.x,position.y);
 
@@ -113,22 +113,7 @@ public class Player extends Creature {
     @Override
     public void move(float x, float y, boolean attack1) {
         super.move(x, y, attack);
-        if(y > 0 && first){
-            System.out.println("teststttttstst");
-            playerBody.applyForce(0.0f, 100.0f, position.x, position.y, true);
-            first = false;
-        }else if(y <0 && first){
-            playerBody.applyForce(0.0f, -100.0f, position.x, position.y, true);
-            first = false;
-        }else if(x > 0 && first) {
-            System.out.println("rechts");
-            playerBody.applyForce(100.0f, 0.0f, position.x, position.y, true);
-            first = false;
-        }else if(y <0 && first) {
-            System.out.println("links");
-            playerBody.applyForce(-100.0f, 0.0f, position.x, position.y, true);
-            first = false;
-        }
+        playerBody.setLinearVelocity(new Vector2(x*2.5f,y*2.5f));
         camera.position.set(position.x, position.y, 0);
         camera.update();
     }
@@ -170,12 +155,7 @@ public class Player extends Creature {
     }
 
 
-    public void move(float x, float y) {
-        //updates the player position which is then used to move the camera
-        super.move(x, y,attack);
-        camera.position.set(position.x, position.y, 0);
-        camera.update();
-    }
+
 
     public void attack() {
         attack = true;
@@ -200,21 +180,7 @@ public class Player extends Creature {
 
     public void blockStop() {
     }
-    public void movementStop(int i){
-        if(i == 0){
-            first =true;
-            playerBody.applyForce(0.0f, -100.0f, position.x, position.y, true);
-        }else if( i == 1 ){
-            playerBody.applyForce(0.0f, 100.0f, position.x, position.y, true);
-            first =true;
-        }else if(i ==2){
-            playerBody.applyForce(-100.0f, 0.0f, position.x, position.y, true);
-            first =true;
-        }else{
-            playerBody.applyForce(100.0f, 0.0f, position.x, position.y, true);
-            first =true;
-        }
-    }
+
     public void useItem(InventoryItem item) {
         System.out.println("using the item");
         StatusEffect effect = null;
