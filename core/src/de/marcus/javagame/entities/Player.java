@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.marcus.javagame.datahandling.data.datahandling.SavedataHandler;
 import de.marcus.javagame.datahandling.data.inventory.Inventory;
 import de.marcus.javagame.datahandling.data.inventory.InventoryItem;
-import de.marcus.javagame.graphics.ui.UI;
 import de.marcus.javagame.graphics.ui.windows.InventoryWindow;
+import de.marcus.javagame.graphics.ui.UI;
 import de.marcus.javagame.managers.TextureManager;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,7 +37,7 @@ public class Player extends Creature {
     CircleShape swordShape;
     FixtureDef swordFixtureDef;
     Fixture swordFixture;
-
+    boolean first = true;
     BodyDef playerBodyDef;
     Body playerBody;
     CircleShape circle;
@@ -48,6 +48,8 @@ public class Player extends Creature {
     boolean attack;
     @JsonIgnore
     private UI ui;
+
+
 
 
     public Player(float posX, float posY) {
@@ -66,7 +68,7 @@ public class Player extends Creature {
         //TODO: Radius ist noch nicht richtig
         circle.setRadius(5f);
         //TODO: wahrscheinlich in Render
-        playerBodyDef.position.set(position.x, position.y);
+        playerBodyDef.position.set(position.x,position.y);
 
         playerFixtureDef.shape = circle;
         playerFixtureDef.density = 0f;
@@ -80,7 +82,7 @@ public class Player extends Creature {
         swordShape.setRadius(0.5f);
 
         swordFixtureDef.shape = swordShape;
-        swordFixtureDef.density = 2f;
+        swordFixtureDef.density = 0f;
         swordFixtureDef.friction = 0.2f;
         inventory = SavedataHandler.load(Inventory.class);
         inventory.setPlayer(this);
@@ -88,32 +90,46 @@ public class Player extends Creature {
 
 
     }
-
-    public void setSwordPosition() {
-        if (super.getActiveAnimation() == 0 || super.getActiveAnimation() == 4) {
-            swordBodyDef.position.set(position.x + 6f, position.y);
-        } else if (super.getActiveAnimation() == 3 || super.getActiveAnimation() == 5) {
-            swordBodyDef.position.set(position.x - 6f, position.y);
-        } else if (super.getActiveAnimation() == 1 || super.getActiveAnimation() == 6) {
-            swordBodyDef.position.set(position.x, position.y + 6f);
-        } else {
-            swordBodyDef.position.set(position.x, position.y - 6f);
-        }
+    public void setSwordPosition(){
+              if(super.getActiveAnimation() == 0 || super.getActiveAnimation() == 4){
+                  swordBodyDef.position.set(position.x +6f, position.y );
+              }else if(super.getActiveAnimation() == 3 || super.getActiveAnimation() == 5){
+                  swordBodyDef.position.set(position.x -6f, position.y );
+              }else if(super.getActiveAnimation() == 1 || super.getActiveAnimation() == 6){
+                  swordBodyDef.position.set(position.x , position.y +6f);
+              }else{
+                  swordBodyDef.position.set(position.x , position.y -6f);
+              }
     }
-
     @Override
     public void update(float delta) {
         super.update(delta);
-        ui.update(this.getPosition().x, this.getPosition().y);
+        ui.update(this.getPosition().x,this.getPosition().y);
     }
 
     @Override
     public void move(float x, float y, boolean attack1) {
         super.move(x, y, attack);
-        playerBody.applyLinearImpulse(new Vector2(Gdx.graphics.getDeltaTime() * (x * getMovementSpeed()), Gdx.graphics.getDeltaTime() * (y * getMovementSpeed())), new Vector2(position.x, position.y), true);
+        if(y > 0 && first){
+            System.out.println("teststttttstst");
+            playerBody.applyForce(0.0f, 100.0f, position.x, position.y, true);
+            first = false;
+        }else if(y <0 && first){
+            playerBody.applyForce(0.0f, -100.0f, position.x, position.y, true);
+            first = false;
+        }else if(x > 0 && first) {
+            System.out.println("rechts");
+            playerBody.applyForce(100.0f, 0.0f, position.x, position.y, true);
+            first = false;
+        }else if(y <0 && first) {
+            System.out.println("links");
+            playerBody.applyForce(-100.0f, 0.0f, position.x, position.y, true);
+            first = false;
+        }
         camera.position.set(position.x, position.y, 0);
         camera.update();
     }
+
 
 
     @Override
@@ -125,7 +141,7 @@ public class Player extends Creature {
 
     @JsonIgnore
     public void setUI(Stage stage) {
-        this.ui = new UI(stage, this);
+        this.ui = new UI(stage,this);
     }
 
     public void setInventoryWindow(InventoryWindow window) {
@@ -134,7 +150,6 @@ public class Player extends Creature {
 
     /**
      * Creates a camera based on the screen aspect ratio
-     *
      * @return The cam
      */
     private OrthographicCamera initialiseCamera() {
@@ -149,6 +164,14 @@ public class Player extends Creature {
 
 
         return camera;
+    }
+
+
+    public void move(float x, float y) {
+        //updates the player position which is then used to move the camera
+        super.move(x, y,attack);
+        camera.position.set(position.x, position.y, 0);
+        camera.update();
     }
 
     public void attack() {
@@ -174,7 +197,21 @@ public class Player extends Creature {
 
     public void blockStop() {
     }
-
+    public void movementStop(int i){
+        if(i == 0){
+            first =true;
+            playerBody.applyForce(0.0f, -100.0f, position.x, position.y, true);
+        }else if( i == 1 ){
+            playerBody.applyForce(0.0f, 100.0f, position.x, position.y, true);
+            first =true;
+        }else if(i ==2){
+            playerBody.applyForce(-100.0f, 0.0f, position.x, position.y, true);
+            first =true;
+        }else{
+            playerBody.applyForce(100.0f, 0.0f, position.x, position.y, true);
+            first =true;
+        }
+    }
     public void useItem(InventoryItem item) {
         System.out.println("using the item");
         StatusEffect effect = null;
