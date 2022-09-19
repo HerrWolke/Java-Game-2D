@@ -65,14 +65,16 @@ public class Player extends Creature {
         circle = new CircleShape();
         playerFixtureDef = new FixtureDef();
         playerBodyDef.type = BodyDef.BodyType.DynamicBody;
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(0.5f,1);
 
 
         //TODO: Radius ist noch nicht richtig
         circle.setRadius(1f);
         //TODO: wahrscheinlich in Render
-        playerBodyDef.position.set(position.x,position.y);
+        playerBodyDef.position.set(position.x+1.3f,position.y+1f);
 
-        playerFixtureDef.shape = circle;
+        playerFixtureDef.shape = shape;
         playerFixtureDef.density = 0f;
         playerFixtureDef.friction = 0.0f;
 
