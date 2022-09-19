@@ -13,6 +13,7 @@ import de.marcus.javagame.datahandling.data.inventory.InventorySlot;
 import de.marcus.javagame.datahandling.data.shop.Shops;
 import de.marcus.javagame.graphics.ui.UI;
 import de.marcus.javagame.graphics.ui.windows.InventoryWindow;
+import de.marcus.javagame.managers.SoundManager;
 import de.marcus.javagame.managers.TextureManager;
 import lombok.Getter;
 import lombok.Setter;
@@ -203,8 +204,11 @@ public class Player extends Creature {
     public void buyItem(String item) {
         Shops.ShopItems itemToBuy = Shops.ShopItems.valueOf(item);
         boolean b = inventory.addItem(new InventorySlot(itemToBuy.getInventoryItem(), 1));
+        inventory.moneyChange(-itemToBuy.getPrice());
         if (!b) {
             ui.displayNotification(2000, "Dein Inventar ist voll!");
+        } else {
+            SoundManager.playSoundEffect(SoundManager.SoundEffects.BUY,false,0.8f);
         }
     }
 }

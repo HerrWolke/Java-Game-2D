@@ -61,7 +61,7 @@ public class Inventory extends Loadable {
         System.out.println("Called constructor");
         this.inventory = new ArrayList<>();
         this.hotbar = new ArrayList<>(10);
-        this.money = 200;
+        this.money = 50;
 
         p = null;
     }
@@ -201,5 +201,10 @@ public class Inventory extends Loadable {
         } else {
             return true;
         }
+    }
+
+    public void moneyChange(int change) {
+        this.money += change;
+        System.out.println(money);
     }
 }

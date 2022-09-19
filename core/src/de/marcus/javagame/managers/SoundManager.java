@@ -33,6 +33,25 @@ public class SoundManager {
 
     }
 
+    public static boolean playSoundEffect(SoundEffects soundEffect, boolean loop, float volume) {
+        if (!sounds.containsKey(soundEffect)) {
+            if (Gdx.files.internal("sfx/" + soundEffect.getEffectName()).exists()) {
+                Sound sound = Gdx.audio.newSound(Gdx.files.internal("sfx/" + soundEffect.getEffectName()));
+                sound.play(volume);
+                sounds.put(soundEffect, sound);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            Sound sound = sounds.get(soundEffect);
+            long play = sound.play();
+            sound.setLooping(play, loop);
+            return true;
+        }
+
+    }
+
     public static void stopSoundLoopForType() {
 
     }
@@ -58,7 +77,8 @@ public class SoundManager {
     public enum SoundEffects {
         INVALID("invalid.wav"),
         NOTIFICATION("notification.wav"),
-        DRINK("drink.mp3");
+        DRINK("drink.mp3"),
+        BUY("purchase1.wav");
 
         SoundEffects(String effectName) {
             this.effectName = effectName;
