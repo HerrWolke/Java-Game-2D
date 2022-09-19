@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector3;
 import de.marcus.javagame.datahandling.data.datahandling.SavedataHandler;
+import de.marcus.javagame.datahandling.data.shop.Shops;
 import de.marcus.javagame.entities.Player;
 import de.marcus.javagame.graphics.ui.UI;
 import de.marcus.javagame.handlers.DialogHandler;
@@ -187,7 +188,7 @@ public class InputManager implements InputProcessor {
         if (button == settings.get(CONTROLS.ATTACK)) {
             p.attackStop();
 
-            return true;
+
             return false;
         }
         return false;
