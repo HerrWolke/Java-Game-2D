@@ -91,8 +91,11 @@ public class ScrollPaneShop extends ScrollPane {
 //                    System.out.println("last pos " + lastPosition + ", scroll direction " + scrollAmountX);
 
                     float width = ((Table) getActor()).getChild(0).getWidth();
-                    setScrollY(getScrollY() + width * 3 * scrollAmountX);
-                    setScrollX(getScrollX() + width * 3 * scrollAmountX);
+
+                    //This is multiplied by 6 as the width does not include the padding of the button (every button has a padding of button width)
+                    //This width is split on the left and right of the button.
+                    setScrollY(getScrollY() + width * 6 * scrollAmountX);
+                    setScrollX(getScrollX() + width * 6 * scrollAmountX);
                 } else
                     return false;
                 return true;

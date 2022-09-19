@@ -35,7 +35,7 @@ public class GameWorld {
 //        tiledMap = tmxMapLoader.load("word_tmx/Tilemap.tmx");
 //        dungeonEingang = tmxMapLoader.load("word_tmx/EingangDungeon.tmx");
 //        boss = tmxMapLoader.load("word_tmx/Boss.tmx");
-        dungeonRechts = tmxMapLoader.load("word_tmx/Tilemap.tmx");
+        dungeonRechts = tmxMapLoader.load("word_tmx/Boss.tmx");
 //        dungeonLinks = tmxMapLoader.load("word_tmx/linksDungeon.tmx");
 //        mine = tmxMapLoader.load("word_tmx/Innenraum1.tmx");
         renderer = new OrthogonalTiledMapRenderer(dungeonRechts, UNIT_SCALE);

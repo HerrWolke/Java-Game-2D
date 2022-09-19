@@ -2,6 +2,7 @@ package de.marcus.javagame.datahandling.data.inventory;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.marcus.javagame.managers.TextureManager;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -44,4 +45,5 @@ public class InventorySlot {
     public void setItem(InventoryItem item) {
         this.item = item;
     }
+
 }

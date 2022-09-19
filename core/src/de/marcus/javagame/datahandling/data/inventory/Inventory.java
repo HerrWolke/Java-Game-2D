@@ -34,6 +34,8 @@ public class Inventory extends Loadable {
     @JsonProperty("inventory_data")
     public ArrayList<InventorySlot> inventory;
 
+    @JsonProperty("money")
+    public int money;
 
     @JsonProperty("hotbar_data")
     public ArrayList<InventorySlot> hotbar;
@@ -59,6 +61,7 @@ public class Inventory extends Loadable {
         System.out.println("Called constructor");
         this.inventory = new ArrayList<>();
         this.hotbar = new ArrayList<>(10);
+        this.money = 200;
 
         p = null;
     }
@@ -125,6 +128,7 @@ public class Inventory extends Loadable {
             for (InventorySlot inventorySlot : inventory) {
                 if (inventorySlot.getItem().equals(slot.getItem()) && (inventorySlot.getItemCount() + slot.getItemCount()) < inventorySlot.getItem().getMaxStackSize()) {
                     inventorySlot.setItemCount(inventorySlot.getItemCount() + slot.getItemCount());
+                    inventoryWindow.setItemAtPosition(inventory.size(), slot.getTexture(), slot.getItemCount());
                     return true;
                 } else if (inventory.size() < INVENTORY_SIZE) {
                     inventory.add(slot);
@@ -188,7 +192,12 @@ public class Inventory extends Loadable {
             if (slot.getItem().isHotbarSelectable()) {
                 System.out.println("slot " + quickbarSlot);
                 hotbar.set(quickbarSlot, slot);
+
+                if(slot.getTexture() == null)
+                    slot.createTexture();
+
                 inventoryWindow.addToQuickbar(quickbarSlot, slot.getTexture());
+
                 return true;
             } else {
                 return false;

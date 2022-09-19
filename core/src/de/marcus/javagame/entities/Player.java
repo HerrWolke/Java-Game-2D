@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.marcus.javagame.datahandling.data.datahandling.SavedataHandler;
 import de.marcus.javagame.datahandling.data.inventory.Inventory;
 import de.marcus.javagame.datahandling.data.inventory.InventoryItem;
+import de.marcus.javagame.datahandling.data.inventory.InventorySlot;
+import de.marcus.javagame.datahandling.data.shop.Shops;
 import de.marcus.javagame.graphics.ui.UI;
 import de.marcus.javagame.graphics.ui.windows.InventoryWindow;
 import de.marcus.javagame.managers.TextureManager;
@@ -188,4 +190,21 @@ public class Player extends Creature {
     }
 
 
+    public boolean canAfford(String item) {
+        Shops.ShopItems itemToBuy = Shops.ShopItems.valueOf(item);
+        if (itemToBuy.getPrice() <= inventory.getMoney()) {
+            return true;
+        } else {
+            ui.displayNotification(2000, "Du kannst dir dieses Item nicht leisten!");
+            return false;
+        }
+    }
+
+    public void buyItem(String item) {
+        Shops.ShopItems itemToBuy = Shops.ShopItems.valueOf(item);
+        boolean b = inventory.addItem(new InventorySlot(itemToBuy.getInventoryItem(), 1));
+        if (!b) {
+            ui.displayNotification(2000, "Dein Inventar ist voll!");
+        }
+    }
 }
