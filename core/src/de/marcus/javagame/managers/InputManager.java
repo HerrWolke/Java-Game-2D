@@ -109,6 +109,10 @@ public class InputManager implements InputProcessor {
             ui.getDialogWindow().getDialogHandler().setCurrentDialog(DialogHandler.Dialogs.TEST_DIALOG);
         }
 
+        if (keycode == Input.Keys.NUMPAD_6) {
+            ui.getShopWindow().generateShop(Shops.POTION_SHOP);
+        }
+
         if (ui.getInventoryWindow().isVisible()) {
             ui.getInventoryWindow().handleInput(keycode, ui);
         }
@@ -184,9 +188,11 @@ public class InputManager implements InputProcessor {
             p.attackStop();
 
             return true;
+            return false;
         }
         return false;
     }
+
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {

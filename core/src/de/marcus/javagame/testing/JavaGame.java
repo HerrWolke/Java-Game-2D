@@ -41,7 +41,6 @@ public class JavaGame extends Game {
     @Override
     public void create() {
         stage = new Stage(new ScreenViewport());
-        stage.setDebugAll(true);
         Table table = new Table();
         Label label = new Label("sdfasdfafasfasdfasdfasdfadsf", new Label.LabelStyle(new BitmapFont(), null));
         Label label2 = new Label("asdfasdfadfadfasdfasdfasdfadsfadsfasdfasdfadfasdfasdfasdfasdf1111111", new Label.LabelStyle(new BitmapFont(), null));

@@ -1,7 +1,10 @@
 package de.marcus.javagame.datahandling.data.inventory;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import de.marcus.javagame.managers.TextureManager;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,11 +12,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class InventorySlot {
+
+
     private int itemCount;
+
     private InventoryItem item;
 
-    @JsonIgnore
-    private Texture texture;
 
     public InventorySlot(InventoryItem item, int itemCount) {
         this.itemCount = itemCount;
@@ -22,11 +26,6 @@ public class InventorySlot {
 
     public InventorySlot() {
 
-    }
-
-    public void createTexture() {
-        System.out.println("items/" + item.name().toLowerCase());
-        texture = new Texture("items/" + item.name().toLowerCase() + ".png");
     }
 
     public int getItemCount() {
@@ -44,4 +43,11 @@ public class InventorySlot {
     public void setItem(InventoryItem item) {
         this.item = item;
     }
+
+    @JsonIgnore
+    public TextureRegion getTexture() {
+        return TextureManager.getTexture(item.name().toLowerCase());
+    }
 }
+
+

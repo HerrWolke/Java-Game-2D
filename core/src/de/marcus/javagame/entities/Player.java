@@ -9,8 +9,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.marcus.javagame.datahandling.data.datahandling.SavedataHandler;
 import de.marcus.javagame.datahandling.data.inventory.Inventory;
 import de.marcus.javagame.datahandling.data.inventory.InventoryItem;
+import de.marcus.javagame.datahandling.data.inventory.InventorySlot;
+import de.marcus.javagame.datahandling.data.shop.Shops;
+import de.marcus.javagame.graphics.ui.UI;
 import de.marcus.javagame.graphics.ui.windows.InventoryWindow;
 import de.marcus.javagame.graphics.ui.UI;
+import de.marcus.javagame.managers.SoundManager;
 import de.marcus.javagame.managers.TextureManager;
 import lombok.Getter;
 import lombok.Setter;
@@ -48,8 +52,6 @@ public class Player extends Creature {
     boolean attack;
     @JsonIgnore
     private UI ui;
-
-
 
 
     public Player(float posX, float posY) {
@@ -101,6 +103,7 @@ public class Player extends Creature {
                   swordBodyDef.position.set(position.x , position.y -6f);
               }
     }
+
     @Override
     public void update(float delta) {
         super.update(delta);
@@ -131,7 +134,6 @@ public class Player extends Creature {
     }
 
 
-
     @Override
     public void setHealth(int health) {
         System.out.println("set health to " + health);
@@ -150,6 +152,7 @@ public class Player extends Creature {
 
     /**
      * Creates a camera based on the screen aspect ratio
+     *
      * @return The cam
      */
     private OrthographicCamera initialiseCamera() {
@@ -225,4 +228,24 @@ public class Player extends Creature {
     }
 
 
+    public boolean canAfford(String item) {
+        Shops.ShopItems itemToBuy = Shops.ShopItems.valueOf(item);
+        if (itemToBuy.getPrice() <= inventory.getMoney()) {
+            return true;
+        } else {
+            ui.displayNotification(2000, "Du kannst dir dieses Item nicht leisten!");
+            return false;
+        }
+    }
+
+    public void buyItem(String item) {
+        Shops.ShopItems itemToBuy = Shops.ShopItems.valueOf(item);
+        boolean b = inventory.addItem(new InventorySlot(itemToBuy.getInventoryItem(), 1));
+        inventory.moneyChange(-itemToBuy.getPrice());
+        if (!b) {
+            ui.displayNotification(2000, "Dein Inventar ist voll!");
+        } else {
+            SoundManager.playSoundEffect(SoundManager.SoundEffects.BUY,false,0.8f);
+        }
+    }
 }

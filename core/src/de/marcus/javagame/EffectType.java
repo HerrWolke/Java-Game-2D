@@ -4,14 +4,15 @@ import lombok.Getter;
 
 @Getter
 public enum EffectType {
-    POISON(EffectInfluence.DAMAGE, 0.5, 4),
-    FIRE(EffectInfluence.DAMAGE, 1.0, 4),
+    POISON(EffectInfluence.HEALTH, 0.5, 4),
+    FIRE(EffectInfluence.HEALTH, 1.0, 4),
     FROZEN(EffectInfluence.MOVEMENT, 0.0, 4),
-    HEAL(EffectInfluence.DAMAGE, 1.0, 0.5);
+    HEAL(EffectInfluence.HEALTH, 1.0, 0.5),
+    STRENGTH(EffectInfluence.DAMAGE, 1.0, 1);
 
-    EffectType(EffectInfluence influence, double damage, double applyTime) {
+    EffectType(EffectInfluence influence, double influenceStrength, double applyTime) {
         this.influence = influence;
-        this.damage = damage;
+        this.damage = influenceStrength;
         this.applyTime = applyTime;
     }
 
@@ -26,7 +27,8 @@ public enum EffectType {
          * <p>
          * In case of negative, they would p.e. slow the player or damage him
          */
-        DAMAGE,
-        MOVEMENT
+        HEALTH,
+        MOVEMENT,
+        DAMAGE
     }
 }

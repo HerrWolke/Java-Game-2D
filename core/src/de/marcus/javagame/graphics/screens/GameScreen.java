@@ -1,6 +1,7 @@
 package de.marcus.javagame.graphics.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -47,6 +48,7 @@ public class GameScreen extends AbstractScreen {
     public GameScreen(LoadingScreen app, int profile) {
         super(app);
         //app.dispose();
+
         world = new World(new Vector2(0, 0), true);
 
         entityManager = SavedataHandler.load(EntityManager.class);
@@ -130,7 +132,7 @@ public class GameScreen extends AbstractScreen {
     public void show() {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-        Gdx.input.setInputProcessor(inputManager);
+        Gdx.input.setInputProcessor(new InputMultiplexer(inputManager, stage));
     }
 
     @Override

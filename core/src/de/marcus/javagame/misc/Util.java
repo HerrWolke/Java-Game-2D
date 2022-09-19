@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,7 +35,7 @@ public class Util {
      * @return The TiledDrawable
      */
     public static TiledDrawable generateTiledDrawable(TextureRegion region) {
-      return new TiledDrawable(region);
+        return new TiledDrawable(region);
     }
 
     /**
@@ -70,6 +69,16 @@ public class Util {
 
     public static BitmapFont getFontForScreenSize(Stage stage, int size) {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("sans_bold_semi.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameters = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameters.size = (int) (size * getScreenWidth(stage) / 1920);
+        parameters.borderColor = Color.BLACK;
+        parameters.borderWidth = 1;
+
+        return generator.generateFont(parameters);
+    }
+
+    public static BitmapFont getFontForScreenSize(Stage stage, int size, String fontName) {
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/" + fontName + ".ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameters = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameters.size = (int) (size * getScreenWidth(stage) / 1920);
         parameters.borderColor = Color.BLACK;

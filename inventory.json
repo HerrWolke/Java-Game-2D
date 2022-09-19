@@ -1,0 +1,59 @@
+{
+  "inventory_data": [
+    {
+      "itemCount": 2,
+      "item": "STRENGTH_POTION"
+    },
+    {
+      "itemCount": 1,
+      "item": "HEAL_POTION"
+    },
+    {
+      "itemCount": 2,
+      "item": "SPEED_POTION"
+    }
+  ],
+  "money": 50,
+  "hotbar_data": [
+    {
+      "itemCount": 1,
+      "item": "SPEED_POTION"
+    },
+    {
+      "itemCount": 0,
+      "item": null
+    },
+    {
+      "itemCount": 0,
+      "item": null
+    },
+    {
+      "itemCount": 0,
+      "item": null
+    },
+    {
+      "itemCount": 0,
+      "item": null
+    },
+    {
+      "itemCount": 0,
+      "item": null
+    },
+    {
+      "itemCount": 0,
+      "item": null
+    },
+    {
+      "itemCount": 0,
+      "item": null
+    },
+    {
+      "itemCount": 0,
+      "item": null
+    },
+    {
+      "itemCount": 0,
+      "item": null
+    }
+  ]
+}

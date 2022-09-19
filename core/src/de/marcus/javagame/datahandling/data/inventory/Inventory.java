@@ -24,12 +24,18 @@ public class Inventory extends Loadable {
     public static final int INVENTORY_SIZE = 30;
     @JsonIgnore
     public static final int HOTBAR_SIZE = 10;
+
+    @JsonIgnore
+    public static final int INFINITE_STACK = Integer.MAX_VALUE;
+
     @JsonIgnore
     Player p;
 
     @JsonProperty("inventory_data")
     public ArrayList<InventorySlot> inventory;
 
+    @JsonProperty("money")
+    public int money;
 
     @JsonProperty("hotbar_data")
     public ArrayList<InventorySlot> hotbar;
@@ -55,6 +61,7 @@ public class Inventory extends Loadable {
         System.out.println("Called constructor");
         this.inventory = new ArrayList<>();
         this.hotbar = new ArrayList<>(10);
+        this.money = 50;
 
         p = null;
     }
@@ -118,16 +125,19 @@ public class Inventory extends Loadable {
      */
     public boolean addItem(InventorySlot slot) {
         if (!inventory.isEmpty()) {
-            for (InventorySlot inventorySlot : inventory) {
+            for (int i = 0; i < inventory.size(); i++) {
+                InventorySlot inventorySlot = inventory.get(i);
+
                 if (inventorySlot.getItem().equals(slot.getItem()) && (inventorySlot.getItemCount() + slot.getItemCount()) < inventorySlot.getItem().getMaxStackSize()) {
                     inventorySlot.setItemCount(inventorySlot.getItemCount() + slot.getItemCount());
+                    inventoryWindow.setItemAtPosition(inventory.indexOf(inventorySlot), slot.getTexture(), inventorySlot.getItemCount());
+                    System.out.println("adding to existing slot");
                     return true;
-                } else if (inventory.size() < INVENTORY_SIZE) {
+                } else if (inventory.size() < INVENTORY_SIZE && i == inventory.size() - 1) {
+                    System.out.println("adding to new slot");
                     inventory.add(slot);
-                    inventoryWindow.setItemAtPosition(inventory.size(), slot.getTexture(), slot.getItemCount());
+                    inventoryWindow.setItemAtPosition(inventory.size()-1, slot.getTexture(), slot.getItemCount());
                     return true;
-                } else {
-                    return false;
                 }
             }
             //This should never happen. At least I hope so...
@@ -152,7 +162,6 @@ public class Inventory extends Loadable {
 
         for (int i = 0; i < inventory.size(); i++) {
             InventorySlot inventorySlot = inventory.get(i);
-            inventorySlot.createTexture();
             inventoryWindow.setItemAtPosition(i, inventorySlot.getTexture(), inventorySlot.getItemCount());
         }
 
@@ -160,7 +169,6 @@ public class Inventory extends Loadable {
             InventorySlot inventorySlot = hotbar.get(i);
 
             if (inventorySlot.getItem() != null) {
-                inventorySlot.createTexture();
                 inventoryWindow.setItemIntoHotbar(i, inventorySlot.getTexture(), inventorySlot.getItemCount());
             }
         }
@@ -169,7 +177,6 @@ public class Inventory extends Loadable {
     public boolean isItemEquitable(int selectedItem) {
         if (selectedItem < inventory.size()) {
             boolean usable = inventory.get(selectedItem).getItem().isHotbarSelectable();
-            System.out.println("use " + usable);
             return usable;
         } else {
             return false;
@@ -182,9 +189,11 @@ public class Inventory extends Loadable {
             System.out.println(hotbar.size());
 
             if (slot.getItem().isHotbarSelectable()) {
-                System.out.println("slot " + quickbarSlot);
                 hotbar.set(quickbarSlot, slot);
+
+
                 inventoryWindow.addToQuickbar(quickbarSlot, slot.getTexture());
+
                 return true;
             } else {
                 return false;
@@ -192,5 +201,10 @@ public class Inventory extends Loadable {
         } else {
             return true;
         }
+    }
+
+    public void moneyChange(int change) {
+        this.money += change;
+        System.out.println(money);
     }
 }

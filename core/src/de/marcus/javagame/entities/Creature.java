@@ -132,7 +132,7 @@ public class Creature extends Entity {
 
     public void applyEffect(StatusEffect effect) {
         effects.add(effect);
-        SoundManager.playSoundEffect(SoundManager.SoundEffects.DRINK,false);
+        SoundManager.playSoundEffect(SoundManager.SoundEffects.DRINK, false);
     }
 
     public void move(float x, float y, boolean attack) {
