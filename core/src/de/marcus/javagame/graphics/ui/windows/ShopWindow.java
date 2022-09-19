@@ -44,92 +44,17 @@ public class ShopWindow extends Window {
 
         setPosition(screenWidth / 4.0f, screenHeight / 4.0f);
         setSize(screenWidth / 2.0f, screenHeight / 2.0f);
-        TextureRegionDrawable drawable = new TextureRegionDrawable(new Texture("potion_selected.png"));
-        TextureRegionDrawable potion = new TextureRegionDrawable(new Texture("items/heal_potion.png"));
         Table priceTable = new Table();
         Table shopCenterTable = new Table();
         Table shopItemInformation = new Table();
 
-         priceLabel = new Label("0,0 Lana",new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+         priceLabel = new Label("0 Lana",new Label.LabelStyle(new BitmapFont(), Color.WHITE));
          itemInformationLabel = new Label("Item Info",new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
-        Table table = new Table();
-        for (int i = 0; i < 60; i++) {
-            TextButton button = new TextButton("Text" + i, new ImageTextButton.ImageTextButtonStyle(potion, null, null, new BitmapFont()));
-            Image image = new Image(drawable);
-            AlphaAction alphaAction = new AlphaAction();
-            alphaAction.setAlpha(0.0f);
-            image.addAction(alphaAction);
 
-            if (i > 1) {
-                AlphaAction alphaAction2 = new AlphaAction();
-                alphaAction2.setAlpha(0.0f);
-                button.addAction(alphaAction2);
-                button.setName("HEAL_POTION");
-            } else {
-                button.setName("STRENGTH_POTION");
-            }
-
-
-            Stack stack = new Stack();
-            stack.add(image);
-            stack.add(button);
-
-
-            stack.addListener(new ClickListener() {
-                @Override
-                public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                    super.enter(event, x, y, pointer, fromActor);
-
-                    AlphaAction action2 = new AlphaAction();
-                    action2.setAlpha(0.75f);
-                    action2.setDuration(5f);
-
-                    SnapshotArray<Actor> child = ((Stack) event.getListenerActor()).getChildren();
-                    Shops.ShopItems shopItem = Shops.ShopItems.valueOf(child.get(1).getName());
-                    priceLabel.setText(shopItem.getPrice());
-                    priceLabel.addAction(Actions.fadeIn(0.5f));
-                    itemInformationLabel.setText(shopItem.getInfo());
-                    itemInformationLabel.addAction(Actions.fadeIn(0.5f));
-
-                   child.get(0).addAction(Actions.forever(Actions.sequence(Actions.fadeIn(2f), action2)));
-                }
-
-                @Override
-                public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                    super.exit(event, x, y, pointer, toActor);
-                    System.out.println("The button was exited???");
-
-                    SnapshotArray<Actor> child = ((Stack) event.getListenerActor()).getChildren();
-
-
-                    priceLabel.addAction(Actions.fadeOut(0.5f));
-                    itemInformationLabel.addAction(Actions.fadeOut(0.5f));
-
-                    Actor image = child.get(0);
-                    for (Action actionFromList : image.getActions()) {
-                        image.removeAction(actionFromList);
-                    }
-                    image.addAction(Actions.fadeOut(0.5f));
-                }
-
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    super.clicked(event, x, y);
-                    System.out.println("Button " + event.getListenerActor());
-                    buy(((Stack) event.getListenerActor()).getChildren().get(1).getName());
-                }
-            });
-            table.add(stack).size(Value.percentWidth(1/6f,this),Value.percentWidth(1/6f,this)).padLeft(Value.percentWidth((1f/2f)/6f,this)).padRight(Value.percentWidth((1f/2f)/6f,this));
-
-        }
-
-        shop = new ScrollPaneShop(table, new ScrollPane.ScrollPaneStyle(null, null, null, null, null));
+        shop = new ScrollPaneShop(null, new ScrollPane.ScrollPaneStyle(null, null, null, null, null));
         shop.setSmoothScrolling(true);
         shop.setScrollingDisabled(false, true);
-
-//        this.add(shop).grow().width(shop.getWidth()*3).height(shop.getHeight());
-//        this.row();
 
         priceTable.add(priceLabel).top().center().padBottom(priceLabel.getHeight()/2);
         priceTable.top().center();
@@ -142,22 +67,14 @@ public class ShopWindow extends Window {
         this.row();
         shopItemInformation.add(itemInformationLabel).padBottom(Value.percentHeight(5.0f));
         this.add(shopItemInformation).grow().top();
-        Dialog dialog = new Dialog("Confirm purchase", new WindowStyle(new BitmapFont(), Color.GOLD, new TextureRegionDrawable(new Texture("generic_dialog.png"))));
-        Label priceLabel2 = new Label("This is price", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        TextButton buyButton = new TextButton("Confirm", new TextButton.TextButtonStyle(null, null, null, new BitmapFont()));
-        dialog.text(priceLabel2);
-        dialog.button(buyButton);
-        dialog.setPosition((screenWidth / 4.0f) - 75, (screenHeight / 4.0f) - 75);
-//        dialog.setSize(screenWidth / 6.0f,(screenHeight / 6.0f) * Util.getReversedAspectRatio(stage));
+
+
         this.setModal(false);
-        this.setVisible(true);
+        this.setVisible(false);
         this.setMovable(false);
 
 
         stage.setScrollFocus(shop);
-
-
-
     }
 
 
@@ -186,6 +103,7 @@ public class ShopWindow extends Window {
             dialog.setSize(screenWidth / 5.0f,(screenHeight / 5.0f) * Util.getReversedAspectRatio(stage));
             dialog.setPosition((screenWidth / 4.0f)-dialog.getWidth()/2, (screenHeight / 4.0f)-dialog.getHeight()/2);
             this.addActor(dialog);
+
         }
     }
 
@@ -201,11 +119,14 @@ public class ShopWindow extends Window {
         for (Shops.ShopItems item : shop.getItems()) {
             i++;
             TextureRegionDrawable potion = new TextureRegionDrawable(TextureManager.getTexture(item.name().toLowerCase()));
+            System.out.println(item.name().toLowerCase());
+            TextureRegionDrawable selected = new TextureRegionDrawable(TextureManager.getTexture("potion_selected"));
+
             TextButton button = new TextButton("", new ImageTextButton.ImageTextButtonStyle(potion, null, null, new BitmapFont()));
-            Image image = new Image(potion);
+            Image image = new Image(selected);
             image.addAction(Actions.alpha(0));
 
-            if (i > 2) {
+            if (i > 3) {
                 button.addAction(Actions.alpha(0));
             }
             button.setName(item.name());
@@ -253,12 +174,14 @@ public class ShopWindow extends Window {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     super.clicked(event, x, y);
-                    System.out.println("Button " + event.getListenerActor());
                     buy(((Stack) event.getListenerActor()).getChildren().get(1).getName());
                 }
             });
             table.add(stack).size(Value.percentWidth(1/6f,this),Value.percentWidth(1/6f,this)).padLeft(Value.percentWidth((1f/2f)/6f,this)).padRight(Value.percentWidth((1f/2f)/6f,this));
 
         }
+
+        this.shop.setActor(table);
+        this.setVisible(true);
     }
 }

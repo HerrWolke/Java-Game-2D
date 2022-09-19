@@ -125,17 +125,19 @@ public class Inventory extends Loadable {
      */
     public boolean addItem(InventorySlot slot) {
         if (!inventory.isEmpty()) {
-            for (InventorySlot inventorySlot : inventory) {
+            for (int i = 0; i < inventory.size(); i++) {
+                InventorySlot inventorySlot = inventory.get(i);
+
                 if (inventorySlot.getItem().equals(slot.getItem()) && (inventorySlot.getItemCount() + slot.getItemCount()) < inventorySlot.getItem().getMaxStackSize()) {
                     inventorySlot.setItemCount(inventorySlot.getItemCount() + slot.getItemCount());
-                    inventoryWindow.setItemAtPosition(inventory.size(), slot.getTexture(), slot.getItemCount());
+                    inventoryWindow.setItemAtPosition(inventory.indexOf(inventorySlot), slot.getTexture(), inventorySlot.getItemCount());
+                    System.out.println("adding to existing slot");
                     return true;
-                } else if (inventory.size() < INVENTORY_SIZE) {
+                } else if (inventory.size() < INVENTORY_SIZE && i == inventory.size() - 1) {
+                    System.out.println("adding to new slot");
                     inventory.add(slot);
-                    inventoryWindow.setItemAtPosition(inventory.size(), slot.getTexture(), slot.getItemCount());
+                    inventoryWindow.setItemAtPosition(inventory.size()-1, slot.getTexture(), slot.getItemCount());
                     return true;
-                } else {
-                    return false;
                 }
             }
             //This should never happen. At least I hope so...
@@ -175,7 +177,6 @@ public class Inventory extends Loadable {
     public boolean isItemEquitable(int selectedItem) {
         if (selectedItem < inventory.size()) {
             boolean usable = inventory.get(selectedItem).getItem().isHotbarSelectable();
-            System.out.println("use " + usable);
             return usable;
         } else {
             return false;
@@ -188,7 +189,6 @@ public class Inventory extends Loadable {
             System.out.println(hotbar.size());
 
             if (slot.getItem().isHotbarSelectable()) {
-                System.out.println("slot " + quickbarSlot);
                 hotbar.set(quickbarSlot, slot);
 
 

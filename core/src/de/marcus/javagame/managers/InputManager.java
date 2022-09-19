@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector3;
 import de.marcus.javagame.datahandling.data.datahandling.SavedataHandler;
+import de.marcus.javagame.datahandling.data.shop.Shops;
 import de.marcus.javagame.entities.Player;
 import de.marcus.javagame.graphics.ui.UI;
 import de.marcus.javagame.handlers.DialogHandler;
@@ -105,8 +106,11 @@ public class InputManager implements InputProcessor {
         }
 
         if (keycode == Input.Keys.NUMPAD_9) {
-            System.out.println("hit the key");
             ui.getDialogWindow().getDialogHandler().setCurrentDialog(DialogHandler.Dialogs.TEST_DIALOG);
+        }
+
+        if (keycode == Input.Keys.NUMPAD_6) {
+            ui.getShopWindow().generateShop(Shops.POTION_SHOP);
         }
 
         if (ui.getInventoryWindow().isVisible()) {
@@ -155,7 +159,6 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        System.out.println("touch down");
         if (button == (settings.get(CONTROLS.ATTACK))) {
             p.attack();
             return false;

@@ -243,7 +243,6 @@ public class InventoryWindow extends Window {
                 Inventory slot starts at top right (0) underneath is the 10 slot etc.
                  */
                 selectedItem += 10 * y;
-                System.out.println("top " + -(height * 0.38f * y));
             }
 
             //same as above

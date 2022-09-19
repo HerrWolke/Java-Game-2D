@@ -1,15 +1,23 @@
 {
   "inventory_data": [
     {
-      "itemCount": 1,
+      "itemCount": 2,
       "item": "STRENGTH_POTION"
+    },
+    {
+      "itemCount": 1,
+      "item": "HEAL_POTION"
+    },
+    {
+      "itemCount": 2,
+      "item": "SPEED_POTION"
     }
   ],
   "money": 200,
   "hotbar_data": [
     {
-      "itemCount": 0,
-      "item": null
+      "itemCount": 1,
+      "item": "SPEED_POTION"
     },
     {
       "itemCount": 0,

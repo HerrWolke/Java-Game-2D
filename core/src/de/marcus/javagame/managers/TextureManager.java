@@ -1,5 +1,6 @@
 package de.marcus.javagame.managers;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -10,6 +11,7 @@ public class TextureManager {
 
     public static TextureRegion getTexture(String name) {
         return images.findRegion(name);
+        
     }
 
     public static Array<TextureAtlas.AtlasRegion> getRegion(String name) {

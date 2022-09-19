@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 public enum Shops {
 
-    POTION_SHOP(ShopItems.HEAL_POTION);
+    POTION_SHOP(ShopItems.HEAL_POTION, ShopItems.STRENGTH_POTION, ShopItems.SPEED_POTION);
 
     Shops(ShopItems... items) {
         this.items = Arrays.asList(items);
@@ -19,11 +19,12 @@ public enum Shops {
 
     @Getter
     public enum ShopItems {
-        HEAL_POTION(InventoryItem.HEAL_POTION, 5,"Dieser Trank wird dich um eine Herz heilen!"),
-        STRENGTH_POTION(InventoryItem.STRENGTH_POTION, 10,"Dieser Trank verdoppelt deine Angriffkraft um das 2x-Fache für " + InventoryItem.STRENGTH_POTION.getEffect().getDuration());
+        HEAL_POTION(5,"Dieser Trank wird dich um eine Herz heilen!"),
+        STRENGTH_POTION(10,"Dieser Trank verdoppelt deine Angriffkraft um das 2x-Fache für " + InventoryItem.STRENGTH_POTION.getEffect().getDuration()),
+        SPEED_POTION(5,"Dieser Trank erhöht deine Laufgeschwindigkeit");
 
-        ShopItems(InventoryItem inventoryItem, int price, String info) {
-            this.inventoryItem = inventoryItem;
+        ShopItems(int price, String info) {
+            this.inventoryItem = InventoryItem.valueOf(this.name());
             this.price = price;
             this.info = info;
         }
