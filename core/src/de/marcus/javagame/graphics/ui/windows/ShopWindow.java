@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.SnapshotArray;
 import de.marcus.javagame.datahandling.data.shop.Shops;
 import de.marcus.javagame.entities.Player;
 import de.marcus.javagame.graphics.ui.elements.ScrollPaneShop;
+import de.marcus.javagame.managers.TextureManager;
 import de.marcus.javagame.misc.Util;
 
 
@@ -43,7 +44,6 @@ public class ShopWindow extends Window {
 
         setPosition(screenWidth / 4.0f, screenHeight / 4.0f);
         setSize(screenWidth / 2.0f, screenHeight / 2.0f);
-        TextureRegionDrawable drawableBackground = new TextureRegionDrawable(new TextureRegion(new Texture("shop_background.png")));
         TextureRegionDrawable drawable = new TextureRegionDrawable(new Texture("potion_selected.png"));
         TextureRegionDrawable potion = new TextureRegionDrawable(new Texture("items/heal_potion.png"));
         Table priceTable = new Table();
@@ -157,6 +157,7 @@ public class ShopWindow extends Window {
         stage.setScrollFocus(shop);
 
 
+
     }
 
 
@@ -192,5 +193,72 @@ public class ShopWindow extends Window {
     public void act(float delta) {
         super.act(delta);
 
+    }
+
+    public void generateShop(Shops shop) {
+        Table table = new Table();
+        int i = 0;
+        for (Shops.ShopItems item : shop.getItems()) {
+            i++;
+            TextureRegionDrawable potion = new TextureRegionDrawable(TextureManager.getTexture(item.name().toLowerCase()));
+            TextButton button = new TextButton("", new ImageTextButton.ImageTextButtonStyle(potion, null, null, new BitmapFont()));
+            Image image = new Image(potion);
+            image.addAction(Actions.alpha(0));
+
+            if (i > 2) {
+                button.addAction(Actions.alpha(0));
+            }
+            button.setName(item.name());
+
+            Stack stack = new Stack();
+            stack.add(image);
+            stack.add(button);
+
+
+            stack.addListener(new ClickListener() {
+                @Override
+                public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                    super.enter(event, x, y, pointer, fromActor);
+
+
+                    SnapshotArray<Actor> child = ((Stack) event.getListenerActor()).getChildren();
+                    Shops.ShopItems shopItem = Shops.ShopItems.valueOf(child.get(1).getName());
+
+
+                    priceLabel.setText(shopItem.getPrice());
+                    priceLabel.addAction(Actions.fadeIn(0.5f));
+                    itemInformationLabel.setText(shopItem.getInfo());
+                    itemInformationLabel.addAction(Actions.fadeIn(0.5f));
+
+                    child.get(0).addAction(Actions.forever(Actions.sequence(Actions.fadeIn(2f), Actions.alpha(0.75f,5f))));
+                }
+
+                @Override
+                public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                    super.exit(event, x, y, pointer, toActor);
+
+                    SnapshotArray<Actor> child = ((Stack) event.getListenerActor()).getChildren();
+
+
+                    priceLabel.addAction(Actions.fadeOut(0.5f));
+                    itemInformationLabel.addAction(Actions.fadeOut(0.5f));
+
+                    Actor image = child.get(0);
+                    for (Action actionFromList : image.getActions()) {
+                        image.removeAction(actionFromList);
+                    }
+                    image.addAction(Actions.fadeOut(0.5f));
+                }
+
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
+                    System.out.println("Button " + event.getListenerActor());
+                    buy(((Stack) event.getListenerActor()).getChildren().get(1).getName());
+                }
+            });
+            table.add(stack).size(Value.percentWidth(1/6f,this),Value.percentWidth(1/6f,this)).padLeft(Value.percentWidth((1f/2f)/6f,this)).padRight(Value.percentWidth((1f/2f)/6f,this));
+
+        }
     }
 }

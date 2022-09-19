@@ -1,0 +1,51 @@
+{
+  "inventory_data": [
+    {
+      "itemCount": 1,
+      "item": "STRENGTH_POTION"
+    }
+  ],
+  "money": 200,
+  "hotbar_data": [
+    {
+      "itemCount": 0,
+      "item": null
+    },
+    {
+      "itemCount": 0,
+      "item": null
+    },
+    {
+      "itemCount": 0,
+      "item": null
+    },
+    {
+      "itemCount": 0,
+      "item": null
+    },
+    {
+      "itemCount": 0,
+      "item": null
+    },
+    {
+      "itemCount": 0,
+      "item": null
+    },
+    {
+      "itemCount": 0,
+      "item": null
+    },
+    {
+      "itemCount": 0,
+      "item": null
+    },
+    {
+      "itemCount": 0,
+      "item": null
+    },
+    {
+      "itemCount": 0,
+      "item": null
+    }
+  ]
+}

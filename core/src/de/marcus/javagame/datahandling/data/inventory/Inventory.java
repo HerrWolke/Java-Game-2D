@@ -160,7 +160,6 @@ public class Inventory extends Loadable {
 
         for (int i = 0; i < inventory.size(); i++) {
             InventorySlot inventorySlot = inventory.get(i);
-            inventorySlot.createTexture();
             inventoryWindow.setItemAtPosition(i, inventorySlot.getTexture(), inventorySlot.getItemCount());
         }
 
@@ -168,7 +167,6 @@ public class Inventory extends Loadable {
             InventorySlot inventorySlot = hotbar.get(i);
 
             if (inventorySlot.getItem() != null) {
-                inventorySlot.createTexture();
                 inventoryWindow.setItemIntoHotbar(i, inventorySlot.getTexture(), inventorySlot.getItemCount());
             }
         }
@@ -193,8 +191,6 @@ public class Inventory extends Loadable {
                 System.out.println("slot " + quickbarSlot);
                 hotbar.set(quickbarSlot, slot);
 
-                if(slot.getTexture() == null)
-                    slot.createTexture();
 
                 inventoryWindow.addToQuickbar(quickbarSlot, slot.getTexture());
 

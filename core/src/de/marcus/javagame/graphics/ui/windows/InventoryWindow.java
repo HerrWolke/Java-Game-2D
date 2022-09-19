@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -325,12 +326,12 @@ public class InventoryWindow extends Window {
         startButton.setChecked(true);
     }
 
-    public void addToQuickbar(int quickbarSlot, Texture texture) {
+    public void addToQuickbar(int quickbarSlot, TextureRegion texture) {
         Image currentSelected = (Image) hotbar.getChild(Math.abs(quickbarSlot - (hotbar.getChildren().size - 1)));
         currentSelected.setDrawable(new TextureRegionDrawable(texture));
     }
 
-    public void setItemAtPosition(int i, Texture texture, int itemCount) {
+    public void setItemAtPosition(int i, TextureRegion texture, int itemCount) {
         Image child = (Image) placeholders.getChild(i);
         Label label = (Label) placeholderNumbers.getChild(i);
         if (texture != null) {
@@ -342,7 +343,7 @@ public class InventoryWindow extends Window {
         }
     }
 
-    public void setItemIntoHotbar(int i, Texture texture, int itemCount) {
+    public void setItemIntoHotbar(int i, TextureRegion texture, int itemCount) {
         Image child = (Image) hotbar.getChild(i);
         if (texture != null) {
             child.setDrawable(new TextureRegionDrawable(texture));
