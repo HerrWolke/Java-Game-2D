@@ -21,6 +21,7 @@ import de.marcus.javagame.managers.SoundManager;
 import de.marcus.javagame.misc.Util;
 import lombok.Getter;
 
+//TODO: Add money counter to top left UI!
 @Getter
 public class UI {
     /**
@@ -49,6 +50,7 @@ public class UI {
     Table playerInfoUIContainer;
     ProgressBar healthBar;
     ProgressBar armorBar;
+
 
 
     /**

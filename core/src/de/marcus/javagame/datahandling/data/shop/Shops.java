@@ -9,7 +9,8 @@ import java.util.List;
 @Getter
 public enum Shops {
 
-    POTION_SHOP(ShopItems.HEAL_POTION, ShopItems.STRENGTH_POTION, ShopItems.SPEED_POTION);
+    POTION_SHOP(ShopItems.HEAL_POTION, ShopItems.STRENGTH_POTION, ShopItems.SPEED_POTION),
+    EQUIPMENT_SHOP();
 
     Shops(ShopItems... items) {
         this.items = Arrays.asList(items);

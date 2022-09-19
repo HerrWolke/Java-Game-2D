@@ -12,12 +12,16 @@ import lombok.Getter;
 @Getter
 public enum InventoryItem {
 
+    //Default, Non Deletable Items
     COIN(Inventory.INFINITE_STACK, false, false),
     MAP(Inventory.MAX_WEAPON_STACK, false, false),
     STARTER_SWORD(Inventory.MAX_WEAPON_STACK, false, true),
+
+    //Potions
     HEAL_POTION(Inventory.MAX_POTION_STACK, true, true, new StatusEffect(EffectType.HEAL, 1000)),
     STRENGTH_POTION(Inventory.MAX_POTION_STACK, true, true, new StatusEffect(EffectType.STRENGTH, 1000)),
-    SPEED_POTION(Inventory.MAX_POTION_STACK,true,true,new StatusEffect(EffectType.HEAL,1000));
+    SPEED_POTION(Inventory.MAX_POTION_STACK,true,true,new StatusEffect(EffectType.HEAL,1000))
+    ;
 
     InventoryItem(int maxStackSize, boolean deletable, boolean hotbarSelectable) {
         this.maxStackSize = maxStackSize;
