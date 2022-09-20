@@ -22,7 +22,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Entity {
+public class Entity{
     protected Vector2 position;
 
     @JsonIgnore

@@ -107,7 +107,7 @@ public class InputManager implements InputProcessor {
 
         if (keycode == Input.Keys.NUMPAD_9) {
             System.out.println("hit the key");
-            ui.getDialogWindow().getDialogHandler().setCurrentDialog(DialogHandler.Dialogs.TEST_DIALOG);
+            ui.getDialogWindow().getDialogHandler().setCurrentDialog(DialogHandler.Dialogs.WEAPON_SHOP_DIALOG);
         }
 
         if (keycode == Input.Keys.NUMPAD_6) {

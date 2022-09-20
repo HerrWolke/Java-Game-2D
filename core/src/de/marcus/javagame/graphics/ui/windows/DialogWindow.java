@@ -13,12 +13,14 @@ import com.badlogic.gdx.utils.Align;
 import com.rafaskoberg.gdx.typinglabel.TypingAdapter;
 import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 import de.marcus.javagame.datahandling.data.dialog.Dialog;
+import de.marcus.javagame.datahandling.data.shop.Shops;
 import de.marcus.javagame.graphics.ui.UI;
 import de.marcus.javagame.handlers.DialogHandler;
 import de.marcus.javagame.misc.Util;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Getter
 public class DialogWindow extends Window {
@@ -62,6 +64,9 @@ public class DialogWindow extends Window {
         dialog.setTypingListener(new TypingAdapter() {
             public void event(String event) {
                 System.out.println("Received text event: " + event);
+                if(event.equalsIgnoreCase("OpenShop")) {
+                    ui.getShopWindow().generateShop(Shops.POTION_SHOP);
+                }
             }
 
             public void end() {
@@ -155,13 +160,16 @@ public class DialogWindow extends Window {
 
     private void moveSelector(int moveY) {
         int nextSelection = currentSelectedOption + moveY;
+        System.out.println("sel next" + nextSelection);
         if (nextSelection > -1 && nextSelection < postion.getChildren().size) {
+
             ImageTextButton old = (ImageTextButton) postion.getChild(currentSelectedOption);
             old.setChecked(false);
 
             ImageTextButton newButton = (ImageTextButton) postion.getChild(nextSelection);
             newButton.setChecked(true);
 
+            System.out.println("setting sel");
             currentSelectedOption = nextSelection;
         }
     }
@@ -186,21 +194,42 @@ public class DialogWindow extends Window {
             ImageTextButton imageTextButton = (ImageTextButton) postion.getChild(i);
             imageTextButton.setVisible(false);
         }
+        currentSelectedOption = 0;
         String menuTitle = arg.getDialogTitle();
         String dialogText = arg.getDialogText();
         List<String> texts = arg.getButtonTexts();
+        boolean fitsOnScreen = true;
+        for (String text : texts) {
+            if(text.length() > 52) {
+                fitsOnScreen = false;
+                break;
+            }
+        }
 
-        if (menuTitle.length() < 18 && dialogText.length() < 280) {
+        if (menuTitle.length() < 18 && dialogText.length() < 280 && fitsOnScreen) {
             System.out.println("menu title " + menuTitle);
             label.setText(menuTitle);
             dialog.setText("");
-            dialog.setText("{SLOWER}{EASE=1;1;true}" + dialogText);
+            StringBuilder dialogTextTimingBuilder = new StringBuilder();
+            for (char currentChar :dialogText.toCharArray()) {
+                if (String.valueOf(currentChar).matches("[^,]\\p{Punct}")) {
+                    dialogTextTimingBuilder.append(currentChar).append("{WAIT}");
+                } else if(String.valueOf(currentChar).matches("\\p{Punct}")){
+                    dialogTextTimingBuilder.append(currentChar).append("{WAIT=0.5}");
+                } else {
+                    dialogTextTimingBuilder.append(currentChar);
+                }
+            }
+
+            dialog.setText("{SLOWER}{EASE=1;1;true}" + dialogTextTimingBuilder);
             for (int i = 0; i < postion.getChildren().size; i++) {
                 ImageTextButton imageTextButton = (ImageTextButton) postion.getChild(i);
                 imageTextButton.setText(texts.get(i));
             }
             return true;
         } else {
+            System.out.println("Fatal Error. Text is too long!");
+            System.exit(-1);
             return false;
         }
     }

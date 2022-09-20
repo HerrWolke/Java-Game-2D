@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.marcus.javagame.datahandling.Loadable;
 import de.marcus.javagame.datahandling.data.datahandling.SavedataHandler;
 import de.marcus.javagame.datahandling.data.inventory.Inventory;
 import de.marcus.javagame.datahandling.data.inventory.InventoryItem;

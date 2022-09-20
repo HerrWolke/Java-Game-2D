@@ -9,6 +9,8 @@ public class DialogBuilder {
     private List<Dialog> nextDialogs;
     private String dialogTitel;
 
+    private boolean topDialog;
+
     public DialogBuilder setDialogText(String dialogText) {
         this.dialogText = dialogText;
         return this;
@@ -25,11 +27,18 @@ public class DialogBuilder {
     }
 
     public DialogBuilder setNextDialogs(Dialog... dialogs) {
+
         this.nextDialogs = Arrays.asList(dialogs);
         return this;
     }
 
     public Dialog createDialog() {
-        return new Dialog(dialogTitel, dialogText, buttonTexts, nextDialogs);
+        return new Dialog(dialogTitel, dialogText, buttonTexts, nextDialogs, topDialog);
+    }
+
+
+    public DialogBuilder markAsTop() {
+        this.topDialog = true;
+        return this;
     }
 }
