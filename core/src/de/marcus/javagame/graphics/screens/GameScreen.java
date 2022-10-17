@@ -21,7 +21,7 @@ public class GameScreen extends AbstractScreen {
 
 
     InputManager inputManager;
-    World world;
+
 
 
     GameWorld gameWorld;
@@ -49,7 +49,7 @@ public class GameScreen extends AbstractScreen {
         super(app);
         //app.dispose();
 
-        world = new World(new Vector2(0, 0), true);
+
 
         entityManager = SavedataHandler.load(EntityManager.class);
         entityManager.getPlayer().setUI(stage);
@@ -75,13 +75,13 @@ public class GameScreen extends AbstractScreen {
 
         //TODO: Player body
         //setzt Body in Player
-        entityManager.getPlayer().setPlayerBody(world.createBody(entityManager.getPlayer().getPlayerBodyDef()));
+        entityManager.getPlayer().setPlayerBody(gameWorld.getWorld().createBody(entityManager.getPlayer().getPlayerBodyDef()));
         //setzt die fixture
         entityManager.getPlayer().setPlayerFixture(entityManager.getPlayer().getPlayerBody().createFixture(entityManager.getPlayer().getPlayerFixtureDef()));
-        entityManager.getPlayer().setSwordBody((world.createBody(entityManager.getPlayer().getSwordBodyDef())));
+        entityManager.getPlayer().setSwordBody((gameWorld.getWorld().createBody(entityManager.getPlayer().getSwordBodyDef())));
         entityManager.getPlayer().setSwordFixture(entityManager.getPlayer().getSwordBody().createFixture(entityManager.getPlayer().getSwordFixtureDef()));
-        world.setContactListener(new ContactListenerExtern(this));
-        gameWorld.setMap(4);
+        gameWorld.getWorld().setContactListener(new ContactListenerExtern(this));
+        gameWorld.setMap(0);
 
     }
 
@@ -90,10 +90,8 @@ public class GameScreen extends AbstractScreen {
         //story spawns etc
         inputManager.handleMovement();
         ui.update(entityManager.getPlayer().getPosition().x, entityManager.getPlayer().getPosition().y);
-        if (gameWorld.load2) {
-            gameWorld.load2 = false;
-        }
-        world.step(1 / 60f, 6, 2);
+
+        gameWorld.getWorld().step(1 / 60f, 6, 2);
     }
 
     @Override
@@ -112,7 +110,7 @@ public class GameScreen extends AbstractScreen {
         batch.setProjectionMatrix(entityManager.getPlayer().getCamera().combined);
         gameWorld.render(entityManager.getPlayer().getCamera());
         entityManager.render(batch);
-        debugRenderer.render(world, entityManager.getPlayer().getCamera().combined);
+        debugRenderer.render(gameWorld.getWorld(), entityManager.getPlayer().getCamera().combined);
 
 //        font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 20);
 
@@ -125,7 +123,7 @@ public class GameScreen extends AbstractScreen {
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-        world.step(1 / 60f, 6, 2);
+        gameWorld.getWorld().step(1 / 60f, 6, 2);
     }
 
     @Override
