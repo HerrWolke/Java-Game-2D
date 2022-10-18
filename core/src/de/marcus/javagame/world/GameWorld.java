@@ -66,6 +66,7 @@ public class GameWorld {
                     BodyDef bodydef = new BodyDef();
                     bodydef.type = StaticBody;
                     Body bod = world.createBody(bodydef);
+
                     bodydef.position.set(new Vector2(0, 10));
                     float[] vertices = p.getVertices();
 
@@ -75,7 +76,7 @@ public class GameWorld {
                     }
 
                     gb.set(vertices);
-
+                    bod.createFixture(gb,0.0f);
                 }
 
             }

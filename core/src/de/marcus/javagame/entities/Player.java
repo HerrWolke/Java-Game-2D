@@ -62,6 +62,14 @@ public class Player extends Creature {
                 TextureManager.getAnimation("running", true, 0.25f),
                 TextureManager.getAnimation("running", true, 0.25f)
         ));
+
+        inventory = SavedataHandler.load(Inventory.class);
+        inventory.setPlayer(this);
+        camera = initialiseCamera();
+
+
+    }
+    public void createCollisionPlayer(){
         playerBodyDef = new BodyDef();
         circle = new CircleShape();
         playerFixtureDef = new FixtureDef();
@@ -89,11 +97,6 @@ public class Player extends Creature {
         swordFixtureDef.shape = swordShape;
         swordFixtureDef.density = 0f;
         swordFixtureDef.friction = 0.2f;
-        inventory = SavedataHandler.load(Inventory.class);
-        inventory.setPlayer(this);
-        camera = initialiseCamera();
-
-
     }
     public void setSwordPosition(){
               if(super.getActiveAnimation() == 0 || super.getActiveAnimation() == 4){

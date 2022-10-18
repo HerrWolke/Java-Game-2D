@@ -74,6 +74,7 @@ public class GameScreen extends AbstractScreen {
 
 
         //TODO: Player body
+        entityManager.getPlayer().createCollisionPlayer();
         //setzt Body in Player
         entityManager.getPlayer().setPlayerBody(gameWorld.getWorld().createBody(entityManager.getPlayer().getPlayerBodyDef()));
         //setzt die fixture
