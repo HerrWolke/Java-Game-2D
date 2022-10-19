@@ -8,6 +8,8 @@ import de.marcus.javagame.managers.TextureManager;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 
 @Getter
 @Setter
@@ -16,12 +18,16 @@ public class InventorySlot {
 
     private int itemCount;
 
+    private String uuid;
+
     private InventoryItem item;
 
 
     public InventorySlot(InventoryItem item, int itemCount) {
         this.itemCount = itemCount;
         this.item = item;
+        this.uuid = UUID.randomUUID().toString();
+
     }
 
     public InventorySlot() {
@@ -47,6 +53,10 @@ public class InventorySlot {
     @JsonIgnore
     public TextureRegion getTexture() {
         return TextureManager.getTexture(item.name().toLowerCase());
+    }
+
+    public String getUuid() {
+        return uuid == null ? "" : uuid;
     }
 }
 

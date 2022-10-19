@@ -80,8 +80,11 @@ public class UI {
     //To layer the hotbar Item above the hotbar slot (show it "inside" of slot)
     Group hotbarGroup;
 
+    Player player;
+
     public UI(Stage stage, Player player) {
         this.stage = stage;
+        this.player = player;
         //MAIN TABLE
         mainUIContainer = new Table();
         mainUIContainer.setFillParent(true);

@@ -1,6 +1,8 @@
 package de.marcus.javagame.io.logging;
 
 
+import lombok.Getter;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -11,10 +13,15 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 @Logging(displayName = "LoggingSystem")
+@Getter
 public class LoggingSystem {
     Logger logger = new Logger(this, Logger.Lvl.DEFAULT);
+    Logger debugger = new Logger(this,Logger.Lvl.DEBUG);
+
     public static String dateLogName;
     public static final String LOG_FOLDER = "Logs/";
+
+
 
     public LoggingSystem() {
         initialize();

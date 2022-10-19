@@ -13,6 +13,8 @@ import de.marcus.javagame.managers.EntityManager;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -22,7 +24,8 @@ import java.util.Map;
  */
 public class SavedataHandler {
     public static String settingsFilePath = "Rising Mage/Settings/game.settings";
-    public static String dataPath = "RisingMage/Data/";
+    private static final String userprofile = System.getenv("USERPROFILE");
+    public static String dataPath = String.format("%s/.prefs/Rising Mage/Data/",userprofile.replaceAll("\\\\","/"));
     private static Preferences preferences;
 
     /**
@@ -38,20 +41,20 @@ public class SavedataHandler {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         String name = toLoad.getSimpleName().toLowerCase();
-        System.out.println(name + ".json");
-        File file = new File(name + ".json");
+//        System.out.println(dataPath + name + ".json");
+        File file = new File(dataPath + name + ".json");
 
         if (file.exists()) {
 
             try {
-                System.out.println("Loading data");
+//                System.out.println("Loading data");
                 return mapper.readValue(file, toLoad);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         } else {
             try {
-                System.out.println("File does not exist. Instantiating new object");
+//                System.out.println("File does not exist. Instantiating new object");
                 //gets the no args constructor and creates a new object to return
                 return toLoad.getConstructor().newInstance();
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
@@ -75,10 +78,11 @@ public class SavedataHandler {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         String name = loadable.getClass().getSimpleName().toLowerCase();
-        System.out.println(name);
-        File file = new File(name + ".json");
+        System.out.println(dataPath + name + ".json");
+        File file = new File(dataPath + name + ".json");
 
         try {
+            Files.createDirectories(new File(dataPath).toPath());
             mapper.writeValue(file, loadable);
 
         } catch (IOException e) {
@@ -90,6 +94,11 @@ public class SavedataHandler {
         if (preferences == null)
             preferences = Gdx.app.getPreferences(settingsFilePath);
         return preferences;
+    }
+
+    public static void test() {
+        preferences.putBoolean("test",true);
+        preferences.flush();
     }
 
     public static void setPreference(Map<String, ?> map) {

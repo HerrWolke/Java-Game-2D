@@ -9,6 +9,7 @@ import de.marcus.javagame.datahandling.data.datahandling.SavedataHandler;
 import de.marcus.javagame.datahandling.data.shop.Shops;
 import de.marcus.javagame.entities.Player;
 import de.marcus.javagame.graphics.ui.UI;
+import de.marcus.javagame.graphics.ui.windows.InventoryWindow;
 import de.marcus.javagame.handlers.DialogHandler;
 
 import java.util.HashMap;
@@ -118,11 +119,16 @@ public class InputManager implements InputProcessor {
             ui.getInventoryWindow().handleInput(keycode, ui);
         }
 
+        if(ui.getShopWindow().isVisible() && InventoryWindow.InventoryControlKey.CLOSE_MENU.contains(keycode)) {
+            ui.getShopWindow().setVisible(false);
+        }
+
         if (ui.getDialogWindow().isVisible()) {
             if (ui.getDialogWindow().areDialogButtonsVisible()) {
                 ui.getDialogWindow().handleInput(keycode);
             } else {
                 if (!ui.getDialogWindow().getDialogHandler().isDialogActive()) {
+                    System.out.println("Dialog is inactive. Closing window");
                     ui.getDialogWindow().setVisible(false);
                 }
             }

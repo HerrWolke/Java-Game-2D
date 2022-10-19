@@ -3,6 +3,7 @@ package de.marcus.javagame.world;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -14,6 +15,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import lombok.Getter;
+
+import java.util.Arrays;
 
 import static com.badlogic.gdx.physics.box2d.BodyDef.BodyType.StaticBody;
 
@@ -36,38 +39,48 @@ public class GameWorld {
 
     public GameWorld(OrthographicCamera camera) {
 
-        world = new World(new Vector2(0, 0), true);
+         world = new World(new Vector2(0, 0), true);
         AssetManager assetManager = new AssetManager();
         TmxMapLoader tmxMapLoader = new TmxMapLoader();
-      tiledMap = tmxMapLoader.load("word_tmx/Tilemap.tmx");
-        dungeonEingang = tmxMapLoader.load("word_tmx/EingangDungeon.tmx");
-        boss = tmxMapLoader.load("word_tmx/Boss.tmx");
-        dungeonRechts = tmxMapLoader.load("word_tmx/Boss.tmx");
-        dungeonLinks = tmxMapLoader.load("word_tmx/linksDungeon.tmx");
-        //mine = tmxMapLoader.load("word_tmx/Innenraum1.tmx");
+        tiledMap = tmxMapLoader.load("word_tmx/Tilemap.tmx");
+//        dungeonEingang = tmxMapLoader.load("word_tmx/EingangDungeon.tmx");
+//        boss = tmxMapLoader.load("word_tmx/Boss.tmx");
+        dungeonRechts = tmxMapLoader.load("word_tmx/boss.tmx");
+//        dungeonLinks = tmxMapLoader.load("word_tmx/linksDungeon.tmx");
+//        mine = tmxMapLoader.load("word_tmx/Innenraum1.tmx");
         renderer = new OrthogonalTiledMapRenderer(dungeonRechts, UNIT_SCALE);
         renderer.setView(camera);
-        renderer.setMap(tiledMap);
+        renderer.setMap(dungeonRechts);
         MapLayer collisionObjectLayer = tiledMap.getLayers().get("Nicht Betretbar");
+        MapLayers tiledMapLayers = tiledMap.getLayers();
+
         MapObjects objects = collisionObjectLayer.getObjects();
-        for(PolygonMapObject mapobject : objects.getByType(PolygonMapObject.class)){
-            Polygon p = mapobject.getPolygon(); //
-            PolygonShape gb = new PolygonShape();
-            BodyDef bodydef = new BodyDef();
-            bodydef.type =  StaticBody;
-            Body bod = world.createBody(bodydef);
 
-            bodydef.position.set(new Vector2(0, 10));
-            float[] vertices = p.getVertices();
-
-            for (int id = 0; id < vertices.length; id += 2) {
-                vertices[id]   = (p.getX() + vertices[id])   ;
-                vertices[id+1] = (p.getY() + vertices[id+1]) ;
-            }
-
-            gb.set(vertices);
-            bod.createFixture(gb,0.0f);
-        }
+        System.out.println();
+//        for(PolygonMapObject mapobject : objects.getByType(PolygonMapObject.class)){
+//            Polygon p = mapobject.getPolygon(); //
+//            PolygonShape gb = new PolygonShape();
+//            BodyDef bodydef = new BodyDef();
+//            bodydef.type =  StaticBody;
+//            Body bod = world.createBody(bodydef);
+//
+//            bodydef.position.set(new Vector2(0, 10));
+//            float[] vertices = p.getVertices();
+//            System.out.println("vertices " + vertices.length);
+//
+//            for (int id = 0; id < vertices.length; id += 2) {
+//                vertices[id]   = (p.getX() + vertices[id])   ;
+//                vertices[id+1] = (p.getY() + vertices[id+1]) ;
+//            }
+//
+//            float[] vert =  {555.5f,333f,222f,111f};
+//
+//            System.out.println(vert.length);
+//            System.out.println(Arrays.toString(vert));
+//            gb.set(vert);
+//            System.out.println("no error yet");
+//            bod.createFixture(gb,0.0f);
+//        }
     }
 
     public void render(OrthographicCamera camera) {

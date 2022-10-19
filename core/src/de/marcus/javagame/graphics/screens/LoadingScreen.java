@@ -16,11 +16,9 @@ public class LoadingScreen extends Game {
     Animation<TextureRegion> loadingAnimation;
     TextureAtlas atlas;
     boolean loaded;
-    public static LoggingSystem loggingSystem;
 
     @Override
     public void create() {
-        loggingSystem = new LoggingSystem();
 
 
         g = new GameScreenManager(this);

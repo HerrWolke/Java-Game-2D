@@ -1,5 +1,8 @@
 package de.marcus.javagame.handlers;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.marcus.javagame.datahandling.data.DialogCompletionData;
+import de.marcus.javagame.datahandling.data.datahandling.SavedataHandler;
 import de.marcus.javagame.datahandling.data.dialog.Dialog;
 import de.marcus.javagame.datahandling.data.dialog.DialogBuilder;
 import de.marcus.javagame.graphics.ui.windows.DialogWindow;
@@ -9,15 +12,37 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DialogHandler {
+
+    @JsonIgnore
+    private Dialogs currentDialogType;
+
+    @JsonIgnore
     private boolean isDialogActive;
+    @JsonIgnore
     private Dialog currentDialog;
 
+    @JsonIgnore
     private DialogWindow window;
+
+    private DialogCompletionData dialogCompletionData;
 
     public DialogHandler(DialogWindow window) {
         isDialogActive = false;
         currentDialog = Dialogs.WEAPON_SHOP_DIALOG.dialog;
         this.window = window;
+        dialogCompletionData = SavedataHandler.load(DialogCompletionData.class);
+        dialogCompletionData.completeDialog(Dialogs.DIALOG_DEFAULT);
+        dialogCompletionData.completeDialog(Dialogs.WEAPON_SHOP_DIALOG);
+        SavedataHandler.save(dialogCompletionData);
+
+    }
+
+    public boolean hasDialogBeenCompletedBefore(Dialogs dialog) {
+        return dialogCompletionData.getCompletedDialogs().contains(dialog);
+    }
+
+    public boolean hasCurrentDialogBeenCompletedBefore() {
+        return dialogCompletionData.getCompletedDialogs().contains(currentDialogType);
     }
 
     public Dialog dialogButtonPressed(int buttonNumber) {
@@ -33,33 +58,39 @@ public class DialogHandler {
     public void setCurrentDialog(Dialogs currentDialog) {
         isDialogActive = true;
         this.currentDialog = currentDialog.dialog;
+        this.currentDialogType = currentDialog;
         window.setVisible(true);
         window.setDialogMenuOptions(currentDialog.dialog);
-
     }
 
     public boolean isDialogFinished() {
-        this.isDialogActive = false;
-        return currentDialog.getNextDialogs().isEmpty();
+        boolean empty = currentDialog.getNextDialogs().isEmpty();
+        System.out.println("This dialog is now " + empty);
+        this.isDialogActive = !empty;
+        if(!isDialogActive) {
+
+            System.out.println("Overwriting dialog");
+        }
+        return empty;
     }
 
 
     /**
-     * How to build a dialog
+     * Wie erstellt man einen Dialog?
      * <br><br>
      *
      * <p>1. Copy the {@link DialogHandler.Dialogs#DIALOG_DEFAULT}</p><br>
      * <p>2. What variables? <br>
-     *      <p style="text-indent:40px">2.1. DialogTitle is the text which is to be displayed in top left of dialog box.<b style="color:orange">!!! ONLY NEEDS TO BE SET FOR TOP DIALOG!!!</b></p>
-     *      <p style="text-indent:40px">2.2 DialogText is the stuff the NPC talks to you about</p>
-     *      <p style="text-indent:40px">  2.3 ButtonTexts: (Optional) This only has to be called, if you want to have
-     *      buttons on that dialog. If you just want some text (for example if its the last dialog or a monologue) then no buttons are needed so dont call the
-     *          .setButtonTexts();</p>
-     *      <p style="text-indent:40px"> 2.4 NextDialogs: (Optional if Button Texts is not set) This only has to be called when ButtonTexts are set. The first button text will lead to the first follow
-     *      up dialog, the second text to the second dialog specified etc.  <b style="color:red">THERE CAN NEVER BE MORE THAN THREE!!!!</b></p>
+     *      <p style="text-indent:40px">2.1. DialogTitle der oben links im Dialog angezeigt werden.<b style="color:orange">!!! Muss nur für die Klasse gesetzt werden, bei der .markAsTop aufgerufen würde(oberste)!!!</b></p>
+     *      <p style="text-indent:40px">2.2 DialogText der Text über den der NPC redet</p>
+     *      <p style="text-indent:40px">  2.3 ButtonTexts: (Optional) Diese Methode muss nur aufgerufen werden, wenn du Buttons haben willst in diesem Dialog.
+     *      Wenn du nur Text willst (z.B. wenn es der letzte Dialog der Reihe ist oder ein Monolog) dann brauchst du die Methode
+     *          .setButtonTexts(); nicht aufzurufen</p>
+     *      <p style="text-indent:40px"> 2.4 NextDialogs: (Optional: Nur wenn Buttons Texts gesetzt wurden). Der erste Button Text führt zum ersten Dialog
+     *      der zweite zum zweiten etc. <b style="color:red">ES KANN NIE MEHR ALS 3 GEBEN!!!!!</b></p>
      * <br>
      * 3. Structure
-     *     <p style="text-indent:40px"> 3.1 The following structure always has to exist:
+     *     <p style="text-indent:40px"> 3.1 Die folgende Struktur muss immer existieren:
      *      new DialogBuilder()
      *      .setDialogTitle("This is the title")
      *      .setDialogText("This is some text")
@@ -67,8 +98,8 @@ public class DialogHandler {
      *      .createDialog()
      *      </p>
      *
-     *  This is the base structure. This will create a dialog window with a title, a text but no buttons.
-     *  When the text is done displaying, you will be told you can now close the dialog. That's it.
+     *  Das ist die Basisstruktur. Dies wird einen Dialog erzeugen, welcher nur Text, einen Titel aber keine Überschrift hat.
+     *  Wenn der Dialog fertig erzählt ist, wird dir gesagt, du kannst Enter drücken, um den Dialog zu schließen
      *
      *  <br>
      *
@@ -77,14 +108,16 @@ public class DialogHandler {
      * 4. Events
      *<br>
      * Available Events:<br>
-     * GiftItem, OpenShop, GiftMoney<br><br>
+     * GiftItem, OpenShop, GiftMoney, DialogFinished<br><br>
      * For all you have to call a second event<br>
+     *
      * This should describe the item using the names from {@link de.marcus.javagame.datahandling.data.inventory.InventoryItem} or the Shop from {@link de.marcus.javagame.datahandling.data.shop.Shops}
-     * or the amount of money (int!)
+     * or the amount of money (int!) or for DialogFinished the name of the dialog
      * <br>
      * Events are called by writing {EVENT=EVENTNAME} in the text
      * <br>
      * Example: "Here you go.{WAIT=1} {EVENT=GiftItem} {EVENT=HEAL_POTION}"
+     *
      *  </p>
      *
      */
@@ -119,6 +152,7 @@ public class DialogHandler {
                         .setNextDialogs(
                                 new DialogBuilder().
                                         setDialogText("Lass mich wissen, wenn du Hilfe brauchst! {EVENT=OpenShop}").
+                                        setAsDefaultDialog().
                                         createDialog(),
                                 new DialogBuilder().
                                         setDialogText("Gerne! Wofür brauchst du denn Ausrüstung?")
@@ -131,12 +165,13 @@ public class DialogHandler {
                                                         setDialogText("Viel Glück dabei! Ich denke dieses Schwert könnte dir sicherlich dabei helfen.{WAIT=1} {EVENT=GiftSword}").
                                                         createDialog(),
                                                 new DialogBuilder().
-                                                        setDialogText("Angriff ist die beste Verteidigung, daher würde ich dir das Schwert aus dem Shop empfehlen.{WAIT=1}{EVENT=OpenShop}").
+                                                        setDialogText("Angriff ist die beste Verteidigung, daher würde ich dir das Schwert aus dem Shop empfehlen.{WAIT=1}{EVENT=OpenShop}{EVENT=DialogFinished}").
                                                         createDialog()
                                         ).
                                         createDialog(),
                                 new DialogBuilder().
                                         setDialogText("Schönen Tag noch, Auf Wiedersehen!").
+                                        setAsDefaultDialog().
                                         createDialog()
                         )
                         .markAsTop()

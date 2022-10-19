@@ -11,6 +11,8 @@ public class DialogBuilder {
 
     private boolean topDialog;
 
+    private boolean disableOnceFinishedOnce = true;
+
     public DialogBuilder setDialogText(String dialogText) {
         this.dialogText = dialogText;
         return this;
@@ -32,13 +34,21 @@ public class DialogBuilder {
         return this;
     }
 
+
+    public DialogBuilder setAsDefaultDialog() {
+        this.disableOnceFinishedOnce = false;
+        return this;
+    }
+
     public Dialog createDialog() {
-        return new Dialog(dialogTitel, dialogText, buttonTexts, nextDialogs, topDialog);
+        System.out.println("The dialog " + dialogText + " is " + disableOnceFinishedOnce);
+        return new Dialog(dialogTitel, dialogText, buttonTexts, nextDialogs, topDialog, disableOnceFinishedOnce);
     }
 
 
     public DialogBuilder markAsTop() {
         this.topDialog = true;
+        this.disableOnceFinishedOnce = false;
         return this;
     }
 }

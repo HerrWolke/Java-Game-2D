@@ -77,6 +77,10 @@ public class ShopWindow extends Window {
         stage.setScrollFocus(shop);
     }
 
+    public void handleInput(int keycode) {
+
+    }
+
 
 
     public void buy(String item) {
@@ -115,7 +119,7 @@ public class ShopWindow extends Window {
                 super.clicked(event, x, y);
                 System.out.println("buying " + item);
                 player.buyItem(item);
-                setVisible(false);
+
             }
         });
         dialog.text(priceLabel2);

@@ -342,12 +342,12 @@ public class InventoryWindow extends Window {
         }
     }
 
-    public void setItemIntoHotbar(int i, TextureRegion texture, int itemCount) {
-        Image child = (Image) hotbar.getChild(i);
+    public void setItemIntoHotbar(int itemPosition, TextureRegion texture, int itemCount) {
+        Image child = (Image) hotbar.getChild(itemPosition);
         if (texture != null) {
             child.setDrawable(new TextureRegionDrawable(texture));
         } else {
-            child.setDrawable(new TextureRegionDrawable(new Texture("placeholder.png")));
+            child.setDrawable(new TextureRegionDrawable(new Texture("placeholder_marked.png")));
         }
     }
 

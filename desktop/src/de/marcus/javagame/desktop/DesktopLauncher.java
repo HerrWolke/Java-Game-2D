@@ -14,9 +14,10 @@ public class DesktopLauncher {
 		config.width = LwjglApplicationConfiguration.getDesktopDisplayMode().width;
 		config.height = LwjglApplicationConfiguration.getDesktopDisplayMode().height;
 		config.fullscreen = false;
+		config.forceExit = false;
 		config.title = "Rising Mage";
 		config.addIcon("items/starter_sword.png", Files.FileType.Internal);
-		config.forceExit = true;
+
 		new LwjglApplication(new LoadingScreen(), config);
 	}
 

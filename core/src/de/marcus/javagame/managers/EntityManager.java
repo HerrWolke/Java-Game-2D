@@ -1,6 +1,7 @@
 package de.marcus.javagame.managers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -40,11 +41,14 @@ public class EntityManager extends Loadable {
     @JsonIgnore
     private float passedAnimTime;
 
+    private Texture test;
+
     public EntityManager() {
         passedAnimTime = 0f;
         this.currentUsedEntities = new LinkedHashMap<>();
         this.memoryLoadedEntities = new LinkedHashMap<>();
         this.player = new Player(60, 80);
+        test = new Texture(Gdx.files.internal("char2.png"));
     }
 
 
@@ -57,6 +61,7 @@ public class EntityManager extends Loadable {
         for (Entity entity : currentUsedEntities.values()) {
             spriteBatch.draw(entity.getTexture(), entity.getPosition().x, entity.getPosition().y);
         }
+        spriteBatch.draw(test,107,125,2.5f,3f);
         spriteBatch.end();
     }
 
