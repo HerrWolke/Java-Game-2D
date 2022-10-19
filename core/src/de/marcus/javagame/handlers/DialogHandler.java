@@ -122,6 +122,16 @@ public class DialogHandler {
      *
      */
     public enum Dialogs {
+        TEST_DIALOG
+            (
+                    new DialogBuilder().
+                    setDialogTitle("Fortnite").
+                    setDialogText("Ich liebe Fortnite").
+                    setButtonTexts("ich auch","Halts maul","Für fortnite").
+                    setNextDialogs(new DialogBuilder().
+                            setDialogText("").
+                            createDialog()).markAsTop().createDialog()),
+
         DIALOG_DEFAULT(
                 new DialogBuilder().
                         setDialogTitle("NPC1").
@@ -178,7 +188,23 @@ public class DialogHandler {
                         .createDialog()
 
 
-        );
+        ), POTION_SHOP_DIALOG(new DialogBuilder().
+        setDialogTitle("Torben - Tränke").
+                setDialogText("Guten Tag Der Herr, was kann ich für sie tun?").
+                setButtonTexts("Guten Tag! Ich benötige Beratung bei den Tränken.","Guten Tag! Ich möchte mich erstmals ein wenig umschauen. ", "Guten Tag! wie viel kosten die Tränke jeweils?  ").
+                setNextDialogs(
+                        new DialogBuilder().
+                                setDialogText("Das kommt auf die Situation an in der sie sich befinden. \n Manchmal muss man sich schnell regenerieren, ein andermal sollte man besser schneller sein als der Gegner und manchmal ist es von Vorteil Stärker zu sein als er.{EVENT=OpenShop}").
+                                createDialog(),
+                        new DialogBuilder().
+                                setDialogText("Falls sie Hilfe benötigen, geben sie mir bescheid. {EVENT=OpenShop}").
+                                createDialog(),
+                        new DialogBuilder().
+                                setDialogText("Der Heiltrank kostet [], der Stärketrank kostet [] und der Geschwindigkeitstrank kostet []. {EVENT=OpenShop}").
+                                createDialog()
+
+                )
+        .markAsTop().createDialog());
 
         Dialogs(Dialog dialog) {
             this.dialog = dialog;

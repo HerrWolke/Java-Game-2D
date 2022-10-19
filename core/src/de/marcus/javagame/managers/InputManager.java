@@ -106,9 +106,9 @@ public class InputManager implements InputProcessor {
             p.setHealth(p.getHealth() + 1);
         }
 
-        if (keycode == Input.Keys.NUMPAD_9) {
+        if (keycode == Input.Keys.NUM_9) {
             System.out.println("hit the key");
-            ui.getDialogWindow().getDialogHandler().setCurrentDialog(DialogHandler.Dialogs.WEAPON_SHOP_DIALOG);
+            ui.getDialogWindow().getDialogHandler().setCurrentDialog(DialogHandler.Dialogs.POTION_SHOP_DIALOG);
         }
 
         if (keycode == Input.Keys.NUMPAD_6) {
