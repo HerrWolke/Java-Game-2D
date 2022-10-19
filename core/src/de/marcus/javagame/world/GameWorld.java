@@ -48,26 +48,7 @@ public class GameWorld {
         renderer = new OrthogonalTiledMapRenderer(dungeonRechts, UNIT_SCALE);
         renderer.setView(camera);
         renderer.setMap(tiledMap);
-        MapLayer collisionObjectLayer = tiledMap.getLayers().get("Nicht Betretbar");
-        MapObjects objects = collisionObjectLayer.getObjects();
-        for(PolygonMapObject mapobject : objects.getByType(PolygonMapObject.class)){
-            Polygon p = mapobject.getPolygon(); //
-            PolygonShape gb = new PolygonShape();
-            BodyDef bodydef = new BodyDef();
-            bodydef.type =  StaticBody;
-            Body bod = world.createBody(bodydef);
 
-            bodydef.position.set(new Vector2(0, 10));
-            float[] vertices = p.getVertices();
-
-            for (int id = 0; id < vertices.length; id += 2) {
-                vertices[id]   = (p.getX() + vertices[id])   ;
-                vertices[id+1] = (p.getY() + vertices[id+1]) ;
-            }
-
-            gb.set(vertices);
-            bod.createFixture(gb,0.0f);
-        }
     }
 
     public void render(OrthographicCamera camera) {
