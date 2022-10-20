@@ -42,7 +42,6 @@ public class SavedataHandler {
         String name = toLoad.getSimpleName().toLowerCase();File file = new File(dataPath + name + ".json");
 
         if (file.exists()) {
-
             try {return mapper.readValue(file, toLoad);
             } catch (IOException e) {
                 throw new RuntimeException(e);

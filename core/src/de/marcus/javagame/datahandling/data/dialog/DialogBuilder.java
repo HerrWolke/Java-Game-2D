@@ -41,7 +41,6 @@ public class DialogBuilder {
     }
 
     public Dialog createDialog() {
-        System.out.println("The dialog " + dialogText + " is " + disableOnceFinishedOnce);
         return new Dialog(dialogTitel, dialogText, buttonTexts, nextDialogs, topDialog, disableOnceFinishedOnce);
     }
 
