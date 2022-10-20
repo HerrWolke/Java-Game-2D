@@ -202,8 +202,10 @@ public class DialogHandler {
                                 .createDialog(),
                         new DialogBuilder().
                                 setDialogText("Der Heiltrank kostet [], der Stärketrank kostet [] und der Geschwindigkeitstrank kostet []. {EVENT=OpenShop}").
-                .setAsDefaultDialog().
-                createDialog()
+                                setAsDefaultDialog().
+                                createDialog()
+                ).
+                markAsTop().createDialog()
 
 
         ),
@@ -248,8 +250,25 @@ public class DialogHandler {
 
         VILLAGER_DIALOG_2(new DialogBuilder().
 
-                setDialogTitle("Quentin - Dorfbewohner"));
+                setDialogTitle("Quentin - Dorfbewohner").
+                setDialogText("Hallo Fremder! Du siehst aus als könntest du Hilfe gebrauchen?").
+                setButtonTexts("Ich suche jemanden ", "Kannten sie meinen Vater? Er war ein großer Magier. ", "Lass mich inn Ruhe!").
+                setNextDialogs(
+                        new DialogBuilder().
+                                setDialogText("Wen suchst du?").
+                                setButtonTexts("Ich suche einen Waffenhändler.", "Ich suche einen Tränkehändler", "Ich suche einen Kartographen").
+                                setNextDialogs(
+                                        new DialogBuilder().
+                                                setDialogText("Da gibt es hier den besten. ").
+                                                createDialog(),
+                                        new DialogBuilder().
+                                                setDialogText("Da gibt es hier den besten. ").
+                                                createDialog(),
+                                        new DialogBuilder().
+                                                setDialogText("Da gibt es hier den besten. ").
+                                                createDialog(),
 
+                new DialogBuilder()
         Dialogs(Dialog dialog) {
             this.dialog = dialog;
         }
@@ -257,3 +276,15 @@ public class DialogHandler {
         private Dialog dialog;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
