@@ -55,11 +55,9 @@ public class Inventory extends Loadable {
         ArrayList<InventorySlot> list = new ArrayList<>(10);
         list.addAll(hotbar);
         this.hotbar = list;
-        System.out.println("size " + hotbar.size());
     }
 
     public Inventory() {
-        System.out.println("Called constructor");
         this.inventory = new ArrayList<>();
         this.hotbar = new ArrayList<>(10);
         this.money = 50;

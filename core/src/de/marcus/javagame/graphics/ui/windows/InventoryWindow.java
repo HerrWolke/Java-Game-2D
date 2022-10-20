@@ -65,9 +65,6 @@ public class InventoryWindow extends Window {
         selectedItemOption = 2;
         this.setResizable(true);
 
-        System.out.println(InventoryControlKey.NAV_KEYS.getControls());
-        System.out.println("screen width: " + screenWidth);
-
         TextureRegionDrawable itemOption = new TextureRegionDrawable(new Texture("item_option.png"));
         itemOption.setMinHeight(height / 8f);
         itemOption.setMinWidth(width / 9f);

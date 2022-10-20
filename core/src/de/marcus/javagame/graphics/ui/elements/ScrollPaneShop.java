@@ -48,8 +48,6 @@ public class ScrollPaneShop extends ScrollPane {
                             fadeIn.setDuration(0.2f * i);
 
 
-//                            System.out.println("Fading out child " + (lastPosition-i) + " fading in child " + (lastPosition+(int)((i-1)*scrollAmountX-(scrollAmountX > 0 ? 0 : 3))));
-
                             /*This Clusterfuck explained:
 
                             This is meant to fade out the elements you are scrolling away from and fade in those you are
@@ -87,8 +85,6 @@ public class ScrollPaneShop extends ScrollPane {
                         lastPosition = (int) (lastPosition + 3 * scrollAmountX);
                     }
 
-
-//                    System.out.println("last pos " + lastPosition + ", scroll direction " + scrollAmountX);
 
                     float width = ((Table) getActor()).getChild(0).getWidth();
 

@@ -107,7 +107,6 @@ public class InputManager implements InputProcessor {
         }
 
         if (keycode == Input.Keys.NUM_9) {
-            System.out.println("hit the key");
             ui.getDialogWindow().getDialogHandler().setCurrentDialog(DialogHandler.Dialogs.POTION_SHOP_DIALOG);
         }
 
@@ -128,7 +127,6 @@ public class InputManager implements InputProcessor {
                 ui.getDialogWindow().handleInput(keycode);
             } else {
                 if (!ui.getDialogWindow().getDialogHandler().isDialogActive()) {
-                    System.out.println("Dialog is inactive. Closing window");
                     ui.getDialogWindow().setVisible(false);
                 }
             }

@@ -41,13 +41,9 @@ public class Dialog {
 
     public void overwriteTitles(Dialog dialog) {
         List<Dialog> nextDials = dialog.getNextDialogs();
-//        System.out.println("next dials are " + nextDials);
         if (nextDials != null) {
             for (Dialog dialogInLoop : nextDials) {
-//                System.out.println("--------------");
-//                System.out.println("Current title for " + dialogInLoop.getDialogText() + " is " + dialogInLoop.getDialogTitle());
                 if (dialogInLoop.getDialogTitle().equalsIgnoreCase("") || dialogInLoop.getDialogTitle() == null) {
-//                    System.out.println("overwriting title for " + dialogInLoop.getDialogText() + " with " + dialogTitle);
                     dialogInLoop.setDialogTitle(dialogTitle);
                     overwriteTitles(dialogInLoop);
                 }

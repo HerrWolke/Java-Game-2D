@@ -119,14 +119,10 @@ public class Creature extends Entity {
 
         //I don't know either
         if (mirrorAnimations && !keyFrame.isFlipX()) {
-//                System.out.println("flip!");
             keyFrame.flip(true, false);
         } else if (!mirrorAnimations && keyFrame.isFlipX()) {
             keyFrame.flip(true, false);
-//                System.out.println("unflip");
         }
-
-//            System.out.println("flip " + keyFrame.isFlipX() + " cause " + mirrorAnimations);
         batch.draw(keyFrame, position.x, position.y, width, height);
     }
 
@@ -150,7 +146,6 @@ public class Creature extends Entity {
 
             //Mirrors animation if the active animation is x movement and player is moving left
             mirrorAnimations = activeAnimation == 3 && (!(x > 0));
-//        System.out.println(mirrorAnimations);
         }
 //        else{
 //            activeAnimation = (y == 0 ?

@@ -39,7 +39,7 @@ public class GameWorld {
         world = new World(new Vector2(0, 0), true);
         AssetManager assetManager = new AssetManager();
         TmxMapLoader tmxMapLoader = new TmxMapLoader();
-      tiledMap = tmxMapLoader.load("word_tmx/Tilemap.tmx");
+        tiledMap = tmxMapLoader.load("word_tmx/Tilemap.tmx");
         dungeonEingang = tmxMapLoader.load("word_tmx/EingangDungeon.tmx");
         boss = tmxMapLoader.load("word_tmx/Boss.tmx");
         dungeonRechts = tmxMapLoader.load("word_tmx/Boss.tmx");

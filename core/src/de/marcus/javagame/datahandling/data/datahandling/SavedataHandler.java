@@ -5,7 +5,7 @@ import com.badlogic.gdx.Preferences;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.marcus.javagame.datahandling.Loadable;
-import de.marcus.javagame.datahandling.data.TestInventoryDoNotTouch;
+import de.marcus.javagame.testing.TestInventoryDoNotTouch;
 import de.marcus.javagame.datahandling.data.inventory.InventoryItem;
 import de.marcus.javagame.datahandling.data.inventory.InventorySlot;
 import de.marcus.javagame.managers.EntityManager;
@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -40,21 +39,16 @@ public class SavedataHandler {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        String name = toLoad.getSimpleName().toLowerCase();
-//        System.out.println(dataPath + name + ".json");
-        File file = new File(dataPath + name + ".json");
+        String name = toLoad.getSimpleName().toLowerCase();File file = new File(dataPath + name + ".json");
 
         if (file.exists()) {
 
-            try {
-//                System.out.println("Loading data");
-                return mapper.readValue(file, toLoad);
+            try {return mapper.readValue(file, toLoad);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         } else {
             try {
-//                System.out.println("File does not exist. Instantiating new object");
                 //gets the no args constructor and creates a new object to return
                 return toLoad.getConstructor().newInstance();
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
@@ -118,15 +112,6 @@ public class SavedataHandler {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         File file = new File("inventory.json");
-//        File entityData = new File("entitymanager.json");
-
-//        EntityManager entityManager = new EntityManager();
-//        Entity entity = new Entity();
-//        entity.setPosition(new Vector2(0, 0));
-//        Entity entity2 = new Entity();
-//        entity2.setPosition(new Vector2(3, 0));
-//
-//        entityManager.spawn(entity2, entity);
 
         TestInventoryDoNotTouch inventory = new TestInventoryDoNotTouch(
                 //inventory
@@ -136,7 +121,6 @@ public class SavedataHandler {
         try {
 
             mapper.writeValue(file, inventory);
-//            mapper.writeValue(entityData, entityManager);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -154,9 +138,7 @@ public class SavedataHandler {
 
         try {
             TestInventoryDoNotTouch inventory = mapper.readValue(file, TestInventoryDoNotTouch.class);
-//            EntityManager entityManager = mapper.readValue(entityData, EntityManager.class);
             System.out.println(inventory.toString());
-//            System.out.println(entityManager.toString());
 
         } catch (IOException e) {
             throw new RuntimeException(e);
