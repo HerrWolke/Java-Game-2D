@@ -1,6 +1,7 @@
 package de.marcus.javagame.managers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.AudioRecorder;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import lombok.Getter;

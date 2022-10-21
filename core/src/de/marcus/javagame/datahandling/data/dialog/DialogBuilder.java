@@ -8,6 +8,7 @@ public class DialogBuilder {
     private List<String> buttonTexts;
     private List<Dialog> nextDialogs;
     private String dialogTitel;
+    private String dialogTextOnceFinished;
 
     private boolean topDialog;
 
@@ -40,8 +41,13 @@ public class DialogBuilder {
         return this;
     }
 
+    public DialogBuilder setDialogTextOnceFinished(String dialogTextOnceFinished) {
+        this.dialogTextOnceFinished = dialogTextOnceFinished;
+        return this;
+    }
+
     public Dialog createDialog() {
-        return new Dialog(dialogTitel, dialogText, buttonTexts, nextDialogs, topDialog, disableOnceFinishedOnce);
+        return new Dialog(dialogTitel, dialogText, buttonTexts, nextDialogs, topDialog, disableOnceFinishedOnce,dialogTextOnceFinished);
     }
 
 

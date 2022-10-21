@@ -207,6 +207,10 @@ public class UI {
         this.notificationDisplayTimeLeft = displayTime;
     }
 
+    public void handleUIInput(int keycode) {
+
+    }
+
     public void initialiseUIElements() {
         //INITIALISE ELEMENTS FOR UI
         BitmapFont font = Util.getFontForScreenSize(stage, 12);

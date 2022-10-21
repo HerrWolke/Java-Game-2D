@@ -16,7 +16,7 @@ public class Dialog {
     private String dialogText;
     private List<String> buttonTexts;
     private List<Dialog> nextDialogs;
-
+    private String dialogTextOnceFinished;
     private boolean disableOnOnceFinished;
 
     /**
@@ -24,8 +24,9 @@ public class Dialog {
      *
      * @param disableOnOnceFinished Describes if the dialog is not to be displayed anymore once the dialog was finished once
      */
-    public Dialog(String title, String dialogText, List<String> buttonTexts, List<Dialog> nextDialogs, boolean topDialog, boolean disableOnOnceFinished) {
+    public Dialog(String title, String dialogText, List<String> buttonTexts, List<Dialog> nextDialogs, boolean topDialog, boolean disableOnOnceFinished, String dialogTextOnceFinished) {
         this.dialogTitle = Objects.requireNonNullElse(title, "");
+        this.dialogTextOnceFinished = Objects.requireNonNullElse(dialogTextOnceFinished, "");
         this.dialogText = Objects.requireNonNullElse(dialogText, "");
         this.buttonTexts = Objects.requireNonNullElse(buttonTexts, Arrays.asList("", "", ""));
         this.nextDialogs = Objects.requireNonNullElse(nextDialogs, new ArrayList<>());

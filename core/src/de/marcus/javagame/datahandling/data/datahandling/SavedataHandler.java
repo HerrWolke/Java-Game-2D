@@ -23,7 +23,7 @@ import java.util.Map;
  */
 public class SavedataHandler {
     public static String settingsFilePath = "Rising Mage/Settings/game.settings";
-    private static final String userprofile = System.getenv("USERPROFILE");
+    public static final String userprofile = System.getenv("USERPROFILE");
     public static String dataPath = String.format("%s/.prefs/Rising Mage/Data/",userprofile.replaceAll("\\\\","/"));
     private static Preferences preferences;
 
