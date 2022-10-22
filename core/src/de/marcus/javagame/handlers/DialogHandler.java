@@ -79,8 +79,8 @@ public class DialogHandler {
      * Wie erstellt man einen Dialog?
      * <br><br>
      *
-     * <p>1. Copy the {@link DialogHandler.Dialogs#DIALOG_DEFAULT}</p><br>
-     * <p>2. What variables? <br>
+     * <p>1. Kopiere den {@link DialogHandler.Dialogs#DIALOG_DEFAULT}</p><br>
+     * <p>2. Welche Variablen? <br>
      * <p style="text-indent:40px">2.1. DialogTitle der oben links im Dialog angezeigt werden.<b style="color:orange">!!! Muss nur für die Klasse gesetzt werden, bei der .markAsTop aufgerufen würde(oberste)!!!</b></p>
      * <p style="text-indent:40px">2.2 DialogText der Text über den der NPC redet</p>
      * <p style="text-indent:40px">  2.3 ButtonTexts: (Optional) Diese Methode muss nur aufgerufen werden, wenn du Buttons haben willst in diesem Dialog.
@@ -107,14 +107,14 @@ public class DialogHandler {
      * <br>
      * 4. Events
      * <br>
-     * Available Events:<br>
+     * Verfügbare Events:<br>
      * GiftItem, OpenShop, GiftMoney, DialogFinished<br><br>
-     * For all you have to call a second event<br>
+     * Für alle musst du ein zweites Event aufrufen<br>
      * <p>
-     * This should describe the item using the names from {@link de.marcus.javagame.datahandling.data.inventory.InventoryItem} or the Shop from {@link de.marcus.javagame.datahandling.data.shop.Shops}
-     * or the amount of money (int!) or for DialogFinished the name of the dialog
+     * Bei GiftItem muss das zweite Event den Namen eines Items aus {@link de.marcus.javagame.datahandling.data.inventory.InventoryItem} benutzen (SELBE SCHREIBWEISE) oder einen Shop aus {@link de.marcus.javagame.datahandling.data.shop.Shops}
+     * oder die Menge an Geld bei GiftMoney (Als Ganzzahl!) oder bei DialogFinished den Name den Dialogs.
      * <br>
-     * Events are called by writing {EVENT=EVENTNAME} in the text
+     * Events ruft man auf indem man {EVENT=EVENTNAME} in den Text schreibt. Es empfiehlt sich, davor eine Sekunde zu warten, damit der Spieler Zeit hat, den Dialog zu ende zu lesen.
      * <br>
      * Example: "Here you go.{WAIT=1} {EVENT=GiftItem} {EVENT=HEAL_POTION}"
      *
@@ -190,7 +190,7 @@ public class DialogHandler {
         ), POTION_SHOP_DIALOG(new DialogBuilder().
                 setDialogTitle("Torben - Tränke").
                 setDialogText("Guten Tag Der Herr, was kann ich für sie tun?").
-                setButtonTexts("Guten Tag! Ich benötige Beratung bei den Tränken.", "Guten Tag! Ich möchte mich erstmals ein wenig umschauen. ", "Guten Tag! wie viel kosten die Tränke jeweils?  ").
+                setButtonTexts("Ich benötige Beratung bei den Tränken.", "Ich möchte mich erstmals ein wenig umschauen.", "Wie viel kosten die Tränke jeweils?  ").
                 setNextDialogs(
                         new DialogBuilder().
                                 setDialogText("Das kommt auf die Situation an in der sie sich befinden. \n Manchmal muss man sich schnell regenerieren, ein andermal sollte man besser schneller sein als der Gegner und manchmal ist es von Vorteil Stärker zu sein als er.{EVENT=OpenShop}").
@@ -266,9 +266,9 @@ public class DialogHandler {
                                                 createDialog(),
                                         new DialogBuilder().
                                                 setDialogText("Da gibt es hier den besten. ").
-                                                createDialog(),
+                                                createDialog()
 
-                new DialogBuilder()
+                                ).createDialog()).createDialog());
         Dialogs(Dialog dialog) {
             this.dialog = dialog;
         }
@@ -276,15 +276,3 @@ public class DialogHandler {
         private Dialog dialog;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-

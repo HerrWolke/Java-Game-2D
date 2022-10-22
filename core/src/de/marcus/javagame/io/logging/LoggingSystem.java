@@ -12,6 +12,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
+import static de.marcus.javagame.datahandling.data.datahandling.SavedataHandler.userprofile;
+
 @Logging(displayName = "LoggingSystem")
 @Getter
 public class LoggingSystem {
@@ -19,7 +21,7 @@ public class LoggingSystem {
     Logger debugger = new Logger(this,Logger.Lvl.DEBUG);
 
     public static String dateLogName;
-    public static final String LOG_FOLDER = "Logs/";
+    public static final String LOG_FOLDER = String.format("%s/.prefs/Rising Mage/Logs/",userprofile.replaceAll("\\\\","/"));
 
 
 
@@ -44,7 +46,7 @@ public class LoggingSystem {
         today.set(Calendar.SECOND, 0);
 
         timer.scheduleAtFixedRate(task, today.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
-        new File("Logs").mkdirs();
+        new File(LOG_FOLDER).mkdirs();
 
         File todaysLogFile = new File(LOG_FOLDER + dateLogName + ".log");
 

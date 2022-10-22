@@ -116,7 +116,7 @@ Thumbs.db
 gradlew
 gradlew.bat
 /entity_data.json
-/inventory.json
+/core/assets/default_data_files/inventory.json
 
 
 .gitignore

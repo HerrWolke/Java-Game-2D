@@ -196,6 +196,7 @@ public class DialogWindow extends Window {
         List<String> texts = new ArrayList<>();
         List<String> addToEnd = new ArrayList<>();
         boolean fitsOnScreen = true;
+
         for (String text : arg.getButtonTexts()) {
             if(text.length() > 52) {
                 fitsOnScreen = false;
@@ -219,7 +220,8 @@ public class DialogWindow extends Window {
         }
         currentSelectedOption = 0;
         String menuTitle = arg.getDialogTitle();
-        String dialogText = arg.getDialogText();
+        String dialogText = dialogHandler.hasCurrentDialogBeenCompletedBefore() && !arg.getDialogTextOnceFinished().equals("") ? arg.getDialogTextOnceFinished() : arg.getDialogText();
+
 
 
 
@@ -249,7 +251,12 @@ public class DialogWindow extends Window {
             }
             return true;
         } else {
-            System.err.println("Fatal Error. Dialog System encountered a Problem: \nDialog Problem is in " + (menuTitle.length() > 18 ? "the title & " : "") + (dialogText.length() > 280 ? "the text & " : "") + (!fitsOnScreen ? "the buttons" : "") + "\nThe problem dialog is \"" +
+            System.err.println("Fatal Error. " +
+                    "Dialog System encountered a Problem: " +
+                    "\nDialog Problem is in " + (menuTitle.length() > 18 ? "the title & " : "")
+                    + (dialogText.length() > 280 ? "the text & " : "")
+                    + (!fitsOnScreen ? "the buttons" : "")
+                    + "\nThe problem dialog is \"" +
                     arg.getDialogTitle() + "\"");
             System.exit(-1);
             return false;

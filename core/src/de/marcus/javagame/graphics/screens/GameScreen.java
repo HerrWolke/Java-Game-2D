@@ -25,8 +25,10 @@ public class GameScreen extends AbstractScreen {
 
 
     GameWorld gameWorld;
+    Label label;
     //testen
     Box2DDebugRenderer debugRenderer;
+    private final BitmapFont font;
     private final SpriteBatch batch;
 
     public EntityManager entityManager;
@@ -35,18 +37,36 @@ public class GameScreen extends AbstractScreen {
     public static LoggingSystem loggingSystem = new LoggingSystem();
 
 
+    boolean yes = true;
+
+
+    // StoryHandler sthandler;
+    //LoadWorld loader;
+    //Entities entities;
+
+
     public GameScreen(LoadingScreen app, int profile) {
         super(app);
+        //app.dispose();
 
 
 
         entityManager = SavedataHandler.load(EntityManager.class);
         entityManager.getPlayer().setUI(stage);
         this.ui = entityManager.getPlayer().getUi();
+//        Inventory inventory = SavedataHandler.load(Inventory.class);
         debugRenderer = new Box2DDebugRenderer();
 
 
+//        System.out.println(inventory.toString());
+        System.out.println(entityManager.toString());
+//        entityManager.getPlayer().getEffects().add(new StatusEffect(EffectType.HEAL,1000));
+
+
         inputManager = new InputManager(entityManager.getPlayer(), ui);
+
+
+        font = new BitmapFont();
         batch = new SpriteBatch();
         batch.setProjectionMatrix(entityManager.getPlayer().getCamera().combined);
 
@@ -62,7 +82,7 @@ public class GameScreen extends AbstractScreen {
         entityManager.getPlayer().setSwordBody((gameWorld.getWorld().createBody(entityManager.getPlayer().getSwordBodyDef())));
         entityManager.getPlayer().setSwordFixture(entityManager.getPlayer().getSwordBody().createFixture(entityManager.getPlayer().getSwordFixtureDef()));
         gameWorld.getWorld().setContactListener(new ContactListenerExtern(this));
-        gameWorld.setMap(0);
+        gameWorld.setMap(1);
 
     }
 
@@ -92,6 +112,15 @@ public class GameScreen extends AbstractScreen {
         gameWorld.render(entityManager.getPlayer().getCamera());
         entityManager.render(batch);
         debugRenderer.render(gameWorld.getWorld(), entityManager.getPlayer().getCamera().combined);
+
+//        font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 20);
+
+
+//        label.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
+
+//        label.setPosition(Gdx.graphics.getWidth()-(Gdx.graphics.getWidth()-5f),Gdx.graphics.getHeight()-(0.1f * Gdx.graphics.getHeight()));
+//        label.pack();
+
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
