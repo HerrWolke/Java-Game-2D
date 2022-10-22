@@ -82,7 +82,7 @@ public class GameScreen extends AbstractScreen {
         entityManager.getPlayer().setSwordBody((gameWorld.getWorld().createBody(entityManager.getPlayer().getSwordBodyDef())));
         entityManager.getPlayer().setSwordFixture(entityManager.getPlayer().getSwordBody().createFixture(entityManager.getPlayer().getSwordFixtureDef()));
         gameWorld.getWorld().setContactListener(new ContactListenerExtern(this));
-        gameWorld.setMap(0);
+        gameWorld.setMap(1);
 
     }
 
