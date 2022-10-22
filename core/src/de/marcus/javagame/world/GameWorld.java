@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -14,6 +15,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import lombok.Getter;
+
+import java.util.Arrays;
 
 import static com.badlogic.gdx.physics.box2d.BodyDef.BodyType.StaticBody;
 
@@ -39,7 +42,7 @@ public class GameWorld {
         world = new World(new Vector2(0, 0), true);
         AssetManager assetManager = new AssetManager();
         TmxMapLoader tmxMapLoader = new TmxMapLoader();
-      tiledMap = tmxMapLoader.load("word_tmx/Tilemap.tmx");
+        tiledMap = tmxMapLoader.load("word_tmx/Tilemap.tmx");
         dungeonEingang = tmxMapLoader.load("word_tmx/EingangDungeon.tmx");
         boss = tmxMapLoader.load("word_tmx/Boss.tmx");
         dungeonRechts = tmxMapLoader.load("word_tmx/Boss.tmx");
@@ -47,29 +50,61 @@ public class GameWorld {
         //mine = tmxMapLoader.load("word_tmx/Innenraum1.tmx");
         renderer = new OrthogonalTiledMapRenderer(dungeonRechts, UNIT_SCALE);
         renderer.setView(camera);
-        renderer.setMap(tiledMap);
-        MapLayer collisionObjectLayer = tiledMap.getLayers().get("Nicht Betretbar");
+        //TODO: Kommentar wieder entfernen
+        //renderer.setMap(tiledMap);
+        // getForms("Nicht Betretbar");
+        // getForms("Dach");
+        //   getForms("Eingang");
+
+    }
+    public void getForms(String layer,TiledMap map) {
+        MapLayer collisionObjectLayer = map.getLayers().get(layer);
         MapObjects objects = collisionObjectLayer.getObjects();
-        for(PolygonMapObject mapobject : objects.getByType(PolygonMapObject.class)){
+        System.out.println("objects: " + objects.getByType(PolygonMapObject.class).size);
+        for (PolygonMapObject mapobject : objects.getByType(PolygonMapObject.class)) {
             Polygon p = mapobject.getPolygon(); //
             PolygonShape gb = new PolygonShape();
             BodyDef bodydef = new BodyDef();
-            bodydef.type =  StaticBody;
+            bodydef.type = StaticBody;
             Body bod = world.createBody(bodydef);
 
-            bodydef.position.set(new Vector2(0, 10));
+            bodydef.position.set(new Vector2(p.getX(), p.getY()));
             float[] vertices = p.getVertices();
+            System.out.println("Verticies length: " + vertices.length);
+            if (vertices.length <= 8) {
 
-            for (int id = 0; id < vertices.length; id += 2) {
-                vertices[id]   = (p.getX() + vertices[id])   ;
-                vertices[id+1] = (p.getY() + vertices[id+1]) ;
+
+                for (int id = 0; id < vertices.length; id += 2) {
+                    vertices[id] = (p.getX() + vertices[id])  ;
+                    vertices[id + 1] = (p.getY() + vertices[id + 1] );
+                }
+            } else {
+                System.out.println("ERROR");
             }
 
             gb.set(vertices);
-            bod.createFixture(gb,0.0f);
+
+            bod.createFixture(gb, 100.0f);
+        }
+
+
+
+        for (RectangleMapObject mapobject : objects.getByType(RectangleMapObject.class)) {
+            Rectangle p = mapobject.getRectangle(); //
+            PolygonShape gb = new PolygonShape();
+            BodyDef bodydef = new BodyDef();
+            bodydef.type = StaticBody;
+            Body bod = world.createBody(bodydef);
+
+            bodydef.position.set(new Vector2(p.getX(), p.getY()));
+
+
+
+            gb.setAsBox(p.width/2,p.height/2);
+
+            bod.createFixture(gb, 100.0f);
         }
     }
-
     public void render(OrthographicCamera camera) {
         renderer.setView(camera);
         renderer.render();
@@ -85,6 +120,8 @@ public class GameWorld {
         } else if (i == 1) {
             if (screen != i) {
                 renderer.setMap(dungeonLinks);
+                getForms("Wand",dungeonLinks);
+                getForms("Eingang",dungeonLinks);
             }
         } else if (i == 2) {
             if (screen != i) {
