@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -54,11 +55,9 @@ public class Inventory extends Loadable {
         ArrayList<InventorySlot> list = new ArrayList<>(10);
         list.addAll(hotbar);
         this.hotbar = list;
-        System.out.println("size " + hotbar.size());
     }
 
     public Inventory() {
-        System.out.println("Called constructor");
         this.inventory = new ArrayList<>();
         this.hotbar = new ArrayList<>(10);
         this.money = 50;
@@ -80,9 +79,22 @@ public class Inventory extends Loadable {
 
             if (remove.getItem().isDeletable()) {
                 if (itemsLeft <= 0) {
-                    inventory.remove(remove);
+
                     System.out.println("resetting texture at " + slot);
                     inventoryWindow.setItemAtPosition(slot, null, 0);
+
+                    ArrayList<Integer> toRemove = new ArrayList<>();
+                    for (int i = 0; i<hotbar.size();i++) {
+
+                        if(hotbar.get(i).getUuid().equals(remove.getUuid())) {
+                            System.out.println("Same uuid");
+                            inventoryWindow.setItemIntoHotbar(i,null,0);
+                            toRemove.add(i);
+                        }
+                    }
+                    removeHotbarItemsCorrectly(toRemove);
+                    inventory.remove(remove);
+                    moveInventoryItems();
                 } else {
                     System.out.println("what?");
                     remove.setItemCount(itemsLeft);
@@ -93,6 +105,19 @@ public class Inventory extends Loadable {
             }
         } else {
             return true;
+        }
+    }
+
+    private void removeHotbarItemsCorrectly(List<Integer> slotsToReplace) {
+        for (int slot : slotsToReplace) {
+            hotbar.set(slot,new InventorySlot());
+        }
+    }
+
+    private void moveInventoryItems() {
+        for (InventorySlot slot : inventory) {
+            inventoryWindow.setItemAtPosition(inventory.indexOf(slot), slot.getTexture(), slot.getItemCount());
+            inventoryWindow.setItemAtPosition(inventory.indexOf(slot)+1,null,0);
         }
     }
 
@@ -131,19 +156,22 @@ public class Inventory extends Loadable {
                 if (inventorySlot.getItem().equals(slot.getItem()) && (inventorySlot.getItemCount() + slot.getItemCount()) < inventorySlot.getItem().getMaxStackSize()) {
                     inventorySlot.setItemCount(inventorySlot.getItemCount() + slot.getItemCount());
                     inventoryWindow.setItemAtPosition(inventory.indexOf(inventorySlot), slot.getTexture(), inventorySlot.getItemCount());
-                    System.out.println("adding to existing slot");
+                    System.out.println("Adding to existing slot");
                     return true;
                 } else if (inventory.size() < INVENTORY_SIZE && i == inventory.size() - 1) {
-                    System.out.println("adding to new slot");
+                    System.out.println("Adding to new slot");
                     inventory.add(slot);
                     inventoryWindow.setItemAtPosition(inventory.size()-1, slot.getTexture(), slot.getItemCount());
                     return true;
                 }
             }
             //This should never happen. At least I hope so...
+
             return false;
         } else {
             inventory.add(slot);
+            System.out.println("Adding to default slot");
+            inventoryWindow.setItemAtPosition(0, slot.getTexture(), slot.getItemCount());
             return true;
         }
     }
@@ -190,8 +218,6 @@ public class Inventory extends Loadable {
 
             if (slot.getItem().isHotbarSelectable()) {
                 hotbar.set(quickbarSlot, slot);
-
-
                 inventoryWindow.addToQuickbar(quickbarSlot, slot.getTexture());
 
                 return true;

@@ -1,5 +1,8 @@
 package de.marcus.javagame.handlers;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.marcus.javagame.datahandling.data.DialogCompletionData;
+import de.marcus.javagame.datahandling.data.datahandling.SavedataHandler;
 import de.marcus.javagame.datahandling.data.dialog.Dialog;
 import de.marcus.javagame.datahandling.data.dialog.DialogBuilder;
 import de.marcus.javagame.graphics.ui.windows.DialogWindow;
@@ -9,15 +12,37 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DialogHandler {
+
+    @JsonIgnore
+    private Dialogs currentDialogType;
+
+    @JsonIgnore
     private boolean isDialogActive;
+    @JsonIgnore
     private Dialog currentDialog;
 
+    @JsonIgnore
     private DialogWindow window;
+
+    private DialogCompletionData dialogCompletionData;
 
     public DialogHandler(DialogWindow window) {
         isDialogActive = false;
         currentDialog = Dialogs.WEAPON_SHOP_DIALOG.dialog;
         this.window = window;
+        dialogCompletionData = SavedataHandler.load(DialogCompletionData.class);
+        dialogCompletionData.completeDialog(Dialogs.DIALOG_DEFAULT);
+        dialogCompletionData.completeDialog(Dialogs.WEAPON_SHOP_DIALOG);
+        SavedataHandler.save(dialogCompletionData);
+
+    }
+
+    public boolean hasDialogBeenCompletedBefore(Dialogs dialog) {
+        return dialogCompletionData.getCompletedDialogs().contains(dialog);
+    }
+
+    public boolean hasCurrentDialogBeenCompletedBefore() {
+        return dialogCompletionData.getCompletedDialogs().contains(currentDialogType);
     }
 
     public Dialog dialogButtonPressed(int buttonNumber) {
@@ -33,62 +58,79 @@ public class DialogHandler {
     public void setCurrentDialog(Dialogs currentDialog) {
         isDialogActive = true;
         this.currentDialog = currentDialog.dialog;
+        this.currentDialogType = currentDialog;
         window.setVisible(true);
         window.setDialogMenuOptions(currentDialog.dialog);
-
     }
 
     public boolean isDialogFinished() {
-        this.isDialogActive = false;
-        return currentDialog.getNextDialogs().isEmpty();
+        boolean empty = currentDialog.getNextDialogs().isEmpty();
+        System.out.println("This dialog is now " + empty);
+        this.isDialogActive = !empty;
+        if (!isDialogActive) {
+
+            System.out.println("Overwriting dialog");
+        }
+        return empty;
     }
 
 
     /**
-     * How to build a dialog
+     * Wie erstellt man einen Dialog?
      * <br><br>
      *
-     * <p>1. Copy the {@link DialogHandler.Dialogs#DIALOG_DEFAULT}</p><br>
-     * <p>2. What variables? <br>
-     *      <p style="text-indent:40px">2.1. DialogTitle is the text which is to be displayed in top left of dialog box.<b style="color:orange">!!! ONLY NEEDS TO BE SET FOR TOP DIALOG!!!</b></p>
-     *      <p style="text-indent:40px">2.2 DialogText is the stuff the NPC talks to you about</p>
-     *      <p style="text-indent:40px">  2.3 ButtonTexts: (Optional) This only has to be called, if you want to have
-     *      buttons on that dialog. If you just want some text (for example if its the last dialog or a monologue) then no buttons are needed so dont call the
-     *          .setButtonTexts();</p>
-     *      <p style="text-indent:40px"> 2.4 NextDialogs: (Optional if Button Texts is not set) This only has to be called when ButtonTexts are set. The first button text will lead to the first follow
-     *      up dialog, the second text to the second dialog specified etc.  <b style="color:red">THERE CAN NEVER BE MORE THAN THREE!!!!</b></p>
+     * <p>1. Kopiere den {@link DialogHandler.Dialogs#DIALOG_DEFAULT}</p><br>
+     * <p>2. Welche Variablen? <br>
+     * <p style="text-indent:40px">2.1. DialogTitle der oben links im Dialog angezeigt werden.<b style="color:orange">!!! Muss nur für die Klasse gesetzt werden, bei der .markAsTop aufgerufen würde(oberste)!!!</b></p>
+     * <p style="text-indent:40px">2.2 DialogText der Text über den der NPC redet</p>
+     * <p style="text-indent:40px">  2.3 ButtonTexts: (Optional) Diese Methode muss nur aufgerufen werden, wenn du Buttons haben willst in diesem Dialog.
+     * Wenn du nur Text willst (z.B. wenn es der letzte Dialog der Reihe ist oder ein Monolog) dann brauchst du die Methode
+     * .setButtonTexts(); nicht aufzurufen</p>
+     * <p style="text-indent:40px"> 2.4 NextDialogs: (Optional: Nur wenn Buttons Texts gesetzt wurden). Der erste Button Text führt zum ersten Dialog
+     * der zweite zum zweiten etc. <b style="color:red">ES KANN NIE MEHR ALS 3 GEBEN!!!!!</b></p>
      * <br>
      * 3. Structure
-     *     <p style="text-indent:40px"> 3.1 The following structure always has to exist:
-     *      new DialogBuilder()
-     *      .setDialogTitle("This is the title")
-     *      .setDialogText("This is some text")
-     *      .markAsTop()
-     *      .createDialog()
-     *      </p>
+     * <p style="text-indent:40px"> 3.1 Die folgende Struktur muss immer existieren:
+     * new DialogBuilder()
+     * .setDialogTitle("This is the title")
+     * .setDialogText("This is some text")
+     * .markAsTop()
+     * .createDialog()
+     * </p>
+     * <p>
+     * Das ist die Basisstruktur. Dies wird einen Dialog erzeugen, welcher nur Text, einen Titel aber keine Überschrift hat.
+     * Wenn der Dialog fertig erzählt ist, wird dir gesagt, du kannst Enter drücken, um den Dialog zu schließen
      *
-     *  This is the base structure. This will create a dialog window with a title, a text but no buttons.
-     *  When the text is done displaying, you will be told you can now close the dialog. That's it.
-     *
-     *  <br>
+     * <br>
      *
      * <p>
-     *     <br>
-     * 4. Events
-     *<br>
-     * Available Events:<br>
-     * GiftItem, OpenShop, GiftMoney<br><br>
-     * For all you have to call a second event<br>
-     * This should describe the item using the names from {@link de.marcus.javagame.datahandling.data.inventory.InventoryItem} or the Shop from {@link de.marcus.javagame.datahandling.data.shop.Shops}
-     * or the amount of money (int!)
      * <br>
-     * Events are called by writing {EVENT=EVENTNAME} in the text
+     * 4. Events
+     * <br>
+     * Verfügbare Events:<br>
+     * GiftItem, OpenShop, GiftMoney, DialogFinished<br><br>
+     * Für alle musst du ein zweites Event aufrufen<br>
+     * <p>
+     * Bei GiftItem muss das zweite Event den Namen eines Items aus {@link de.marcus.javagame.datahandling.data.inventory.InventoryItem} benutzen (SELBE SCHREIBWEISE) oder einen Shop aus {@link de.marcus.javagame.datahandling.data.shop.Shops}
+     * oder die Menge an Geld bei GiftMoney (Als Ganzzahl!) oder bei DialogFinished den Name den Dialogs.
+     * <br>
+     * Events ruft man auf indem man {EVENT=EVENTNAME} in den Text schreibt. Es empfiehlt sich, davor eine Sekunde zu warten, damit der Spieler Zeit hat, den Dialog zu ende zu lesen.
      * <br>
      * Example: "Here you go.{WAIT=1} {EVENT=GiftItem} {EVENT=HEAL_POTION}"
-     *  </p>
      *
+     * </p>
      */
     public enum Dialogs {
+        TEST_DIALOG
+                (
+                        new DialogBuilder().
+                                setDialogTitle("Fortnite").
+                                setDialogText("Ich liebe Fortnite").
+                                setButtonTexts("ich auch", "Halts maul", "Für fortnite").
+                                setNextDialogs(new DialogBuilder().
+                                        setDialogText("").
+                                        createDialog()).markAsTop().createDialog()),
+
         DIALOG_DEFAULT(
                 new DialogBuilder().
                         setDialogTitle("NPC1").
@@ -119,6 +161,7 @@ public class DialogHandler {
                         .setNextDialogs(
                                 new DialogBuilder().
                                         setDialogText("Lass mich wissen, wenn du Hilfe brauchst! {EVENT=OpenShop}").
+                                        setAsDefaultDialog().
                                         createDialog(),
                                 new DialogBuilder().
                                         setDialogText("Gerne! Wofür brauchst du denn Ausrüstung?")
@@ -131,20 +174,101 @@ public class DialogHandler {
                                                         setDialogText("Viel Glück dabei! Ich denke dieses Schwert könnte dir sicherlich dabei helfen.{WAIT=1} {EVENT=GiftSword}").
                                                         createDialog(),
                                                 new DialogBuilder().
-                                                        setDialogText("Angriff ist die beste Verteidigung, daher würde ich dir das Schwert aus dem Shop empfehlen.{WAIT=1}{EVENT=OpenShop}").
+                                                        setDialogText("Angriff ist die beste Verteidigung, daher würde ich dir das Schwert aus dem Shop empfehlen.{WAIT=1}{EVENT=OpenShop}{EVENT=DialogFinished}").
                                                         createDialog()
                                         ).
                                         createDialog(),
                                 new DialogBuilder().
                                         setDialogText("Schönen Tag noch, Auf Wiedersehen!").
+                                        setAsDefaultDialog().
                                         createDialog()
                         )
                         .markAsTop()
                         .createDialog()
 
 
-        );
+        ), POTION_SHOP_DIALOG(new DialogBuilder().
+                setDialogTitle("Torben - Tränke").
+                setDialogText("Guten Tag Der Herr, was kann ich für sie tun?").
+                setButtonTexts("Ich benötige Beratung bei den Tränken.", "Ich möchte mich erstmals ein wenig umschauen.", "Wie viel kosten die Tränke jeweils?  ").
+                setNextDialogs(
+                        new DialogBuilder().
+                                setDialogText("Das kommt auf die Situation an in der sie sich befinden. \n Manchmal muss man sich schnell regenerieren, ein andermal sollte man besser schneller sein als der Gegner und manchmal ist es von Vorteil Stärker zu sein als er.{EVENT=OpenShop}").
+                                setAsDefaultDialog().
+                                createDialog(),
+                        new DialogBuilder().
+                                setDialogText("Falls sie Hilfe benötigen, geben sie mir bescheid. {EVENT=OpenShop}").
+                                setAsDefaultDialog()
+                                .createDialog(),
+                        new DialogBuilder().
+                                setDialogText("Der Heiltrank kostet [], der Stärketrank kostet [] und der Geschwindigkeitstrank kostet []. {EVENT=OpenShop}").
+                                setAsDefaultDialog().
+                                createDialog()
+                ).
+                markAsTop().createDialog()
 
+
+        ),
+
+        VILLAGER_DIALOG_1(new DialogBuilder().
+
+                setDialogTitle("Alf - Dorfbewohner").
+
+                setDialogText("Hallo, Fremder! Du kommst mir bekannt vor. …. Jetzt fällt es mir ein, du bist Ryu.").
+
+                setButtonTexts("Ich glaube sie verwechseln mich.", "Woher kennen sie mich?", "Sie verwechseln mich, ich bin sein Bruder, Shyu.").
+
+                setNextDialogs(
+                        new DialogBuilder().
+
+                                setDialogText("Oh, tut mir leid. Als Entschuldigung nimm diese Rhoades.").
+
+                                createDialog(),
+                        new
+
+                                DialogBuilder().
+
+                                setDialogText("Ich kannte deinen Vater. Ein toller Mann, ehrlicher Mann, ein guter Mann ein Mann mit Ehre, ein Mann mit Glauben. Nimm daher diese 3 Tränke.").
+
+                                createDialog(),
+                        new
+
+                                DialogBuilder().
+
+                                setDialogText("Ich wusste gar nicht das Ryu einen Bruder hat. Gib ihm diese Rüstung von mir. Euer Vater war ein Mann mit Idealen.").
+
+                                createDialog()
+
+                )
+
+                        .
+
+                markAsTop().
+
+                createDialog()
+        ),
+
+        VILLAGER_DIALOG_2(new DialogBuilder().
+
+                setDialogTitle("Quentin - Dorfbewohner").
+                setDialogText("Hallo Fremder! Du siehst aus als könntest du Hilfe gebrauchen?").
+                setButtonTexts("Ich suche jemanden ", "Kannten sie meinen Vater? Er war ein großer Magier. ", "Lass mich inn Ruhe!").
+                setNextDialogs(
+                        new DialogBuilder().
+                                setDialogText("Wen suchst du?").
+                                setButtonTexts("Ich suche einen Waffenhändler.", "Ich suche einen Tränkehändler", "Ich suche einen Kartographen").
+                                setNextDialogs(
+                                        new DialogBuilder().
+                                                setDialogText("Da gibt es hier den besten. ").
+                                                createDialog(),
+                                        new DialogBuilder().
+                                                setDialogText("Da gibt es hier den besten. ").
+                                                createDialog(),
+                                        new DialogBuilder().
+                                                setDialogText("Da gibt es hier den besten. ").
+                                                createDialog()
+
+                                ).createDialog()).createDialog());
         Dialogs(Dialog dialog) {
             this.dialog = dialog;
         }

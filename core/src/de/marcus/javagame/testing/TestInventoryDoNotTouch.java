@@ -1,4 +1,4 @@
-package de.marcus.javagame.datahandling.data;
+package de.marcus.javagame.testing;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

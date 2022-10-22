@@ -64,6 +64,8 @@ public class Player extends Creature {
         ));
 
         inventory = SavedataHandler.load(Inventory.class);
+        System.out.println("Inventory content " +
+                inventory.getHotbar() + " inv " + inventory.getHotbar());
         inventory.setPlayer(this);
         camera = initialiseCamera();
 

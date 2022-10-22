@@ -65,9 +65,6 @@ public class InventoryWindow extends Window {
         selectedItemOption = 2;
         this.setResizable(true);
 
-        System.out.println(InventoryControlKey.NAV_KEYS.getControls());
-        System.out.println("screen width: " + screenWidth);
-
         TextureRegionDrawable itemOption = new TextureRegionDrawable(new Texture("item_option.png"));
         itemOption.setMinHeight(height / 8f);
         itemOption.setMinWidth(width / 9f);
@@ -342,12 +339,12 @@ public class InventoryWindow extends Window {
         }
     }
 
-    public void setItemIntoHotbar(int i, TextureRegion texture, int itemCount) {
-        Image child = (Image) hotbar.getChild(i);
+    public void setItemIntoHotbar(int itemPosition, TextureRegion texture, int itemCount) {
+        Image child = (Image) hotbar.getChild(itemPosition);
         if (texture != null) {
             child.setDrawable(new TextureRegionDrawable(texture));
         } else {
-            child.setDrawable(new TextureRegionDrawable(new Texture("placeholder.png")));
+            child.setDrawable(new TextureRegionDrawable(new Texture("placeholder_marked.png")));
         }
     }
 

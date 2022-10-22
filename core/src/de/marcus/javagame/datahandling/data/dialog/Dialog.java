@@ -16,13 +16,21 @@ public class Dialog {
     private String dialogText;
     private List<String> buttonTexts;
     private List<Dialog> nextDialogs;
+    private String dialogTextOnceFinished;
+    private boolean disableOnOnceFinished;
 
-
-    public Dialog(String title, String dialogText, List<String> buttonTexts, List<Dialog> nextDialogs, boolean topDialog) {
+    /**
+     *
+     *
+     * @param disableOnOnceFinished Describes if the dialog is not to be displayed anymore once the dialog was finished once
+     */
+    public Dialog(String title, String dialogText, List<String> buttonTexts, List<Dialog> nextDialogs, boolean topDialog, boolean disableOnOnceFinished, String dialogTextOnceFinished) {
         this.dialogTitle = Objects.requireNonNullElse(title, "");
+        this.dialogTextOnceFinished = Objects.requireNonNullElse(dialogTextOnceFinished, "");
         this.dialogText = Objects.requireNonNullElse(dialogText, "");
         this.buttonTexts = Objects.requireNonNullElse(buttonTexts, Arrays.asList("", "", ""));
         this.nextDialogs = Objects.requireNonNullElse(nextDialogs, new ArrayList<>());
+        this.disableOnOnceFinished = disableOnOnceFinished;
         if (topDialog) {
             overwriteTitles(this);
         }
@@ -34,13 +42,9 @@ public class Dialog {
 
     public void overwriteTitles(Dialog dialog) {
         List<Dialog> nextDials = dialog.getNextDialogs();
-        System.out.println("next dials are " + nextDials);
         if (nextDials != null) {
             for (Dialog dialogInLoop : nextDials) {
-                System.out.println("--------------");
-                System.out.println("Current title for " + dialogInLoop.getDialogText() + " is " + dialogInLoop.getDialogTitle());
                 if (dialogInLoop.getDialogTitle().equalsIgnoreCase("") || dialogInLoop.getDialogTitle() == null) {
-                    System.out.println("overwriting title for " + dialogInLoop.getDialogText() + " with " + dialogTitle);
                     dialogInLoop.setDialogTitle(dialogTitle);
                     overwriteTitles(dialogInLoop);
                 }

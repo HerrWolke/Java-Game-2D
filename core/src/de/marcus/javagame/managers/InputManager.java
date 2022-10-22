@@ -9,6 +9,7 @@ import de.marcus.javagame.datahandling.data.datahandling.SavedataHandler;
 import de.marcus.javagame.datahandling.data.shop.Shops;
 import de.marcus.javagame.entities.Player;
 import de.marcus.javagame.graphics.ui.UI;
+import de.marcus.javagame.graphics.ui.windows.InventoryWindow;
 import de.marcus.javagame.handlers.DialogHandler;
 
 import java.util.HashMap;
@@ -105,9 +106,8 @@ public class InputManager implements InputProcessor {
             p.setHealth(p.getHealth() + 1);
         }
 
-        if (keycode == Input.Keys.NUMPAD_9) {
-            System.out.println("hit the key");
-            ui.getDialogWindow().getDialogHandler().setCurrentDialog(DialogHandler.Dialogs.WEAPON_SHOP_DIALOG);
+        if (keycode == Input.Keys.NUM_9) {
+            ui.getDialogWindow().getDialogHandler().setCurrentDialog(DialogHandler.Dialogs.POTION_SHOP_DIALOG);
         }
 
         if (keycode == Input.Keys.NUMPAD_6) {
@@ -116,6 +116,10 @@ public class InputManager implements InputProcessor {
 
         if (ui.getInventoryWindow().isVisible()) {
             ui.getInventoryWindow().handleInput(keycode, ui);
+        }
+
+        if(ui.getShopWindow().isVisible() && InventoryWindow.InventoryControlKey.CLOSE_MENU.contains(keycode)) {
+            ui.getShopWindow().setVisible(false);
         }
 
         if (ui.getDialogWindow().isVisible()) {

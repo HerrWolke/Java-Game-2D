@@ -3,6 +3,7 @@ package de.marcus.javagame.graphics.ui.windows;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.SnapshotArray;
 import com.rafaskoberg.gdx.typinglabel.TypingAdapter;
 import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 import de.marcus.javagame.datahandling.data.dialog.Dialog;
@@ -19,13 +21,13 @@ import de.marcus.javagame.handlers.DialogHandler;
 import de.marcus.javagame.misc.Util;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 @Getter
 public class DialogWindow extends Window {
 
-    Group postion;
+    Group dialogOptionsGroup;
     Label label;
     TypingLabel dialog;
 
@@ -40,9 +42,10 @@ public class DialogWindow extends Window {
     public DialogWindow(Stage stage, UI ui) {
         super("", new WindowStyle(new BitmapFont(), Color.WHITE, new TextureRegionDrawable(new Texture("dialog.png"))));
         this.ui = ui;
-        postion = new Group();
+        dialogOptionsGroup = new Group();
         otherElements = new Group();
         dialogHandler = new DialogHandler(this);
+
 
         float screenWidth = Util.getScreenWidth(stage);
         float screenHeight = Util.getScreenHeight(stage);
@@ -66,20 +69,22 @@ public class DialogWindow extends Window {
                 System.out.println("Received text event: " + event);
                 if(event.equalsIgnoreCase("OpenShop")) {
                     ui.getShopWindow().generateShop(Shops.POTION_SHOP);
+                    setVisible(false);
                 }
             }
 
             public void end() {
-                for (int i = 0; i < postion.getChildren().size; i++) {
-                    ImageTextButton imageTextButton = (ImageTextButton) postion.getChild(i);
+                for (int i = 0; i < dialogOptionsGroup.getChildren().size; i++) {
+                    ImageTextButton imageTextButton = (ImageTextButton) dialogOptionsGroup.getChild(i);
                     if (!String.valueOf(imageTextButton.getText()).equalsIgnoreCase("")) {
                         imageTextButton.setVisible(true);
                         imageTextButton.setChecked(i == 0);
                     }
                 }
 
-                if (dialogHandler.isDialogFinished())
+                if (dialogHandler.isDialogFinished() && isVisible()) {
                     ui.displayNotification(3000, "Drücke eine beliebige Taste um fortzufahren...");
+                }
             }
         });
 
@@ -112,14 +117,14 @@ public class DialogWindow extends Window {
 
 
         otherElements.addActor(label);
-        postion.addActor(dialogOption);
-        postion.addActor(dialogOption2);
-        postion.addActor(dialogOption3);
+        dialogOptionsGroup.addActor(dialogOption);
+        dialogOptionsGroup.addActor(dialogOption2);
+        dialogOptionsGroup.addActor(dialogOption3);
         otherElements.addActor(dialog);
 
-        postion.setDebug(true);
+        dialogOptionsGroup.setDebug(true);
         getTitleTable().setDebug(true);
-        getTitleTable().addActor(postion);
+        getTitleTable().addActor(dialogOptionsGroup);
         getTitleTable().addActor(otherElements);
 
         this.setModal(false);
@@ -160,16 +165,14 @@ public class DialogWindow extends Window {
 
     private void moveSelector(int moveY) {
         int nextSelection = currentSelectedOption + moveY;
-        System.out.println("sel next" + nextSelection);
-        if (nextSelection > -1 && nextSelection < postion.getChildren().size) {
+        if (nextSelection > -1 && nextSelection < getVisibleChildren(dialogOptionsGroup)) {
 
-            ImageTextButton old = (ImageTextButton) postion.getChild(currentSelectedOption);
+            ImageTextButton old = (ImageTextButton) dialogOptionsGroup.getChild(currentSelectedOption);
             old.setChecked(false);
 
-            ImageTextButton newButton = (ImageTextButton) postion.getChild(nextSelection);
+            ImageTextButton newButton = (ImageTextButton) dialogOptionsGroup.getChild(nextSelection);
             newButton.setChecked(true);
 
-            System.out.println("setting sel");
             currentSelectedOption = nextSelection;
         }
     }
@@ -179,8 +182,8 @@ public class DialogWindow extends Window {
             label.setText(menuTitle);
 
             dialog.setText("{SLOWER}{EASE=1;1;true}" + dialogText);
-            for (int i = 0; i < postion.getChildren().size; i++) {
-                ImageTextButton imageTextButton = (ImageTextButton) postion.getChild(i);
+            for (int i = 0; i < dialogOptionsGroup.getChildren().size; i++) {
+                ImageTextButton imageTextButton = (ImageTextButton) dialogOptionsGroup.getChild(i);
                 imageTextButton.setText(texts[i]);
             }
             return true;
@@ -190,28 +193,48 @@ public class DialogWindow extends Window {
     }
 
     public boolean setDialogMenuOptions(Dialog arg) {
-        for (int i = 0; i < postion.getChildren().size; i++) {
-            ImageTextButton imageTextButton = (ImageTextButton) postion.getChild(i);
-            imageTextButton.setVisible(false);
-        }
-        currentSelectedOption = 0;
-        String menuTitle = arg.getDialogTitle();
-        String dialogText = arg.getDialogText();
-        List<String> texts = arg.getButtonTexts();
+        List<String> texts = new ArrayList<>();
+        List<String> addToEnd = new ArrayList<>();
         boolean fitsOnScreen = true;
-        for (String text : texts) {
+
+        for (String text : arg.getButtonTexts()) {
             if(text.length() > 52) {
                 fitsOnScreen = false;
                 break;
             }
+
+            if(!text.equals("") && !(arg.getNextDialog(arg.getButtonTexts().indexOf(text)).isDisableOnOnceFinished() && dialogHandler.hasCurrentDialogBeenCompletedBefore())) {
+                texts.add(text);
+            } else {
+                addToEnd.add("");
+            }
         }
 
+        //Add texts to end so no spaces are between buttons
+        texts.addAll(addToEnd);
+
+
+        for (int i = 0; i < dialogOptionsGroup.getChildren().size; i++) {
+            ImageTextButton imageTextButton = (ImageTextButton) dialogOptionsGroup.getChild(i);
+            imageTextButton.setVisible(false);
+        }
+        currentSelectedOption = 0;
+        String menuTitle = arg.getDialogTitle();
+        String dialogText = dialogHandler.hasCurrentDialogBeenCompletedBefore() && !arg.getDialogTextOnceFinished().equals("") ? arg.getDialogTextOnceFinished() : arg.getDialogText();
+
+
+
+
         if (menuTitle.length() < 18 && dialogText.length() < 280 && fitsOnScreen) {
-            System.out.println("menu title " + menuTitle);
             label.setText(menuTitle);
             dialog.setText("");
             StringBuilder dialogTextTimingBuilder = new StringBuilder();
-            for (char currentChar :dialogText.toCharArray()) {
+
+            /*
+            This builds the pauses after punctuation
+            Regex one matches every character except comma and the second regex every comma. The pause on a comma should be shorter
+            */
+            for (char currentChar : dialogText.toCharArray()) {
                 if (String.valueOf(currentChar).matches("[^,]\\p{Punct}")) {
                     dialogTextTimingBuilder.append(currentChar).append("{WAIT}");
                 } else if(String.valueOf(currentChar).matches("\\p{Punct}")){
@@ -222,19 +245,41 @@ public class DialogWindow extends Window {
             }
 
             dialog.setText("{SLOWER}{EASE=1;1;true}" + dialogTextTimingBuilder);
-            for (int i = 0; i < postion.getChildren().size; i++) {
-                ImageTextButton imageTextButton = (ImageTextButton) postion.getChild(i);
+            for (int i = 0; i < texts.size(); i++) {
+                ImageTextButton imageTextButton = (ImageTextButton) dialogOptionsGroup.getChild(i);
                 imageTextButton.setText(texts.get(i));
             }
             return true;
         } else {
-            System.out.println("Fatal Error. Text is too long!");
+            System.err.println("Fatal Error. " +
+                    "Dialog System encountered a Problem: " +
+                    "\nDialog Problem is in " + (menuTitle.length() > 18 ? "the title & " : "")
+                    + (dialogText.length() > 280 ? "the text & " : "")
+                    + (!fitsOnScreen ? "the buttons" : "")
+                    + "\nThe problem dialog is \"" +
+                    arg.getDialogTitle() + "\"");
             System.exit(-1);
             return false;
         }
     }
 
     public boolean areDialogButtonsVisible() {
-        return postion.getChild(0).isVisible();
+        return dialogOptionsGroup.getChild(0).isVisible();
+    }
+
+    /**
+     *
+     * @return The amount of children, that are visible within a group
+     * This is for dialogs, which have a disabled option after being used once, so you can not click that option anymore (Hope that makes sense)
+     */
+    private int getVisibleChildren(Group group) {
+        SnapshotArray<Actor> children = group.getChildren();
+
+        int visible = 0;
+        for (Actor actor : children) {
+            if(actor.isVisible()) visible++;
+        }
+
+        return visible;
     }
 }
