@@ -1,81 +1,81 @@
 sprite.png
-size: 2048, 1272
+size: 4096, 4096
 format: RGBA8888
-filter: Linear,Linear
+filter: Nearest, Nearest
 repeat: none
 0_Loading_Animation
   rotate: false
-  xy: 1792, 0
+  xy: 736, 0
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
   index: -1
 1_Loading_Animation
   rotate: false
-  xy: 0, 64
+  xy: 994, 0
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
   index: -1
 2_Loading_Animation
   rotate: false
-  xy: 256, 64
+  xy: 1252, 0
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
   index: -1
 3_Loading_Animation
   rotate: false
-  xy: 512, 64
+  xy: 1510, 0
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
   index: -1
 4_Loading_Animation
   rotate: false
-  xy: 768, 64
+  xy: 1768, 0
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
   index: -1
 5_Loading_Animation
   rotate: false
-  xy: 1024, 64
+  xy: 2026, 0
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
   index: -1
 6_Loading_Animation
   rotate: false
-  xy: 1280, 64
+  xy: 2284, 0
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
   index: -1
 7_Loading_Animation
   rotate: false
-  xy: 1536, 64
+  xy: 2542, 0
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
   index: -1
 8_Loading_Animation
   rotate: false
-  xy: 1792, 64
+  xy: 2800, 0
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
   index: -1
 achievement
   rotate: false
-  xy: 0, 128
+  xy: 3058, 0
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
   index: -1
 achievement_sel
   rotate: false
-  xy: 256, 128
+  xy: 3316, 0
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
@@ -89,231 +89,315 @@ armor
   index: -1
 background
   rotate: false
-  xy: 0, 192
+  xy: 0, 132
   size: 1920, 1080
   orig: 1920, 1080
   offset: 0, 0
   index: -1
+bow
+  rotate: false
+  xy: 34, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
 button_back
   rotate: false
-  xy: 64, 0
+  xy: 3574, 0
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
+chestplate
+  rotate: false
+  xy: 68, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+chestplate_dead
+  rotate: false
+  xy: 102, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+coin
+  rotate: false
+  xy: 136, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+extra_health_potion
+  rotate: false
+  xy: 170, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+heal_potion
+  rotate: false
+  xy: 204, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
 heart
   rotate: false
-  xy: 32, 0
+  xy: 238, 0
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 hearts
   rotate: false
-  xy: 1536, 0
+  xy: 272, 0
   size: 128, 32
   orig: 128, 32
   offset: 0, 0
   index: -1
 hearts_dead
   rotate: false
-  xy: 1664, 0
+  xy: 402, 0
   size: 128, 32
   orig: 128, 32
   offset: 0, 0
   index: -1
 play
   rotate: false
-  xy: 512, 128
+  xy: 3640, 0
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
   index: -1
 play_sel
   rotate: false
-  xy: 768, 128
+  xy: 0, 66
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
   index: -1
+potion_selected
+  rotate: false
+  xy: 532, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
 quit
   rotate: false
-  xy: 1024, 128
+  xy: 258, 66
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
   index: -1
 quit_sel
   rotate: false
-  xy: 1280, 128
+  xy: 516, 66
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
   index: -1
+regeneration_potion
+  rotate: false
+  xy: 566, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
 running
   rotate: false
-  xy: 128, 0
+  xy: 774, 66
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 running
   rotate: false
-  xy: 192, 0
+  xy: 840, 66
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 running
   rotate: false
-  xy: 256, 0
+  xy: 906, 66
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
 running
   rotate: false
-  xy: 320, 0
+  xy: 972, 66
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 4
 running
   rotate: false
-  xy: 384, 0
+  xy: 1038, 66
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 5
 running
   rotate: false
-  xy: 448, 0
+  xy: 1104, 66
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 6
 running
   rotate: false
-  xy: 512, 0
+  xy: 1170, 66
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 7
 running
   rotate: false
-  xy: 576, 0
+  xy: 1236, 66
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 8
 settings
   rotate: false
-  xy: 1536, 128
+  xy: 1302, 66
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
   index: -1
 settings_sel
   rotate: false
-  xy: 1792, 128
+  xy: 1560, 66
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
   index: -1
+speed_potion
+  rotate: false
+  xy: 600, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
 standing_character
   rotate: false
-  xy: 640, 0
+  xy: 1818, 66
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 standing_character
   rotate: false
-  xy: 960, 0
+  xy: 2148, 66
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 standing_character
   rotate: false
-  xy: 1024, 0
+  xy: 2214, 66
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
 standing_character
   rotate: false
-  xy: 1088, 0
+  xy: 2280, 66
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 4
 standing_character
   rotate: false
-  xy: 1152, 0
+  xy: 2346, 66
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 5
 standing_character
   rotate: false
-  xy: 1216, 0
+  xy: 2412, 66
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 6
 standing_character
   rotate: false
-  xy: 1280, 0
+  xy: 2478, 66
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 7
 standing_character
   rotate: false
-  xy: 1344, 0
+  xy: 2544, 66
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 8
 standing_character
   rotate: false
-  xy: 1408, 0
+  xy: 2610, 66
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 9
 standing_character
   rotate: false
-  xy: 704, 0
+  xy: 1884, 66
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 10
 standing_character
   rotate: false
-  xy: 768, 0
+  xy: 1950, 66
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 11
 standing_character
   rotate: false
-  xy: 832, 0
+  xy: 2016, 66
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 12
 standing_character
   rotate: false
-  xy: 896, 0
+  xy: 2082, 66
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 13
+starter_sword
+  rotate: false
+  xy: 634, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+strength_potion
+  rotate: false
+  xy: 668, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+sword
+  rotate: false
+  xy: 702, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
 tower
   rotate: false
-  xy: 1472, 0
+  xy: 2676, 66
   size: 64, 64
   orig: 64, 64
   offset: 0, 0

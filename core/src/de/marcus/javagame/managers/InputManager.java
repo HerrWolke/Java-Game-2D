@@ -5,11 +5,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import de.marcus.javagame.datahandling.SavedataHandler;
+import de.marcus.javagame.datahandling.data.datahandling.SavedataHandler;
+import de.marcus.javagame.datahandling.data.shop.Shops;
 import de.marcus.javagame.entities.Player;
 import de.marcus.javagame.graphics.ui.UI;
+import de.marcus.javagame.graphics.ui.windows.InventoryWindow;
+import de.marcus.javagame.handlers.DialogHandler;
 
 import java.util.HashMap;
 
@@ -38,7 +39,7 @@ public class InputManager implements InputProcessor {
         settings.put(CONTROLS.RUN_LEFT, Input.Keys.A);
         settings.put(CONTROLS.RUN_RIGHT, Input.Keys.D);
         settings.put(CONTROLS.SETTINGS, Input.Keys.ESCAPE);
-        settings.put(CONTROLS.ATTACK, Input.Keys.LEFT);
+        settings.put(CONTROLS.ATTACK, Input.Buttons.LEFT);
         settings.put(CONTROLS.BLOCK_SPEAK, Input.Keys.RIGHT);
         settings.put(CONTROLS.OPEN_INVENTORY, Input.Keys.E);
         settings.put(CONTROLS.CLOSE_DIALOG, Input.Keys.BACKSPACE);
@@ -50,23 +51,24 @@ public class InputManager implements InputProcessor {
     public void handleMovement() {
         Vector3 posCam = new Vector3(0, 0, 0);
 
-        if (Gdx.input.isKeyPressed(settings.get(CONTROLS.RUN_LEFT)))
-            posCam.x -= 1;
+        if (ui.isPlayerAllowedToMove()) {
+            if (Gdx.input.isKeyPressed(settings.get(CONTROLS.RUN_LEFT)))
+                posCam.x -= 1;
 
-        if (Gdx.input.isKeyPressed(settings.get(CONTROLS.RUN_RIGHT)))
-            posCam.x += 1;
+            if (Gdx.input.isKeyPressed(settings.get(CONTROLS.RUN_RIGHT)))
+                posCam.x += 1;
 
-        if (Gdx.input.isKeyPressed(settings.get(CONTROLS.RUN_FORWARD)))
-            posCam.y += 1;
+            if (Gdx.input.isKeyPressed(settings.get(CONTROLS.RUN_FORWARD)))
+                posCam.y += 1;
 
-        if (Gdx.input.isKeyPressed(settings.get(CONTROLS.RUN_BACKWARD)))
-            posCam.y -= 1;
-
+            if (Gdx.input.isKeyPressed(settings.get(CONTROLS.RUN_BACKWARD)))
+                posCam.y -= 1;
+        }
 
 
 //        System.out.printf("x: %s, y: %s",posCam.x,posCam.y);
 
-        p.move(posCam.x, posCam.y);
+        p.move(posCam.x, posCam.y, true);
     }
 
     @Override
@@ -77,13 +79,11 @@ public class InputManager implements InputProcessor {
 
         }
 
-        if (keycode == settings.get(CONTROLS.ATTACK)) {
-            p.attack();
 
-        }
-
-        if(keycode == settings.get(CONTROLS.OPEN_INVENTORY)) {
-            ui.changeInventoryShowState();
+        if (keycode == settings.get(CONTROLS.OPEN_INVENTORY)) {
+            if (ui.isPlayerAllowedToMove()) {
+                ui.changeInventoryShowState();
+            }
         }
 
         if (keycode == settings.get(CONTROLS.BLOCK_SPEAK)) {
@@ -94,20 +94,42 @@ public class InputManager implements InputProcessor {
 
         }
 
-        if(keycode == Input.Keys.NUM_5) {
+        if (keycode == Input.Keys.NUM_5) {
             p.setHealth(p.getHealth() - 1);
         }
 
-        if(keycode == Input.Keys.NUM_7) {
+        if (keycode == Input.Keys.NUM_7) {
             SavedataHandler.save(p.getInventory());
         }
 
-        if(keycode == Input.Keys.NUM_6) {
+        if (keycode == Input.Keys.NUM_6) {
             p.setHealth(p.getHealth() + 1);
         }
 
-        if(ui.getInventory().isVisible()) {
-            ui.getInventory().handleInput(keycode,ui);
+        if (keycode == Input.Keys.NUM_9) {
+            ui.getDialogWindow().getDialogHandler().setCurrentDialog(DialogHandler.Dialogs.POTION_SHOP_DIALOG);
+        }
+
+        if (keycode == Input.Keys.NUMPAD_6) {
+            ui.getShopWindow().generateShop(Shops.POTION_SHOP);
+        }
+
+        if (ui.getInventoryWindow().isVisible()) {
+            ui.getInventoryWindow().handleInput(keycode, ui);
+        }
+
+        if(ui.getShopWindow().isVisible() && InventoryWindow.InventoryControlKey.CLOSE_MENU.contains(keycode)) {
+            ui.getShopWindow().setVisible(false);
+        }
+
+        if (ui.getDialogWindow().isVisible()) {
+            if (ui.getDialogWindow().areDialogButtonsVisible()) {
+                ui.getDialogWindow().handleInput(keycode);
+            } else {
+                if (!ui.getDialogWindow().getDialogHandler().isDialogActive()) {
+                    ui.getDialogWindow().setVisible(false);
+                }
+            }
         }
 
         return true;
@@ -131,6 +153,22 @@ public class InputManager implements InputProcessor {
             p.blockStop();
             return false;
         }
+        if(keycode == settings.get(CONTROLS.RUN_LEFT) ) {
+
+           return false;
+        }
+        if( keycode == settings.get(CONTROLS.RUN_RIGHT) ){
+
+            return false;
+        }
+        if(keycode  == settings.get(CONTROLS.RUN_FORWARD)){
+
+            return false;
+        }
+        if(keycode == settings.get(CONTROLS.RUN_BACKWARD)){
+
+            return false;
+        }
 
         return false;
     }
@@ -142,14 +180,24 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        //attack block
+        if (button == (settings.get(CONTROLS.ATTACK))) {
+            p.attack();
+            return false;
+        }
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        if (button == settings.get(CONTROLS.ATTACK)) {
+            p.attackStop();
+
+
+            return false;
+        }
         return false;
     }
+
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {

@@ -22,7 +22,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Entity {
+public class Entity{
     protected Vector2 position;
 
     @JsonIgnore
@@ -32,8 +32,6 @@ public class Entity {
         position = new Vector2(posX, posY);
         this.texture = texture;
     }
-
-
 
 
     public void render(SpriteBatch batch) {

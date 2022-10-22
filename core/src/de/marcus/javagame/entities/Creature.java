@@ -6,13 +6,13 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.marcus.javagame.managers.SoundManager;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author Marcus
@@ -103,8 +103,7 @@ public class Creature extends Entity {
         List<StatusEffect> toRemove = new LinkedList<>();
         for (StatusEffect statusEffect : effects) {
             boolean b = statusEffect.decrementTimer(Math.round(delta * 1000), this);
-            if(b)
-            {
+            if (b) {
                 toRemove.add(statusEffect);
             }
         }
@@ -120,36 +119,42 @@ public class Creature extends Entity {
 
         //I don't know either
         if (mirrorAnimations && !keyFrame.isFlipX()) {
-//                System.out.println("flip!");
             keyFrame.flip(true, false);
         } else if (!mirrorAnimations && keyFrame.isFlipX()) {
             keyFrame.flip(true, false);
-//                System.out.println("unflip");
         }
-
-//            System.out.println("flip " + keyFrame.isFlipX() + " cause " + mirrorAnimations);
         batch.draw(keyFrame, position.x, position.y, width, height);
     }
 
     public void applyEffect(StatusEffect effect) {
         effects.add(effect);
+        SoundManager.playSoundEffect(SoundManager.SoundEffects.DRINK, false);
     }
 
-    public void move(float x, float y) {
+    public void move(float x, float y, boolean attack) {
 
         //sets the current animation depending on the players direction
         // first check tries to find out if player is moving in y direction, but not in x direction
         // if he is moving in x, it takes the x animation
         // the second one checks if the player is moving in positiv or negative y direction
-        activeAnimation = (y == 0 ?
-                (x == 0 ? 0 : 3)
-                : y > 0 ? 1 : 2);
+        if (!attack) {
 
-        //Mirrors animation if the active animation is x movement and player is moving left
-        mirrorAnimations = activeAnimation == 3 && (!(x > 0));
-//        System.out.println(mirrorAnimations);
 
+            activeAnimation = (y == 0 ?
+                    (x == 0 ? 0 : 3)
+                    : y > 0 ? 1 : 2);
+
+            //Mirrors animation if the active animation is x movement and player is moving left
+            mirrorAnimations = activeAnimation == 3 && (!(x > 0));
+        }
+//        else{
+//            activeAnimation = (y == 0 ?
+//                    (x == 0 ? 4 : 5)
+//                    : y > 0 ? 6 : 7);
+//            mirrorAnimations = activeAnimation == 5 && (!(x > 0));
+//        }
 
         position.set(position.x + (Gdx.graphics.getDeltaTime() * (x * movementSpeed)), position.y + (Gdx.graphics.getDeltaTime() * (y * movementSpeed)));
     }
+
 }

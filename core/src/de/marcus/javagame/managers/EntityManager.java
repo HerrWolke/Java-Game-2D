@@ -1,6 +1,7 @@
 package de.marcus.javagame.managers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -29,7 +30,7 @@ import java.util.UUID;
 
 public class EntityManager extends Loadable {
     @JsonProperty("active_entities")
-    private  LinkedHashMap<UUID, Entity> currentUsedEntities;
+    private LinkedHashMap<UUID, Entity> currentUsedEntities;
 
     @JsonProperty("loaded_entities")
     private LinkedHashMap<UUID, Entity> memoryLoadedEntities;
@@ -39,6 +40,7 @@ public class EntityManager extends Loadable {
 
     @JsonIgnore
     private float passedAnimTime;
+
 
     public EntityManager() {
         passedAnimTime = 0f;
@@ -64,10 +66,6 @@ public class EntityManager extends Loadable {
         for (Entity entity : currentUsedEntities.values()) {
             entity.update();
         }
-    }
-
-    public void load() {
-
     }
 
     public void moveToMemory(@NonNull UUID @NotNull ... uuids) {

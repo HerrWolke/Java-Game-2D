@@ -1,24 +1,22 @@
 package de.marcus.javagame.managers;
 
-import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.AudioRecorder;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import javafx.util.Pair;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 public class SoundManager {
 
-    private static LinkedHashMap<SoundEffects,ArrayList<Long>> soundsPlayingOfType = new LinkedHashMap<>();
-    private static LinkedHashMap<SoundEffects,Sound> sounds = new LinkedHashMap<>();
+    private static LinkedHashMap<SoundEffects, ArrayList<Long>> soundsPlayingOfType = new LinkedHashMap<>();
+    private static LinkedHashMap<SoundEffects, Sound> sounds = new LinkedHashMap<>();
 
     public static boolean playSoundEffect(SoundEffects soundEffect, boolean loop) {
-        if(!sounds.containsKey(soundEffect)) {
+        if (!sounds.containsKey(soundEffect)) {
             if (Gdx.files.internal("sfx/" + soundEffect.getEffectName()).exists()) {
                 Sound sound = Gdx.audio.newSound(Gdx.files.internal("sfx/" + soundEffect.getEffectName()));
                 sound.play();
@@ -30,7 +28,26 @@ public class SoundManager {
         } else {
             Sound sound = sounds.get(soundEffect);
             long play = sound.play();
-            sound.setLooping(play,loop);
+            sound.setLooping(play, loop);
+            return true;
+        }
+
+    }
+
+    public static boolean playSoundEffect(SoundEffects soundEffect, boolean loop, float volume) {
+        if (!sounds.containsKey(soundEffect)) {
+            if (Gdx.files.internal("sfx/" + soundEffect.getEffectName()).exists()) {
+                Sound sound = Gdx.audio.newSound(Gdx.files.internal("sfx/" + soundEffect.getEffectName()));
+                sound.play(volume);
+                sounds.put(soundEffect, sound);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            Sound sound = sounds.get(soundEffect);
+            long play = sound.play();
+            sound.setLooping(play, loop);
             return true;
         }
 
@@ -41,9 +58,9 @@ public class SoundManager {
     }
 
     public static void stopAllSoundEffectsOfType(SoundEffects soundEffect) {
-        for (Map.Entry<SoundEffects,Sound> pair : sounds.entrySet()) {
-            if(pair.getKey().equals(soundEffect)) {
-               pair.getValue().stop();
+        for (Map.Entry<SoundEffects, Sound> pair : sounds.entrySet()) {
+            if (pair.getKey().equals(soundEffect)) {
+                pair.getValue().stop();
             }
         }
     }
@@ -60,7 +77,9 @@ public class SoundManager {
     @Getter
     public enum SoundEffects {
         INVALID("invalid.wav"),
-        NOTIFICATION("notification.wav");
+        NOTIFICATION("notification.wav"),
+        DRINK("drink.mp3"),
+        BUY("purchase1.wav");
 
         SoundEffects(String effectName) {
             this.effectName = effectName;
