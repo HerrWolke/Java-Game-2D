@@ -7,7 +7,6 @@ import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Polygon;
@@ -15,8 +14,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import lombok.Getter;
-
-import java.util.Arrays;
 
 import static com.badlogic.gdx.physics.box2d.BodyDef.BodyType.StaticBody;
 
@@ -42,7 +39,7 @@ public class GameWorld {
         world = new World(new Vector2(0, 0), true);
         AssetManager assetManager = new AssetManager();
         TmxMapLoader tmxMapLoader = new TmxMapLoader();
-        tiledMap = tmxMapLoader.load("word_tmx/Tilemap.tmx");
+//        tiledMap = tmxMapLoader.load("word_tmx/Tilemap.tmx");
         dungeonEingang = tmxMapLoader.load("word_tmx/EingangDungeon.tmx");
         boss = tmxMapLoader.load("word_tmx/Boss.tmx");
         dungeonRechts = tmxMapLoader.load("word_tmx/Boss.tmx");
@@ -94,15 +91,18 @@ public class GameWorld {
             PolygonShape gb = new PolygonShape();
             BodyDef bodydef = new BodyDef();
             bodydef.type = StaticBody;
-            Body bod = world.createBody(bodydef);
 
             bodydef.position.set(new Vector2(p.getX(), p.getY()));
 
 
-
+            System.out.println("Box information: " + p.width/2 + " , " + p.height/2);
             gb.setAsBox(p.width/2,p.height/2);
-
+            Body bod = world.createBody(bodydef);
             bod.createFixture(gb, 100.0f);
+            System.out.println("Pos x: " + (bod.getPosition().x - p.width/2) + " ,y: " + (bod.getPosition().y - p.height/2));
+
+            System.out.println("-----------------");
+
         }
     }
     public void render(OrthographicCamera camera) {
@@ -163,7 +163,7 @@ public class GameWorld {
         rectangle.getCenter(center);
         return center.scl(1 / TILE_SIZE);
     }
-
+//91bfc08
     public void dispose() {
         tiledMap.dispose();
         dungeonEingang.dispose();
@@ -175,7 +175,8 @@ public class GameWorld {
     public void getTileAtCoords() {
 
     }
-    public void setCollisionInMap(String name){
+
+    public void setCollisionInMap(String name) {
 
     }
 

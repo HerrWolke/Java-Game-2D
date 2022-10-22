@@ -5,9 +5,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import de.marcus.javagame.datahandling.data.datahandling.SavedataHandler;
 import de.marcus.javagame.graphics.ui.UI;
@@ -17,11 +15,13 @@ import de.marcus.javagame.managers.EntityManager;
 import de.marcus.javagame.managers.InputManager;
 import de.marcus.javagame.world.GameWorld;
 
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+
 public class GameScreen extends AbstractScreen {
 
 
     InputManager inputManager;
-
 
 
     GameWorld gameWorld;
@@ -49,6 +49,24 @@ public class GameScreen extends AbstractScreen {
         super(app);
         //app.dispose();
 
+        new Thread(() -> {
+            Scanner scanner = new Scanner(System.in);
+            try {
+                while (true) {
+                    System.out.println("Please input a line");
+                    String line = scanner.nextLine();
+                    String[] split = line.split(",");
+                    float x = Float.parseFloat(split[0]);
+                    float y = Float.parseFloat(split[1]);
+
+                    System.out.println("input is " + x + " " + y);
+                    entityManager.getPlayer().tp(x,y);
+                }
+            } catch(IllegalStateException | NoSuchElementException e) {
+                System.out.println("System.in was closed; exiting");
+            }
+
+        }).start();
 
 
         entityManager = SavedataHandler.load(EntityManager.class);

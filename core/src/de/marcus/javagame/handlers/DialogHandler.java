@@ -269,6 +269,7 @@ public class DialogHandler {
                                                 createDialog()
 
                                 ).createDialog()).createDialog());
+
         Dialogs(Dialog dialog) {
             this.dialog = dialog;
         }

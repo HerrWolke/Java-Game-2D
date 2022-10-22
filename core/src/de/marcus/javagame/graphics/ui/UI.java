@@ -1,6 +1,7 @@
 package de.marcus.javagame.graphics.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,11 +16,17 @@ import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 import com.badlogic.gdx.utils.Align;
 import de.marcus.javagame.entities.Player;
 import de.marcus.javagame.graphics.ui.windows.DialogWindow;
+import de.marcus.javagame.graphics.ui.windows.GenericGameWindow;
 import de.marcus.javagame.graphics.ui.windows.InventoryWindow;
 import de.marcus.javagame.graphics.ui.windows.ShopWindow;
 import de.marcus.javagame.managers.SoundManager;
+import de.marcus.javagame.managers.TextureManager;
 import de.marcus.javagame.misc.Util;
 import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 //TODO: Add money counter to top left UI!
 @Getter
@@ -37,6 +44,8 @@ public class UI {
     DialogWindow dialogWindow;
     ShopWindow shopWindow;
 
+    List<GenericGameWindow> extraWindowList;
+
 
     /**
      * Whole screen UI
@@ -50,7 +59,6 @@ public class UI {
     Table playerInfoUIContainer;
     ProgressBar healthBar;
     ProgressBar armorBar;
-
 
 
     /**
@@ -85,8 +93,11 @@ public class UI {
     public UI(Stage stage, Player player) {
         this.stage = stage;
         this.player = player;
+        extraWindowList = new ArrayList<>();
+
         //MAIN TABLE
         mainUIContainer = new Table();
+        mainUIContainer.setDebug(true);
         mainUIContainer.setFillParent(true);
         stage.addActor(mainUIContainer);
         //END MAIN TABLE
@@ -96,6 +107,9 @@ public class UI {
         inventoryWindow = new InventoryWindow(player.getInventory(), stage);
         dialogWindow = new DialogWindow(stage, this);
         shopWindow = new ShopWindow(stage, player);
+        extraWindowList.add(inventoryWindow);
+        extraWindowList.add(dialogWindow);
+        extraWindowList.add(shopWindow);
 
 
         player.setInventoryWindow(inventoryWindow);
@@ -197,7 +211,7 @@ public class UI {
     }
 
     public boolean isPlayerAllowedToMove() {
-        return !dialogWindow.isVisible();
+        return !dialogWindow.isVisible() && !shopWindow.isVisible();
     }
 
     public void displayNotification(long displayTime, String text) {
@@ -208,7 +222,21 @@ public class UI {
     }
 
     public void handleUIInput(int keycode) {
+        if (UIControlKeys.INVENTORY_OPEN.contains(keycode)) {
+            if (isPlayerAllowedToMove()) {
+                changeInventoryShowState();
+            }
+        }
 
+        if(UIControlKeys.CLOSE_MENU.contains(keycode)) {
+            closeAllMenus();
+        }
+    }
+
+    private void closeAllMenus() {
+        inventoryWindow.setVisible(false);
+        dialogWindow.setVisible(false);
+        shopWindow.setVisible(false);
     }
 
     public void initialiseUIElements() {
@@ -220,12 +248,12 @@ public class UI {
 
         //INITIALISE ELEMENTS FOR TOP LEFT UI
 
-        TiledDrawable heartDrawable = Util.generateTiledDrawable(new Texture("hearts.png"));
-        TiledDrawable heartBackgroundDrawable = Util.generateTiledDrawable(new Texture("hearts_dead.png"));
+        TiledDrawable heartDrawable = Util.generateTiledDrawable(TextureManager.getTexture("hearts"));
+        TiledDrawable heartBackgroundDrawable = Util.generateTiledDrawable(TextureManager.getTexture("hearts_dead"));
 
 
-        TiledDrawable chestplateDrawable = Util.generateTiledDrawable(new Texture("items/chestplate.png"));
-        TiledDrawable chestplateBackgroundDrawable = Util.generateTiledDrawable(new Texture("items/chestplate_dead.png"));
+        TiledDrawable chestplateDrawable = Util.generateTiledDrawable(TextureManager.getTexture("chestplate"));
+        TiledDrawable chestplateBackgroundDrawable = Util.generateTiledDrawable(TextureManager.getTexture("chestplate_dead"));
 
         ProgressBar.ProgressBarStyle progressBarStyle = new ProgressBar.ProgressBarStyle(heartBackgroundDrawable, null);
         progressBarStyle.knobBefore = heartDrawable;
@@ -261,5 +289,37 @@ public class UI {
         notification.setVisible(false);
 
         //END INITIALISE
+    }
+
+
+    @Getter
+    public enum UIControlKeys {
+        CLOSE_MENU(Input.Keys.BACKSPACE, Input.Keys.ESCAPE),
+
+        INVENTORY_OPEN(Input.Keys.E),
+        CHOOSE_OPTION(Input.Keys.ENTER, Input.Keys.SPACE),
+
+        NAV_LEFT(Input.Keys.LEFT),
+        NAV_RIGHT(Input.Keys.RIGHT),
+        NAV_UP(Input.Keys.UP),
+        NAV_DOWN(Input.Keys.DOWN),
+        NAV_KEYS(NAV_LEFT, NAV_RIGHT, NAV_DOWN, NAV_UP);
+
+
+        UIControlKeys(Integer... ints) {
+            this.controls = Arrays.asList(ints);
+        }
+
+        UIControlKeys(UIControlKeys... key) {
+            this.controls = new ArrayList<>();
+            Arrays.stream(key).forEach(controlKey -> controls.addAll(controlKey.getControls()));
+        }
+
+        public boolean contains(int keycode) {
+            return controls.contains(keycode);
+        }
+
+        private final List<Integer> controls;
+
     }
 }
