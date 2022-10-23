@@ -1,11 +1,14 @@
 package de.marcus.javagame.entities;
 
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.marcus.javagame.entities.Entity;
 import de.marcus.javagame.managers.SoundManager;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +28,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Creature extends Entity {
+public abstract class Creature extends Entity {
     LinkedList<StatusEffect> effects;
 
     private int health;
@@ -131,7 +134,7 @@ public class Creature extends Entity {
         SoundManager.playSoundEffect(SoundManager.SoundEffects.DRINK, false);
     }
 
-    public void move(float x, float y, boolean attack) {
+    public void move(float x, float y, boolean attack, Body body) {
 
         //sets the current animation depending on the players direction
         // first check tries to find out if player is moving in y direction, but not in x direction
@@ -154,7 +157,8 @@ public class Creature extends Entity {
 //            mirrorAnimations = activeAnimation == 5 && (!(x > 0));
 //        }
 
-        position.set(position.x + (Gdx.graphics.getDeltaTime() * (x * movementSpeed)), position.y + (Gdx.graphics.getDeltaTime() * (y * movementSpeed)));
+        //position.set(position.x + (Gdx.graphics.getDeltaTime() * (x * movementSpeed)), position.y + (Gdx.graphics.getDeltaTime() * (y * movementSpeed)));
+        position.set(body.getPosition().x, body.getPosition().y);
     }
 
 }

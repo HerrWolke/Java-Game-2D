@@ -125,8 +125,8 @@ public class Player extends Creature {
     }
 
     @Override
-    public void move(float x, float y, boolean attack1) {
-        super.move(x, y, attack);
+    public void move(float x, float y, boolean attack1,Body body) {
+        super.move(x, y, attack,playerBody);
         playerBody.setLinearVelocity(new Vector2(x * 2.5f, y * 2.5f));
         camera.position.set(position.x, position.y, 0);
         camera.update();

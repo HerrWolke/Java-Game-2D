@@ -52,7 +52,7 @@ public class GameWorld {
         // getForms("Nicht Betretbar");
         // getForms("Dach");
         //   getForms("Eingang");
-        TILE_SIZE =  128;
+        TILE_SIZE =  Float.valueOf(dungeonLinks.getProperties().get("tilewidth",Integer.class));;
 
     }
     public void getForms(String layer,TiledMap map) {

@@ -77,7 +77,7 @@ public class InputManager implements InputProcessor {
 
 //        System.out.printf("x: %s, y: %s",posCam.x,posCam.y);
 
-        p.move(posCam.x, posCam.y, true);
+        p.move(posCam.x, posCam.y, true,null);
     }
 
     @Override
