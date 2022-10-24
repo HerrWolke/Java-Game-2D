@@ -4,7 +4,7 @@
  <tileset firstgid="257" source="Other objects.tsx"/>
  <tileset firstgid="513" source="Dorf.tsx"/>
  <tileset firstgid="769" source="Town.tsx"/>
- <tileset firstgid="1025" source="Forest and Stairs flipped.tsx"/>
+ <tileset firstgid="1025" source="Forest and Stairs flipped.tsx"/>d
  <tileset firstgid="1281" source="Mine@128x128.tsx"/>
  <tileset firstgid="1537" source="water and sandwater.tsx"/>
  <tileset firstgid="1793" source="snow.tsx"/>

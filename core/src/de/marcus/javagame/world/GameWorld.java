@@ -39,7 +39,7 @@ public class GameWorld {
         world = new World(new Vector2(0, 0), true);
         AssetManager assetManager = new AssetManager();
         TmxMapLoader tmxMapLoader = new TmxMapLoader();
-//        tiledMap = tmxMapLoader.load("word_tmx/Tilemap.tmx");
+       tiledMap = tmxMapLoader.load("word_tmx/Tilemap.tmx");
         dungeonEingang = tmxMapLoader.load("word_tmx/EingangDungeon.tmx");
         boss = tmxMapLoader.load("word_tmx/Boss.tmx");
         dungeonRechts = tmxMapLoader.load("word_tmx/Boss.tmx");
@@ -48,10 +48,10 @@ public class GameWorld {
         renderer = new OrthogonalTiledMapRenderer(dungeonRechts, UNIT_SCALE);
         renderer.setView(camera);
         //TODO: Kommentar wieder entfernen
-        //renderer.setMap(tiledMap);
-        // getForms("Nicht Betretbar");
-        // getForms("Dach");
-        //   getForms("Eingang");
+        renderer.setMap(tiledMap);
+         getForms("nicht betretbar",tiledMap);
+         getForms("Dach",tiledMap);
+           getForms("Eingang",tiledMap);
         TILE_SIZE =  Float.valueOf(dungeonLinks.getProperties().get("tilewidth",Integer.class));;
 
     }
@@ -59,30 +59,53 @@ public class GameWorld {
         MapLayer collisionObjectLayer = map.getLayers().get(layer);
         MapObjects objects = collisionObjectLayer.getObjects();
         System.out.println("objects: " + objects.getByType(PolygonMapObject.class).size);
+        int ind = 0;
         for (PolygonMapObject mapobject : objects.getByType(PolygonMapObject.class)) {
+            System.out.println("vor error");
+            if(mapobject.getPolygon().getTransformedVertices().length > 8){
+                System.out.println("error");
+            }
             Polygon p = mapobject.getPolygon(); //
             PolygonShape gb = new PolygonShape();
             BodyDef bodydef = new BodyDef();
             bodydef.type = StaticBody;
             Body bod = world.createBody(bodydef);
 
-            bodydef.position.set(new Vector2(p.getX(), p.getY()));
-            float[] vertices = p.getVertices();
-            System.out.println("Verticies length: " + vertices.length);
-            if (vertices.length <= 8) {
 
 
-                for (int id = 0; id < vertices.length; id += 2) {
-                    vertices[id] = (p.getX() + vertices[id])  ;
-                    vertices[id + 1] = (p.getY() + vertices[id + 1] );
-                }
-            } else {
-                System.out.println("ERROR");
+
+
+
+
+
+
+
+            float[] vertices = p.getTransformedVertices();
+
+            float[] worldVertices = new float[vertices.length];
+            System.out.println("x: " + p.getX() + " y: " + p.getY());
+            for (int i = 0; i < vertices.length; ++i) {
+                System.out.println(vertices[i]);
+                worldVertices[i] = vertices[i] / 128;
             }
+            System.out.println("finished " + layer);
+            if(vertices.length <=8) {
 
-            gb.set(vertices);
 
-            bod.createFixture(gb, 100.0f);
+                gb.set(worldVertices);
+
+                bod.createFixture(gb, 100.0f);
+            }else{
+                System.out.println("-----------------------------------------Error------------------------------------------");
+                for (int i = 0; i < vertices.length; ++i) {
+                    System.out.println(vertices[i]);
+
+                }
+                System.out.println("-----------------------------------------------------------------------------------------");
+            }
+            System.out.println(ind);
+            ind++;
+
         }
 
 
