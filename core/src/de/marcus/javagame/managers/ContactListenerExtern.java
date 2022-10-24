@@ -15,6 +15,7 @@ public class ContactListenerExtern implements ContactListener {
 
     @Override
     public void beginContact(Contact contact) {
+
         //if(contact.getFixtureA().getBody() == g.entityManager.getPlayer().getPlayerBody() && contact.getFixtureB().getBody() == g.)
     }
 
