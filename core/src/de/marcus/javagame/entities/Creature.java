@@ -158,7 +158,7 @@ public abstract class Creature extends Entity {
 //        }
 
         //position.set(position.x + (Gdx.graphics.getDeltaTime() * (x * movementSpeed)), position.y + (Gdx.graphics.getDeltaTime() * (y * movementSpeed)));
-        position.set(body.getPosition().x, body.getPosition().y);
+        position.set(body.getPosition().x - 0.5f /2 , body.getPosition().y - 0.5f );
     }
 
 }
