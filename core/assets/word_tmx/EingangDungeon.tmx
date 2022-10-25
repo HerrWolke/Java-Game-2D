@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="75" height="57" tilewidth="128" tileheight="128" infinite="0" nextlayerid="9" nextobjectid="21">
+<map version="1.9" tiledversion="1.9.1" orientation="orthogonal" renderorder="right-down" width="75" height="57" tilewidth="128" tileheight="128" infinite="0" nextlayerid="9" nextobjectid="29">
  <tileset firstgid="1" name="Dungeon 2 Color2@128x128" tilewidth="128" tileheight="128" tilecount="256" columns="16">
   <image source="graphics/Dungeon 2 Color2@128x128.png" width="2048" height="2048"/>
  </tileset>
@@ -314,27 +314,30 @@
 </data>
  </layer>
  <objectgroup id="6" name="Wände">
-  <object id="1" x="639.39" y="638.424" width="1660.61" height="896.97"/>
-  <object id="2" x="636.36" y="1905.09" width="1666.67" height="906.061"/>
-  <object id="3" x="630.3" y="1541.45" width="263.636" height="121.212"/>
-  <object id="4" x="633.33" y="1783.88" width="257.576" height="121.212"/>
-  <object id="5" x="2054.55" y="1538.42" width="239.394" height="124.242"/>
-  <object id="6" x="2042.42" y="1792.97" width="260.606" height="118.182"/>
-  <object id="7" x="-4" y="-12" width="256" height="1672"/>
-  <object id="8" x="-8" y="1788" width="264" height="1656"/>
-  <object id="9" x="248" y="3192" width="1156" height="260"/>
-  <object id="10" x="1533.33" y="3196" width="1410.67" height="252"/>
-  <object id="11" x="2676" y="1788" width="260" height="1396"/>
-  <object id="12" x="2672" y="0" width="272" height="1660"/>
-  <object id="13" x="244" y="0" width="2432" height="260"/>
-  <object id="14" x="1396" y="3204" width="144" height="228"/>
+  <object id="21" x="242.424" y="3209.09">
+   <polyline points="0,0 2445.45,-6.06061 2466.67,-1384.85 2596.97,-1348.48 2596.97,-1627.27 2457.58,-1596.97 2454.55,-2957.58 -3.0303,-2957.58 -3.0303,-1578.79 -166.667,-1618.18 -160.606,-1348.48 9.09091,-1375.76 3.0303,-33.3333"/>
+  </object>
+  <object id="22" x="642.424" y="2815.15">
+   <polyline points="1460.61,-1200 1648.48,-1257.58 1657.58,-2175.76 -3.0303,-2172.73 0,-1203.03 248.485,-1193.94 251.515,-1275.76 1409.09,-1275.76 1415.15,-1160.61 1636.36,-1221.21"/>
+  </object>
+  <object id="24" x="636.364" y="1854.55">
+   <polyline points="0,0 3.0303,957.576 1660.61,960.606 1663.64,-3.0303 1424.24,-57.5758 1415.15,63.6364 245.455,60.6061 239.394,-36.3636 24.2424,0"/>
+  </object>
  </objectgroup>
  <objectgroup id="7" name="Eingang">
-  <object id="15" x="-9.09" y="1650.55" width="257.576" height="145.455"/>
-  <object id="16" x="2681.82" y="1668.73" width="257.576" height="130.303"/>
+  <object id="27" x="96.9697" y="1612.12">
+   <polyline points="0,0 -3.0303,230.303 136.364,212.121 139.394,39.3939"/>
+  </object>
+  <object id="28" x="2706.06" y="1639.39">
+   <polyline points="0,0 3.0303,166.667 121.212,200 121.212,-39.3939"/>
+  </object>
  </objectgroup>
  <objectgroup id="8" name="Dach">
-  <object id="17" x="639.39" y="1665.7" width="124.242" height="118.182"/>
-  <object id="20" x="2166.67" y="1647.51" width="136.364" height="142.424"/>
+  <object id="25" x="639.394" y="1627.27">
+   <polyline points="0,0 -6.06061,224.242 124.242,200 118.182,0"/>
+  </object>
+  <object id="26" x="2303.03" y="1603.03">
+   <polyline points="0,0 -9.09091,251.515 -130.303,218.182 -121.212,24.2424"/>
+  </object>
  </objectgroup>
 </map>
