@@ -1,0 +1,23 @@
+ new TypingAdapter() {
+            public void event(String event) {
+                System.out.println("Received text event: " + event);
+                if (event.equalsIgnoreCase("OpenShop")) {
+                    ui.getShopWindow().generateShop(Shops.POTION_SHOP);
+                    setVisible(false);
+                }
+            }
+
+            public void end() {
+                for (int i = 0; i < dialogOptionsGroup.getChildren().size; i++) {
+                    ImageTextButton imageTextButton = (ImageTextButton) dialogOptionsGroup.getChild(i);
+                    if (!String.valueOf(imageTextButton.getText()).equalsIgnoreCase("")) {
+                        imageTextButton.setVisible(true);
+                        imageTextButton.setChecked(i == 0);
+                    }
+                }
+
+                if (dialogHandler.isDialogFinished() && isVisible()) {
+                    ui.displayNotification(3000, "Drücke eine beliebige Taste um fortzufahren...");
+                }
+            }
+        }

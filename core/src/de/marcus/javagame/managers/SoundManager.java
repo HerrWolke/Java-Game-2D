@@ -1,7 +1,6 @@
 package de.marcus.javagame.managers;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.AudioRecorder;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import lombok.Getter;
@@ -46,7 +45,7 @@ public class SoundManager {
             }
         } else {
             Sound sound = sounds.get(soundEffect);
-            long play = sound.play();
+            long play = sound.play(volume);
             sound.setLooping(play, loop);
             return true;
         }
@@ -79,7 +78,8 @@ public class SoundManager {
         INVALID("invalid.wav"),
         NOTIFICATION("notification.wav"),
         DRINK("drink.mp3"),
-        BUY("purchase1.wav");
+        BUY("purchase1.wav"),
+        EQUIP_ARMOR("chain.ogg");
 
         SoundEffects(String effectName) {
             this.effectName = effectName;

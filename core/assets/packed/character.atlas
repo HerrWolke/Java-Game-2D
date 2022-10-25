@@ -1,7 +1,7 @@
 character.png
 size: 247, 1138
 format: RGBA8888
-filter: Linear,Linear
+filter: Nearest,Nearest
 repeat: none
 deadback
   rotate: false

@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.SnapshotArray;
 import de.marcus.javagame.datahandling.data.shop.Shops;
 import de.marcus.javagame.entities.Player;
+import de.marcus.javagame.graphics.ui.UI;
 import de.marcus.javagame.graphics.ui.elements.ScrollPaneShop;
 import de.marcus.javagame.managers.TextureManager;
 import de.marcus.javagame.misc.Util;
@@ -23,6 +24,7 @@ import de.marcus.javagame.misc.Util;
 public class ShopWindow extends GenericGameWindow {
     ScrollPaneShop shop;
     Stage stage;
+    UI ui;
     Player player;
 
     Label priceLabel;
@@ -31,10 +33,11 @@ public class ShopWindow extends GenericGameWindow {
 
     Shops currentShopType;
 
-    public ShopWindow(Stage stage, Player player) {
+    public ShopWindow(UI ui, Player player) {
         super("", new WindowStyle(new BitmapFont(), Color.WHITE, new TextureRegionDrawable(new TextureRegion(TextureManager.getTexture("shop_background")))));
-        this.stage = stage;
+        this.stage = ui.getStage();
         this.player = player;
+        this.ui = ui;
 
 
         float screenHeight = Util.getScreenHeight(stage);
@@ -82,11 +85,17 @@ public class ShopWindow extends GenericGameWindow {
 
     public void buy(String item) {
 
+        Shops.ShopItems itemToBuy = Shops.ShopItems.valueOf(item);
 
         if (player.canAfford(item)) {
+            if((itemToBuy.getMaxItems() == 0 || itemToBuy.getMaxItems() > player.getInventory().itemAmountOfType(itemToBuy.getInventoryItem()))) {
+                this.addActor(generateConfirmationDialog(item));
+            } else {
+                ui.displayNotification(2000L,"Dieses Item ist ausverkauft!");
+            }
 
-            this.addActor(generateConfirmationDialog(item));
-
+        } else {
+            ui.displayNotification(2000L,"Du kannst dir das nicht leisten!");
         }
     }
 
@@ -113,7 +122,6 @@ public class ShopWindow extends GenericGameWindow {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                System.out.println("buying " + item);
                 player.buyItem(item);
 
             }
@@ -144,7 +152,6 @@ public class ShopWindow extends GenericGameWindow {
 
             //Get the texture based on the item name. Hopefully all texture have been added or this will crash!
             TextureRegionDrawable potion = new TextureRegionDrawable(TextureManager.getTexture(item.name().toLowerCase()));
-            System.out.println(item.name().toLowerCase());
             TextureRegionDrawable selected = new TextureRegionDrawable(TextureManager.getTexture("potion_selected"));
 
             TextButton button = new TextButton("", new ImageTextButton.ImageTextButtonStyle(potion, null, null, new BitmapFont()));

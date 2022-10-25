@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="53" height="62" tilewidth="128" tileheight="128" infinite="0" nextlayerid="6" nextobjectid="21">
- <tileset firstgid="1" source="Dungeon 2 Color3@128x128.tsx"/>
- <tileset firstgid="257" source="Dungeon @128x128.tsx"/>
- <tileset firstgid="513" source="Dungeon Color2@128x128.tsx"/>
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="53" height="62" tilewidth="128" tileheight="128" infinite="0" nextlayerid="6" nextobjectid="10">
+ <tileset firstgid="1" source="graphics/Dungeon 2 Color3@128x128.tsx"/>
+ <tileset firstgid="257" source="graphics/Dungeon @128x128.tsx"/>
+ <tileset firstgid="513" source="graphics/Dungeon Color2@128x128.tsx"/>
  <layer id="3" name="Kachelebene 3" width="53" height="62">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -201,7 +201,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="4" name="Wand">
+<objectgroup id="4" name="Wand">
   <object id="16" x="1544" y="246">
    <polyline points="0,0 -1294,4 -1296,1174"/>
   </object>

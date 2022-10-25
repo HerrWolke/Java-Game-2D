@@ -54,11 +54,11 @@ public class Player extends Creature {
 
 
     public Player(float posX, float posY) {
-        super(posX, posY, null, 4, 4, 4, 4, 5.0f, Arrays.asList(
-                TextureManager.getAnimation("standing_character", true, 0.25f),
-                TextureManager.getAnimation("running", true, 0.25f),
-                TextureManager.getAnimation("running", true, 0.25f),
-                TextureManager.getAnimation("running", true, 0.25f)
+        super(posX, posY, null, 4, 4, 4, 4, 8.0f, Arrays.asList(
+                TextureManager.getCharacterAnimation("standingback", true, 0.2f),
+                TextureManager.getCharacterAnimation("walkback", true, 0.2f),
+                TextureManager.getCharacterAnimation("walkfront", true, 0.2f),
+                TextureManager.getCharacterAnimation("walkright", true, 0.2f)
         ));
 
         inventory = SavedataHandler.load(Inventory.class);
@@ -73,7 +73,8 @@ public class Player extends Creature {
     public void tp(float x, float y) {
         camera.position.set(position.x, position.y, 0);
         camera.update();
-        this.position.set(x,y);
+        playerBody.setTransform(x,y,0);
+        this.position.set(x, y);
     }
 
     public void createCollisionPlayer() {
@@ -125,9 +126,10 @@ public class Player extends Creature {
     }
 
     @Override
-    public void move(float x, float y, boolean attack1,Body body) {
-        super.move(x, y, attack,playerBody);
-        playerBody.setLinearVelocity(new Vector2(x * 2.5f, y * 2.5f));
+    public void move(float x, float y, boolean attack1, Body body) {
+        playerBody.setLinearVelocity(new Vector2(x * getMovementSpeed(), y * getMovementSpeed()));
+        super.move(x, y, attack, playerBody);
+
         camera.position.set(position.x, position.y, 0);
         camera.update();
     }
@@ -138,6 +140,13 @@ public class Player extends Creature {
         System.out.println("set health to " + health);
         super.setHealth(health);
         ui.getHealthBar().setValue(health);
+    }
+
+    @Override
+    public void setArmor(int armor) {
+        System.out.println("set armor to " + armor);
+        super.setArmor(armor);
+        ui.getArmorBar().setValue(armor);
     }
 
     @JsonIgnore
@@ -160,7 +169,7 @@ public class Player extends Creature {
         float h = Gdx.graphics.getHeight();
 
         camera = new OrthographicCamera();
-        camera = new OrthographicCamera(50, 50 * (h / w));
+        camera = new OrthographicCamera(50, 50 * (h/w));
         camera.position.set(getPosition().x, getPosition().y, 0);
         camera.update();
 
@@ -195,14 +204,30 @@ public class Player extends Creature {
 
     public void useItem(InventoryItem item) {
         System.out.println("using the item");
-        StatusEffect effect = null;
-        try {
-            effect = (StatusEffect) item.getEffect().clone();
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
-        }
 
-        applyEffect(effect);
+        if (item.isUsable()) {
+            if (item.getEffect() != null) {
+                StatusEffect effect;
+                try {
+                    effect = (StatusEffect) item.getEffect().clone();
+                } catch (CloneNotSupportedException e) {
+                    throw new RuntimeException(e);
+                }
+
+                applyEffect(effect);
+            } else if (item.name().equals("ARMOR")) {
+                setArmor(Math.min(armor + 1, maxArmor));
+                SoundManager.playSoundEffect(SoundManager.SoundEffects.EQUIP_ARMOR,false);
+            }
+        }
+    }
+
+    public void respwawn() {
+        camera.position.set(position.x, position.y, 0);
+        camera.update();
+        setPosition(new Vector2(154,113));
+        playerBody.setTransform(154,113,0);
+        inventory.moneyChange((int) (inventory.money * -0.25));
     }
 
 
@@ -223,7 +248,8 @@ public class Player extends Creature {
         if (!b) {
             ui.displayNotification(2000, "Dein Inventar ist voll!");
         } else {
-            SoundManager.playSoundEffect(SoundManager.SoundEffects.BUY, false, 0.8f);
+            System.out.println("playing sound");
+            SoundManager.playSoundEffect(SoundManager.SoundEffects.BUY, false, 0.25f);
         }
     }
 }

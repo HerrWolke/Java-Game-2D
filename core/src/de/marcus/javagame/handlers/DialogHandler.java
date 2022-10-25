@@ -31,9 +31,6 @@ public class DialogHandler {
         currentDialog = Dialogs.WEAPON_SHOP_DIALOG.dialog;
         this.window = window;
         dialogCompletionData = SavedataHandler.load(DialogCompletionData.class);
-        dialogCompletionData.completeDialog(Dialogs.DIALOG_DEFAULT);
-        dialogCompletionData.completeDialog(Dialogs.WEAPON_SHOP_DIALOG);
-        SavedataHandler.save(dialogCompletionData);
 
     }
 
@@ -160,7 +157,7 @@ public class DialogHandler {
                         .setButtonTexts("Ich schaue mich erstmal um", "Ich bräuchte Hilfe, um Ausrüstung zusammenzustellen", "Ich sehe hier nicht interessantes. Auf Wiedersehen!")
                         .setNextDialogs(
                                 new DialogBuilder().
-                                        setDialogText("Lass mich wissen, wenn du Hilfe brauchst! {EVENT=OpenShop}").
+                                        setDialogText("Lass mich wissen, wenn du Hilfe brauchst!{WAIT=1} {EVENT=OpenShop,POTION_SHOP}").
                                         setAsDefaultDialog().
                                         createDialog(),
                                 new DialogBuilder().
@@ -168,10 +165,10 @@ public class DialogHandler {
                                         .setButtonTexts("Das geht sie nichts an! ", "Ich möchte in die Fußstapfen meines Vaters treten.", "Ich muss mich verteidigen können.")
                                         .setNextDialogs(
                                                 new DialogBuilder().
-                                                        setDialogText("Entschuldigung, ich wollte dir nicht zu nahe treten … \n Mit einem Schwert kann man nie was falsch machen.{WAIT=1}").
+                                                        setDialogText("Entschuldigung, ich wollte dir nicht zu nahe treten … \n Mit einem Schwert kann man nie was falsch machen.{WAIT=1} {EVENT=OpenShop,EQUIPMENT_SHOP}").
                                                         createDialog(),
                                                 new DialogBuilder().
-                                                        setDialogText("Viel Glück dabei! Ich denke dieses Schwert könnte dir sicherlich dabei helfen.{WAIT=1} {EVENT=GiftSword}").
+                                                        setDialogText("Viel Glück dabei! Ich denke dieses Schwert könnte dir sicherlich dabei helfen.{WAIT=1} {EVENT=GiftItem,STARTER_SWORD}").
                                                         createDialog(),
                                                 new DialogBuilder().
                                                         setDialogText("Angriff ist die beste Verteidigung, daher würde ich dir das Schwert aus dem Shop empfehlen.{WAIT=1}{EVENT=OpenShop}{EVENT=DialogFinished}").

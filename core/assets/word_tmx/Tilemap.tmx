@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.1" orientation="orthogonal" renderorder="right-down" width="285" height="221" tilewidth="128" tileheight="128" infinite="0" nextlayerid="38" nextobjectid="494">
- <tileset firstgid="1" source="Test.tsx"/>
- <tileset firstgid="257" source="Other objects.tsx"/>
- <tileset firstgid="513" source="Dorf.tsx"/>
- <tileset firstgid="769" source="Town.tsx"/>
- <tileset firstgid="1025" source="Forest and Stairs flipped.tsx"/>d
- <tileset firstgid="1281" source="Mine@128x128.tsx"/>
- <tileset firstgid="1537" source="water and sandwater.tsx"/>
- <tileset firstgid="1793" source="snow.tsx"/>
- <tileset firstgid="2049" source="Snowland.tsx"/>
- <tileset firstgid="2305" source="snowland 2.tsx"/>
- <tileset firstgid="2561" source="snow dorf.tsx"/>
- <tileset firstgid="2817" source="snow and stairs.tsx"/>
- <tileset firstgid="3073" source="dungeon.tsx"/>
- <tileset firstgid="3329" source="dungeon treppen.tsx"/>
- <tileset firstgid="3585" source="grassland ROT.tsx"/>
- <tileset firstgid="3841" source="wasserfall.tsx"/>
- <tileset firstgid="3937" source="grünland.tsx"/>
- <tileset firstgid="4193" source="grünland stufen und wald.tsx"/>
- <tileset firstgid="4449" source="rotland mehr bäume.tsx"/>
- <tileset firstgid="4705" source="Town 2 Color 3@128x128.tsx"/>
- <tileset firstgid="4961" source="rotland stadt.tsx"/>
- <tileset firstgid="5217" source="rotland dorf.tsx"/>
- <tileset firstgid="5473" source="wasserfall rot.tsx"/>
- <tileset firstgid="5569" source="waterfall ice.tsx"/>
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="285" height="221" tilewidth="128" tileheight="128" infinite="0" backgroundcolor="#000000" nextlayerid="39" nextobjectid="495">
+ <tileset firstgid="1" source="graphics/Test.tsx"/>
+ <tileset firstgid="257" source="graphics/Other objects.tsx"/>
+ <tileset firstgid="513" source="graphics/Dorf.tsx"/>
+ <tileset firstgid="769" source="graphics/Town.tsx"/>
+ <tileset firstgid="1025" source="graphics/Forest and Stairs flipped.tsx"/>
+ <tileset firstgid="1281" source="graphics/Mine@128x128.tsx"/>
+ <tileset firstgid="1537" source="graphics/water and sandwater.tsx"/>
+ <tileset firstgid="1793" source="graphics/snow.tsx"/>
+ <tileset firstgid="2049" source="graphics/Snowland.tsx"/>
+ <tileset firstgid="2305" source="graphics/snowland 2.tsx"/>
+ <tileset firstgid="2561" source="graphics/snow dorf.tsx"/>
+ <tileset firstgid="2817" source="graphics/snow and stairs.tsx"/>
+ <tileset firstgid="3073" source="graphics/dungeon.tsx"/>
+ <tileset firstgid="3329" source="graphics/dungeon treppen.tsx"/>
+ <tileset firstgid="3585" source="graphics/grassland ROT.tsx"/>
+ <tileset firstgid="3841" source="graphics/wasserfall.tsx"/>
+ <tileset firstgid="3937" source="graphics/grünland.tsx"/>
+ <tileset firstgid="4193" source="graphics/grünland stufen und wald.tsx"/>
+ <tileset firstgid="4449" source="graphics/rotland mehr bäume.tsx"/>
+ <tileset firstgid="4705" source="graphics/Town 2 Color 3@128x128.tsx"/>
+ <tileset firstgid="4961" source="graphics/rotland stadt.tsx"/>
+ <tileset firstgid="5217" source="graphics/rotland dorf.tsx"/>
+ <tileset firstgid="5473" source="graphics/wasserfall rot.tsx"/>
+ <tileset firstgid="5569" source="graphics/waterfall ice.tsx"/>
  <layer id="12" name="doppelt verkackt" width="285" height="221">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

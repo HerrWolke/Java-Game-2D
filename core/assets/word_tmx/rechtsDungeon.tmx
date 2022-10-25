@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="64" height="63" tilewidth="128" tileheight="128" infinite="0" nextlayerid="9" nextobjectid="45">
- <tileset firstgid="1" source="Dungeon @128x128.tsx"/>
- <tileset firstgid="257" source="Dungeon 2 Color3@128x128.tsx"/>
- <tileset firstgid="513" source="Dungeon Color3@128x128.tsx"/>
- <tileset firstgid="769" source="Dungeon 2@128x128.tsx"/>
+ <tileset firstgid="1" source="graphics/Dungeon @128x128.tsx"/>
+ <tileset firstgid="257" source="graphics/Dungeon 2 Color3@128x128.tsx"/>
+ <tileset firstgid="513" source="graphics/Dungeon Color3@128x128.tsx"/>
+ <tileset firstgid="769" source="graphics/Dungeon 2@128x128.tsx"/>
  <layer id="2" name="Kachelebene 2" width="64" height="63">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -205,13 +205,35 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="4" name="Wand"/>
- <objectgroup id="5" visible="0"/>
- <objectgroup id="6" name="Eingang">
-  <object id="34" x="5636" y="1536" width="244" height="132"/>
+ <objectgroup id="4" name="Wand">
+  <object id="1" x="1408" y="1152" width="260" height="364"/>
+  <object id="2" x="1396" y="1668" width="268" height="372"/>
+  <object id="3" x="1664" y="1800" width="1148" height="244"/>
+  <object id="5" x="2548" y="2012" width="264" height="2464"/>
+  <object id="6" x="-12" y="4220" width="2564" height="260"/>
+  <object id="7" x="-4" y="4484" width="268" height="632"/>
+  <object id="10" x="256" y="4872" width="6264" height="240"/>
+  <object id="12" x="6280" y="4240" width="248" height="624"/>
+  <object id="13" x="3208" y="4232" width="3104" height="232"/>
+  <object id="14" x="3208" y="1792" width="248" height="2432"/>
+  <object id="18" x="3440" y="1800" width="1176" height="240"/>
+  <object id="19" x="4344" y="2032" width="264" height="1168"/>
+  <object id="23" x="4616.24" y="2948.85" width="1269.7" height="254.545"/>
+  <object id="24" x="5637.45" y="1670.06" width="248.485" height="1278.79"/>
+  <object id="25" x="5634.42" y="1157.94" width="254.545" height="375.758"/>
+  <object id="26" x="3207.15" y="1157.94" width="2439.39" height="248.485"/>
+  <object id="27" x="3201.09" y="6.42" width="254.545" height="1151.52"/>
+  <object id="28" x="2572" y="12" width="624" height="368"/>
+  <object id="29" x="2560" y="376" width="256" height="1040"/>
+  <object id="30" x="1652" y="1164" width="936" height="240"/>
+ </objectgroup>
+ <objectgroup id="5" name="EingangZwischenRaum">
   <object id="33" x="1412" y="1520" width="252" height="148"/>
  </objectgroup>
- <objectgroup id="7" name="nicht betretbar">
+ <objectgroup id="6" name="EingangBoss">
+  <object id="34" x="5636" y="1536" width="244" height="132"/>
+ </objectgroup>
+ <objectgroup id="7" name="Gegenstände">
   <object id="35" x="4744" y="1920" width="112" height="904"/>
   <object id="36" x="5384" y="1932" width="124" height="880"/>
   <object id="38" x="4996" y="2484" width="252" height="200"/>
@@ -219,29 +241,9 @@
   <object id="40" x="2960" y="4612" width="92" height="92"/>
   <object id="41" x="6020" y="4608" width="116" height="120"/>
   <object id="42" x="648" y="4496" width="112" height="352"/>
-  <object id="30" x="1652" y="1164" width="936" height="240"/>
-  <object id="29" x="2560" y="376" width="256" height="1040"/>
-  <object id="28" x="2572" y="12" width="624" height="368"/>
-  <object id="27" x="3201.09" y="6.42" width="254.545" height="1151.52"/>
-  <object id="26" x="3207.15" y="1157.94" width="2439.39" height="248.485"/>
-  <object id="25" x="5634.42" y="1157.94" width="254.545" height="375.758"/>
-  <object id="24" x="5637.45" y="1670.06" width="248.485" height="1278.79"/>
-  <object id="23" x="4616.24" y="2948.85" width="1269.7" height="254.545"/>
-  <object id="19" x="4344" y="2032" width="264" height="1168"/>
-  <object id="18" x="3440" y="1800" width="1176" height="240"/>
-  <object id="14" x="3208" y="1792" width="248" height="2432"/>
-  <object id="13" x="3208" y="4232" width="3104" height="232"/>
-  <object id="12" x="6280" y="4240" width="248" height="624"/>
-  <object id="10" x="256" y="4872" width="6264" height="240"/>
-  <object id="7" x="-4" y="4484" width="268" height="632"/>
-  <object id="6" x="-12" y="4220" width="2564" height="260"/>
-  <object id="5" x="2548" y="2012" width="264" height="2464"/>
-  <object id="3" x="1664" y="1800" width="1148" height="244"/>
-  <object id="2" x="1396" y="1668" width="268" height="372"/>
-  <object id="1" x="1408" y="1152" width="260" height="364"/>
  </objectgroup>
  <objectgroup id="8" name="Kisten">
-  <object id="44" x="5500" y="1408" width="136" height="108"/>
   <object id="43" x="5764" y="4484" width="124" height="104"/>
+  <object id="44" x="5500" y="1408" width="136" height="108"/>
  </objectgroup>
 </map>
