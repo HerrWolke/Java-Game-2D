@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import de.marcus.javagame.datahandling.data.datahandling.SavedataHandler;
@@ -103,7 +104,9 @@ public class GameScreen extends AbstractScreen {
         entityManager.getPlayer().setSwordBody((gameWorld.getWorld().createBody(entityManager.getPlayer().getSwordBodyDef())));
         entityManager.getPlayer().setSwordFixture(entityManager.getPlayer().getSwordBody().createFixture(entityManager.getPlayer().getSwordFixtureDef()));
         gameWorld.getWorld().setContactListener(new ContactListenerExtern(this));
-        gameWorld.setMap(1);
+        gameWorld.setMap(1,entityManager.getPlayer());
+
+        entityManager.getPlayer().tp(14f,73f);
 
     }
 
@@ -114,6 +117,12 @@ public class GameScreen extends AbstractScreen {
         ui.update(entityManager.getPlayer().getPosition().x, entityManager.getPlayer().getPosition().y);
 
         gameWorld.getWorld().step(1 / 60f, 6, 2);
+        if(gameWorld.destroy){
+            for(Body b : gameWorld.getBodies()){
+                gameWorld.getWorld().destroyBody(b);
+            }
+            gameWorld.destroy = false;
+        }
     }
 
     @Override
@@ -133,7 +142,7 @@ public class GameScreen extends AbstractScreen {
         gameWorld.render(entityManager.getPlayer().getCamera());
         entityManager.render(batch);
         debugRenderer.render(gameWorld.getWorld(), entityManager.getPlayer().getCamera().combined);
-
+        gameWorld.getWorld().setContactListener(new ContactListenerExtern(this));
 
 //        font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 20);
 
@@ -146,7 +155,7 @@ public class GameScreen extends AbstractScreen {
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-        gameWorld.getWorld().step(1 / 60f, 6, 2);
+
     }
 
     @Override
