@@ -1,14 +1,14 @@
 package de.marcus.javagame.world;
 
 public class Eingang {
-    int mapType;
+   public int mapType;
     int map;
     public Eingang(float x, float y,int map){
            this.map = map;
            if(x >154 && x<158 && y > 135 && y < 140 && map ==0){
                 mapType = 5;
            }else if(x >50 && x<56 && y > 154 && y < 163 && map ==0){
-                  mapType = 5;
+                  mapType = 4;
            }else if(x >60 && x<70 && y > 154 && y < 163 && map ==0){
                   mapType = 5;
            }else if(x >138 && x<142 && y > 109 && y < 113 && map ==0){

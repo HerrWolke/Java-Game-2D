@@ -15,6 +15,9 @@ public class ContactListenerExtern implements ContactListener {
           Body body1 = contact.getFixtureA().getBody();
         Body body2 = contact.getFixtureB().getBody();
         if(body1 == g.entityManager.getPlayer().getPlayerBody() && g.gameWorld.eingang.containsKey(body2)){
+                         g.gameWorld.setMap(g.gameWorld.eingang.get(body2).mapType);
+                         //TODO: Vllt world clearen, koordinaten setzen
+        }else if(){
 
         }
     }
