@@ -41,19 +41,22 @@ public class SavedataHandler {
 
         String name = toLoad.getSimpleName().toLowerCase();
         File file = new File(dataPath + name + ".json");
+        String fileName = name + ".json";
 
         if (file.exists()) {
             try {
                 return mapper.readValue(file, toLoad);
+
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         } else {
             try {
-                //gets the no args constructor and creates a new object to return
-                return toLoad.getConstructor().newInstance();
-            } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
-                     NoSuchMethodException e) {
+                Files.createDirectories(new File(dataPath).toPath());
+                Files.copy(Gdx.files.internal("default_data_files/"+fileName).read(),file.toPath());
+
+                return load(toLoad);
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
