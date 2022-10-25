@@ -55,13 +55,13 @@ public class GameWorld {
         renderer.setView(camera);
         //TODO: Kommentar wieder entfernen
         renderer.setMap(tiledMap);
-         getForms("nicht betretbar",tiledMap);
-         getForms("Dach",tiledMap);
-           getForms("Eingang",tiledMap);
+         getForms("nicht betretbar",tiledMap,0);
+         getForms("Dach",tiledMap,0);
+           getForms("Eingang",tiledMap,0);
         TILE_SIZE =  Float.valueOf(dungeonLinks.getProperties().get("tilewidth",Integer.class));;
 
     }
-    public void getForms(String layer,TiledMap map) {
+    public void getForms(String layer,TiledMap map,int mapt) {
         MapLayer collisionObjectLayer = map.getLayers().get(layer);
         MapObjects objects = collisionObjectLayer.getObjects();
         System.out.println("objects: " + objects.getByType(PolygonMapObject.class).size);
@@ -76,15 +76,6 @@ public class GameWorld {
             BodyDef bodydef = new BodyDef();
             bodydef.type = StaticBody;
             Body bod = world.createBody(bodydef);
-
-
-
-
-
-
-
-
-
 
             float[] vertices = p.getTransformedVertices();
 
@@ -111,7 +102,7 @@ public class GameWorld {
             }
             System.out.println(ind);
             if(layer.equals("Eingang")){
-                eingang.put(bod, new Eingang(bod.getPosition().x ,bod.getPosition().y));//TODO: x position anpassen
+                eingang.put(bod, new Eingang(bod.getPosition().x ,bod.getPosition().y,mapt));//TODO: x position anpassen
             }
             ind++;
 
@@ -139,7 +130,7 @@ public class GameWorld {
             System.out.println("-----------------");
             bod.setTransform(getTransformedCenterForRectangle(p),0);
             if(layer.equals("Eingang")){
-                eingang.put(bod, new Eingang(bod.getPosition().x-p.width/2,bod.getPosition().y));
+                eingang.put(bod, new Eingang(bod.getPosition().x-p.width/2,bod.getPosition().y,mapt));
             }
         }
     }
@@ -158,8 +149,8 @@ public class GameWorld {
         } else if (i == 1) {
             if (screen != i) {
                 renderer.setMap(dungeonLinks);
-                getForms("Wand",dungeonLinks);
-                getForms("Eingang",dungeonLinks);
+                getForms("Wand",dungeonLinks,1);
+                getForms("Eingang",dungeonLinks,1);
             }
         } else if (i == 2) {
             if (screen != i) {
@@ -178,23 +169,32 @@ public class GameWorld {
         } else if (i == 5) {
             if (screen != i) {
                 renderer.setMap(mine1);
-
+                getForms("nicht betretbar",mine1,5);
+                getForms("Eingang",mine1,5);
             }
         } else if (i == 6) {
             if (screen != i) {
                 renderer.setMap(mine2);
+                getForms("nicht betretbar",mine2,6);
+                getForms("Eingang",mine2,6);
             }
         }else if (i == 7) {
             if (screen != i) {
                 renderer.setMap(innenRaum1);
+                getForms("nicht betretbar",innenRaum1,7);
+                getForms("Eingang",innenRaum1,7);
             }
         }else if (i == 8) {
             if (screen != i) {
                 renderer.setMap(innenRaum2);
+                getForms("nicht betretbar",innenRaum2,8);
+                getForms("Eingang",innenRaum2,8);
             }
         }else if (i == 9) {
             if (screen != i) {
                 renderer.setMap(innenRaum3);
+                getForms("nicht betretbar",innenRaum3,9);
+                getForms("Eingang",innenRaum3,9);
             }
         }
     }
