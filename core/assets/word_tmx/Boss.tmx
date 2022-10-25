@@ -282,25 +282,24 @@
   <object id="14" x="4992" y="248" width="252" height="772"/>
   <object id="15" x="4104" y="768" width="892" height="252"/>
   <object id="16" x="4108" y="1028" width="236" height="516"/>
- </objectgroup>
- <objectgroup id="6" name="Gegenstände">
-  <object id="17" x="1156" y="3500" width="120" height="80"/>
-  <object id="18" x="2060" y="3468" width="112" height="108"/>
-  <object id="19" x="2172" y="3740" width="132" height="108"/>
-  <object id="20" x="2428" y="3420" width="136" height="148"/>
-  <object id="21" x="2420" y="3692" width="148" height="128"/>
-  <object id="22" x="2820" y="3320" width="116" height="128"/>
-  <object id="23" x="2952" y="1916" width="108" height="124"/>
-  <object id="24" x="4740" y="1916" width="116" height="124"/>
-  <object id="25" x="4488" y="1808" width="112" height="104"/>
-  <object id="26" x="2824" y="3840" width="112" height="120"/>
-  <object id="27" x="4868" y="4228" width="108" height="112"/>
+  <object id="32" x="4732" y="500" width="132" height="136"/>
+  <object id="31" x="3072" y="512" width="128" height="120"/>
+  <object id="30" x="2828" y="5252" width="108" height="116"/>
   <object id="28" x="4736" y="5236" width="124" height="136"/>
   <object id="29" x="2936" y="5240" width="136" height="132"/>
-  <object id="30" x="2828" y="5252" width="108" height="116"/>
-  <object id="31" x="3072" y="512" width="128" height="120"/>
-  <object id="32" x="4732" y="500" width="132" height="136"/>
+  <object id="27" x="4868" y="4228" width="108" height="112"/>
+  <object id="26" x="2824" y="3840" width="112" height="120"/>
+  <object id="25" x="4488" y="1808" width="112" height="104"/>
+  <object id="24" x="4740" y="1916" width="116" height="124"/>
+  <object id="23" x="2952" y="1916" width="108" height="124"/>
+  <object id="22" x="2820" y="3320" width="116" height="128"/>
+  <object id="21" x="2420" y="3692" width="148" height="128"/>
+  <object id="20" x="2428" y="3420" width="136" height="148"/>
+  <object id="19" x="2172" y="3740" width="132" height="108"/>
+  <object id="18" x="2060" y="3468" width="112" height="108"/>
+  <object id="17" x="1156" y="3500" width="120" height="80"/>
  </objectgroup>
+ <objectgroup id="6" name="Gegenstände"/>
  <objectgroup id="7" name="Dach">
   <object id="33" x="3832" y="1540" width="144" height="120"/>
  </objectgroup>

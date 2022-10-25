@@ -155,16 +155,25 @@ public class GameWorld {
         } else if (i == 2) {
             if (screen != i) {
                 renderer.setMap(dungeonEingang);
-                load2 = true;
+                getForms("Wände",dungeonEingang,2);
+                getForms("Dach",dungeonEingang,2);
+                getForms("Eingang",dungeonEingang,2);
             }
 
         } else if (i == 3) {
             if (screen != i) {
                 renderer.setMap(boss);
+                getForms("Wand",boss,3);
+                getForms("Dach",boss,3);
+                getForms("Kisten",boss,3);
             }
         } else if (i == 4) {
             if (screen != i) {
                 renderer.setMap(dungeonRechts);
+                getForms("nicht betretbar",dungeonRechts,4);
+                getForms("Eingang",dungeonRechts,4);
+                getForms("Kisten",dungeonRechts,4);
+
             }
         } else if (i == 5) {
             if (screen != i) {
