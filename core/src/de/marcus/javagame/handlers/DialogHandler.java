@@ -270,9 +270,7 @@ public class DialogHandler {
                                 ).createDialog(),
                         new DialogBuilder().
                                 setDialogText("Ah … Ryu jetzt erkenne ich dich. Natürlich kannte ich ihn. Er hatte das Herz am rechten Fleck. Nimm las Zeichen der Dankbarkeit diesen Trank der Stärke.")
-                        createDialog().
-                                markAsTop().
-                                createDialog()
+                                .createDialog()).createDialog()
                 ),
 
                 VILLAGER_DIALOG_3(new DialogBuilder().
@@ -292,7 +290,7 @@ public class DialogHandler {
                         ).
                         markAsTop().
                         createDialog()
-                )),
+                ),
 
 
         KARTOGRAPH(new DialogBuilder().
@@ -306,15 +304,18 @@ public class DialogHandler {
                                 setNextDialogs(new DialogBuilder().
                                         setDialogText("Oh … Das tut mir leid! Dein Vater war ein großartiger Mensch, er hat unserem Dorf viel geholfen als er hier war. Ich hoffe du findest ihn wieder! Hier hast du die Kopie der Karte.").
                                         setButtonTexts("", "", "Vielen Dank! Was bin ich ihnen für die Kopie schuldig?").
-                                        setNextDialogs(new DialogBuilder().
-                                                setDialogText("Ach lass gut sein kleiner! Viel Glück auf deiner Reise.").
+                                        setNextDialogs(new DialogBuilder()
+                                                .setDialogText("Ach lass gut sein kleiner! Viel Glück auf deiner Reise.").
                                                 setButtonTexts("", "", "Vielen Dank! Auf Wiedersehen!").
                                                 setNextDialogs(new DialogBuilder().
-                                                        setDialogText("Dafür doch nnicht! Sei vorsichtig und wenn du deinen Vater gefunden hast müsst ihr in unserem Dorf vorbeikommen unnd wir trinken was zusammen.").
-                                                        createDialog(),
-                                               )))
-                ).markAsTop().
-                createDialog())
+                                                        setDialogText("Dafür doch nnicht! Sei vorsichtig und wenn du deinen Vater " +
+                                                                "gefunden hast müsst ihr in unserem Dorf vorbeikommen unnd wir trinken was zusammen.")
+                                                        .createDialog())
+                                                .createDialog())
+                                        .createDialog()
+
+
+                ).createDialog()).markAsTop().createDialog());
 
         Dialogs(Dialog dialog) {
             this.dialog = dialog;

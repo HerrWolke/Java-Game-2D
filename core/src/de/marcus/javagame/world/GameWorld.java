@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
+import de.marcus.javagame.datahandling.data.collisions.BodyData;
 import de.marcus.javagame.entities.Player;
 import lombok.Getter;
 
@@ -37,7 +38,7 @@ public class GameWorld {
     TiledMap innenRaum1,innenRaum2,innenRaum3,tiledMap,dungeonEingang,boss,dungeonRechts,dungeonLinks,mine1,mine2;
     int screen = 0;
     OrthogonalTiledMapRenderer renderer;
-    ArrayList<Body> bodies = new ArrayList<>();
+
     public boolean load2 = false;
 
     public GameWorld(OrthographicCamera camera) {
@@ -88,13 +89,23 @@ public class GameWorld {
             bodyDef.type = StaticBody;
             body = world.createBody(bodyDef);
             body.createFixture(shape,1.0f);
-            bodies.add(body);
+            body.setUserData(new BodyData(true,false));
             if(layer.equals("Eingang")){
                     eingang.put(body,new Eingang(v.x,v.y,mapt));
             }
             shape.dispose();
         }
 
+    }
+    private void markDeleteableForDestruction() {
+        Array<Body> bodies = new Array<>();
+        world.getBodies(bodies);
+        for (Body body : bodies) {
+            BodyData userData = (BodyData) body.getUserData();
+            if(userData.isCanBeDestroyed()) {
+                userData.setMarkedForDestruction(true);
+            }
+        }
     }
 
     private ArrayList<Object> createPolyline(PolylineMapObject polyline) {
@@ -133,8 +144,7 @@ public class GameWorld {
             }
         } else if (i == 1) {
             if (screen != i) {
-              destroy = true;
-
+                markDeleteableForDestruction();
                 renderer.setMap(dungeonLinks);
                 getForms("Wand", dungeonLinks, 1);
                 getForms("Eingang", dungeonLinks, 1);

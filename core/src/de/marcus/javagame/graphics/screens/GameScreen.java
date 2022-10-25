@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.Array;
+import de.marcus.javagame.datahandling.data.collisions.BodyData;
 import de.marcus.javagame.datahandling.data.datahandling.SavedataHandler;
 import de.marcus.javagame.graphics.ui.UI;
 import de.marcus.javagame.io.logging.LoggingSystem;
@@ -17,6 +19,7 @@ import de.marcus.javagame.managers.InputManager;
 import de.marcus.javagame.world.GameWorld;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -101,7 +104,9 @@ public class GameScreen extends AbstractScreen {
         entityManager.getPlayer().setPlayerBody(gameWorld.getWorld().createBody(entityManager.getPlayer().getPlayerBodyDef()));
         //setzt die fixture
         entityManager.getPlayer().setPlayerFixture(entityManager.getPlayer().getPlayerBody().createFixture(entityManager.getPlayer().getPlayerFixtureDef()));
-        entityManager.getPlayer().setSwordBody((gameWorld.getWorld().createBody(entityManager.getPlayer().getSwordBodyDef())));
+        Body body = gameWorld.getWorld().createBody(entityManager.getPlayer().getSwordBodyDef());
+        body.setUserData(new BodyData(false,false));
+        entityManager.getPlayer().setSwordBody(body);
         entityManager.getPlayer().setSwordFixture(entityManager.getPlayer().getSwordBody().createFixture(entityManager.getPlayer().getSwordFixtureDef()));
         gameWorld.getWorld().setContactListener(new ContactListenerExtern(this));
         gameWorld.setMap(1,entityManager.getPlayer());
@@ -110,6 +115,8 @@ public class GameScreen extends AbstractScreen {
 
     }
 
+
+
     @Override
     public void update(float delta) {
         //story spawns etc
@@ -117,12 +124,17 @@ public class GameScreen extends AbstractScreen {
         ui.update(entityManager.getPlayer().getPosition().x, entityManager.getPlayer().getPosition().y);
 
         gameWorld.getWorld().step(1 / 60f, 6, 2);
-        if(gameWorld.destroy){
-            for(Body b : gameWorld.getBodies()){
-                gameWorld.getWorld().destroyBody(b);
-            }
-            gameWorld.destroy = false;
+        cleanupBodys();
+    }
+
+    private void cleanupBodys() {
+        Array<Body> bodies = new Array<>();
+        gameWorld.getWorld().getBodies(bodies);
+        for (Body body : bodies) {
+            BodyData userData = (BodyData) body.getUserData();
+            System.out.println(userData.isCanBeDestroyed());
         }
+
     }
 
     @Override
