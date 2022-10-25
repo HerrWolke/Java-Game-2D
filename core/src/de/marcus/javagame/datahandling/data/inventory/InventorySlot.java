@@ -50,7 +50,10 @@ public class InventorySlot {
 
     @JsonIgnore
     public TextureRegion getTexture() {
-        return TextureManager.getTexture(item.name().toLowerCase());
+        if(item != null)
+            return TextureManager.getTexture(item.name().toLowerCase());
+        else
+            return TextureManager.getTexture("placeholder");
     }
 
     public String getUuid() {

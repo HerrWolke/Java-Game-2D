@@ -109,7 +109,7 @@ public class InventoryWindow extends GenericGameWindow {
         parameter.borderColor = Color.BLACK;
         parameter.borderWidth = 1;
         parameter.padLeft = 40;
-        BitmapFont font12 = generator.generateFont(parameter); // font size 12 pixels
+        BitmapFont font12 = generator.generateFont(parameter);
 
         for (int x = 0; x < 3; x++) {
             for (int i = 1; i < 11; i++) {
@@ -128,7 +128,7 @@ public class InventoryWindow extends GenericGameWindow {
             image.setPosition(width - placeholder.getMinWidth() * i - width * (0.031f + 0.00325f * (i - 1)), -height * 0.24f - placeholder.getMinHeight() * 3.5f - height * (0.015f) * 4.5f);
             Label label = new Label("" + Math.abs(i - 11), new Label.LabelStyle(font12, null));
             label.setPosition(width - placeholder.getMinWidth() * i - width * (0.031f + 0.00325f * (i - 1)), -height * 0.24f - placeholder.getMinHeight() * 3.5f - height * (0.015f) * 4.5f);
-
+            System.out.println("Size of hotbar " + hotbar.getChildren().size);
 
             hotbar.addActor(image);
             hotbarNumbers.addActor(label);
@@ -350,7 +350,7 @@ public class InventoryWindow extends GenericGameWindow {
             child.setDrawable(new TextureRegionDrawable(texture));
             label.setText(itemCount);
         } else {
-            child.setDrawable(new TextureRegionDrawable(new Texture("placeholder.png")));
+            child.setDrawable(new TextureRegionDrawable(TextureManager.getTexture("placeholder")));
             label.setText("");
         }
     }
@@ -360,7 +360,7 @@ public class InventoryWindow extends GenericGameWindow {
         if (texture != null) {
             child.setDrawable(new TextureRegionDrawable(texture));
         } else {
-            child.setDrawable(new TextureRegionDrawable(new Texture("placeholder_marked.png")));
+            child.setDrawable(new TextureRegionDrawable(TextureManager.getTexture("placeholder")));
         }
     }
 

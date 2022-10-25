@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="40" height="45" tilewidth="128" tileheight="128" infinite="0" nextlayerid="5" nextobjectid="1">
  <tileset firstgid="1" name="Einrichtung" tilewidth="128" tileheight="128" tilecount="256" columns="16">
-  <image source="ExtraObjects@128x128.png" width="2048" height="2048"/>
+  <image source="graphics/ExtraObjects@128x128.png" width="2048" height="2048"/>
  </tileset>
  <tileset firstgid="257" name="Innen" tilewidth="128" tileheight="128" tilecount="256" columns="16">
-  <image source="Interior Color 2@128x128.png" width="2048" height="2048"/>
+  <image source="graphics/Interior Color 2@128x128.png" width="2048" height="2048"/>
  </tileset>
  <tileset firstgid="513" name="Interior Color 3@128x128" tilewidth="128" tileheight="128" tilecount="256" columns="16">
-  <image source="Interior Color 3@128x128.png" width="2048" height="2048"/>
+  <image source="graphics/Interior Color 3@128x128.png" width="2048" height="2048"/>
  </tileset>
  <tileset firstgid="769" name="Interior@128x128" tilewidth="128" tileheight="128" tilecount="256" columns="16">
-  <image source="Interior@128x128.png" width="2048" height="2048"/>
+  <image source="graphics/Interior@128x128.png" width="2048" height="2048"/>
  </tileset>
  <tileset firstgid="1025" name="Interior 2 Color 2@128x128" tilewidth="128" tileheight="128" tilecount="256" columns="16">
-  <image source="Interior 2 Color 2@128x128.png" width="2048" height="2048"/>
+  <image source="graphics/Interior 2 Color 2@128x128.png" width="2048" height="2048"/>
  </tileset>
- <tileset firstgid="1281" source="Interior 2 Color 2@128x128.tsx"/>
- <tileset firstgid="1537" source="Interior 2 Color 3@128x128.tsx"/>
- <tileset firstgid="1793" source="Interior 2@128x128.tsx"/>
- <tileset firstgid="2049" source="Interior Color 2@128x128.tsx"/>
- <tileset firstgid="2305" source="Interior Color 3@128x128.tsx"/>
+ <tileset firstgid="1281" source="graphics/Interior 2 Color 2@128x128.tsx"/>
+ <tileset firstgid="1537" source="graphics/Interior 2 Color 3@128x128.tsx"/>
+ <tileset firstgid="1793" source="graphics/Interior 2@128x128.tsx"/>
+ <tileset firstgid="2049" source="graphics/Interior Color 2@128x128.tsx"/>
+ <tileset firstgid="2305" source="graphics/Interior Color 3@128x128.tsx"/>
  <layer id="1" name="Boden/Wand" width="40" height="45">
   <data encoding="csv">
 273,274,275,276,277,278,275,276,277,278,275,276,277,278,275,276,277,275,276,277,278,279,280,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

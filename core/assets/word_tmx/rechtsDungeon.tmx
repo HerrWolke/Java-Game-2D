@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="64" height="63" tilewidth="128" tileheight="128" infinite="0" nextlayerid="9" nextobjectid="45">
- <tileset firstgid="1" source="Dungeon @128x128.tsx"/>
- <tileset firstgid="257" source="Dungeon 2 Color3@128x128.tsx"/>
- <tileset firstgid="513" source="Dungeon Color3@128x128.tsx"/>
- <tileset firstgid="769" source="Dungeon 2@128x128.tsx"/>
+ <tileset firstgid="1" source="graphics/Dungeon @128x128.tsx"/>
+ <tileset firstgid="257" source="graphics/Dungeon 2 Color3@128x128.tsx"/>
+ <tileset firstgid="513" source="graphics/Dungeon Color3@128x128.tsx"/>
+ <tileset firstgid="769" source="graphics/Dungeon 2@128x128.tsx"/>
  <layer id="2" name="Kachelebene 2" width="64" height="63">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

@@ -8,7 +8,8 @@ public enum EffectType {
     FIRE(EffectInfluence.HEALTH, 1.0, 4),
     FROZEN(EffectInfluence.MOVEMENT, 0.0, 4),
     HEAL(EffectInfluence.HEALTH, 1.0, 0.5),
-    STRENGTH(EffectInfluence.DAMAGE, 1.0, 1);
+    STRENGTH(EffectInfluence.DAMAGE, 1.0, 1),
+    SPEED(EffectInfluence.MOVEMENT, 1.0, 5);
 
     EffectType(EffectInfluence influence, double influenceStrength, double applyTime) {
         this.influence = influence;

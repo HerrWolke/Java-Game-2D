@@ -54,7 +54,7 @@ public class EntityManager extends Loadable {
         passedAnimTime += Gdx.graphics.getDeltaTime();
 
         spriteBatch.begin();
-        player.render(spriteBatch, passedAnimTime, 2.5f, 2.5f);
+        player.render(spriteBatch, passedAnimTime, 1.5f, 2f);
         for (Entity entity : currentUsedEntities.values()) {
             spriteBatch.draw(entity.getTexture(), entity.getPosition().x, entity.getPosition().y);
         }
