@@ -54,58 +54,34 @@ public class GameWorld {
         renderer = new OrthogonalTiledMapRenderer(dungeonRechts, UNIT_SCALE);
         renderer.setView(camera);
         //TODO: Kommentar wieder entfernen
-        renderer.setMap(tiledMap);
-         getForms("nicht betretbar",tiledMap,0);
+       // renderer.setMap(tiledMap);
+        /* getForms("nicht betretbar",tiledMap,0);
          getForms("Dach",tiledMap,0);
-           getForms("Eingang",tiledMap,0);
+           getForms("Eingang",tiledMap,0);*/
         TILE_SIZE =  Float.valueOf(dungeonLinks.getProperties().get("tilewidth",Integer.class));;
 
     }
     public void getForms(String layer,TiledMap map,int mapt) {
         MapLayer collisionObjectLayer = map.getLayers().get(layer);
         MapObjects objects = collisionObjectLayer.getObjects();
-        System.out.println("objects: " + objects.getByType(PolygonMapObject.class).size);
+
         int ind = 0;
         for (PolygonMapObject mapobject : objects.getByType(PolygonMapObject.class)) {
-            System.out.println("vor error");
-            if(mapobject.getPolygon().getTransformedVertices().length > 8){
-                System.out.println("error");
-            }
-            Polygon p = mapobject.getPolygon(); //
-            PolygonShape gb = new PolygonShape();
-            BodyDef bodydef = new BodyDef();
-            bodydef.type = StaticBody;
-            Body bod = world.createBody(bodydef);
 
-            float[] vertices = p.getTransformedVertices();
+            PolygonMapObject polygonMapObject = (PolygonMapObject) mapobject;
 
-            float[] worldVertices = new float[vertices.length];
-            System.out.println("x: " + p.getX() + " y: " + p.getY());
-            for (int i = 0; i < vertices.length; ++i) {
-                System.out.println(vertices[i]);
-                worldVertices[i] = vertices[i] / 128;
-            }
-            System.out.println("finished " + layer);
-            if(vertices.length <=8) {
+            Polygon polygon = polygonMapObject.getPolygon();
+
+            BodyDef bodyDef = getBodyDef(1 * 128 + polygon.getX(), 1 * 128 + polygon.getY());
+           if(polygon.getVertices().length<=8) {
 
 
-                gb.set(worldVertices);
-
-                bod.createFixture(gb, 100.0f);
-            }else{
-                System.out.println("-----------------------------------------Error------------------------------------------");
-                for (int i = 0; i < vertices.length; ++i) {
-                    System.out.println(vertices[i]);
-
-                }
-                System.out.println("-----------------------------------------------------------------------------------------");
-            }
-            System.out.println(ind);
-            if(layer.equals("Eingang")){
-                eingang.put(bod, new Eingang(bod.getPosition().x ,bod.getPosition().y,mapt));//TODO: x position anpassen
-            }
-            ind++;
-
+               Body body = world.createBody(bodyDef);
+               PolygonShape polygonShape = new PolygonShape();
+               polygonShape.set(polygon.getVertices());
+               body.createFixture(polygonShape, 0.0f);
+               polygonShape.dispose();
+           }
         }
 
 
@@ -122,17 +98,26 @@ public class GameWorld {
 
             System.out.println("Box information: " + p.width/2 + " , " + p.height/2);
 
-            gb.setAsBox(p.width*0.5F/ TILE_SIZE,p.height*0.5F/ TILE_SIZE);
+            gb.setAsBox(p.width*0.5F/ TILE_SIZE,p.height * 0.5F/ TILE_SIZE);
             Body bod = world.createBody(bodydef);
             bod.createFixture(gb, 100.0f);
             System.out.println("Pos x: " + (bod.getPosition().x - p.width/2) + " ,y: " + (bod.getPosition().y - p.height/2));
 
             System.out.println("-----------------");
             bod.setTransform(getTransformedCenterForRectangle(p),0);
+
             if(layer.equals("Eingang")){
                 eingang.put(bod, new Eingang(bod.getPosition().x-p.width/2,bod.getPosition().y,mapt));
             }
         }
+    }
+    private BodyDef getBodyDef(float x, float y)
+    {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.position.set(x, y);
+
+        return bodyDef;
     }
     public void render(OrthographicCamera camera) {
         renderer.setView(camera);
