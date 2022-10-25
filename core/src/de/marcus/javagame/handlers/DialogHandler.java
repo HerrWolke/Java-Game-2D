@@ -31,9 +31,6 @@ public class DialogHandler {
         currentDialog = Dialogs.WEAPON_SHOP_DIALOG.dialog;
         this.window = window;
         dialogCompletionData = SavedataHandler.load(DialogCompletionData.class);
-        dialogCompletionData.completeDialog(Dialogs.DIALOG_DEFAULT);
-        dialogCompletionData.completeDialog(Dialogs.WEAPON_SHOP_DIALOG);
-        SavedataHandler.save(dialogCompletionData);
 
     }
 
@@ -160,7 +157,7 @@ public class DialogHandler {
                         .setButtonTexts("Ich schaue mich erstmal um", "Ich bräuchte Hilfe, um Ausrüstung zusammenzustellen", "Ich sehe hier nicht interessantes. Auf Wiedersehen!")
                         .setNextDialogs(
                                 new DialogBuilder().
-                                        setDialogText("Lass mich wissen, wenn du Hilfe brauchst! {EVENT=OpenShop}").
+                                        setDialogText("Lass mich wissen, wenn du Hilfe brauchst!{WAIT=1} {EVENT=OpenShop,POTION_SHOP}").
                                         setAsDefaultDialog().
                                         createDialog(),
                                 new DialogBuilder().
@@ -168,10 +165,10 @@ public class DialogHandler {
                                         .setButtonTexts("Das geht sie nichts an! ", "Ich möchte in die Fußstapfen meines Vaters treten.", "Ich muss mich verteidigen können.")
                                         .setNextDialogs(
                                                 new DialogBuilder().
-                                                        setDialogText("Entschuldigung, ich wollte dir nicht zu nahe treten … \n Mit einem Schwert kann man nie was falsch machen.{WAIT=1}").
+                                                        setDialogText("Entschuldigung, ich wollte dir nicht zu nahe treten … \n Mit einem Schwert kann man nie was falsch machen.{WAIT=1} {EVENT=OpenShop,EQUIPMENT_SHOP}").
                                                         createDialog(),
                                                 new DialogBuilder().
-                                                        setDialogText("Viel Glück dabei! Ich denke dieses Schwert könnte dir sicherlich dabei helfen.{WAIT=1} {EVENT=GiftSword}").
+                                                        setDialogText("Viel Glück dabei! Ich denke dieses Schwert könnte dir sicherlich dabei helfen.{WAIT=1} {EVENT=GiftItem,STARTER_SWORD}").
                                                         createDialog(),
                                                 new DialogBuilder().
                                                         setDialogText("Angriff ist die beste Verteidigung, daher würde ich dir das Schwert aus dem Shop empfehlen.{WAIT=1}{EVENT=OpenShop}{EVENT=DialogFinished}").
@@ -237,15 +234,17 @@ public class DialogHandler {
 
                                 setDialogText("Ich wusste gar nicht das Ryu einen Bruder hat. Gib ihm diese Rüstung von mir. Euer Vater war ein Mann mit Idealen.").
 
+                                createDialog(),
+                        new DialogBuilder().
+                                setDialogText("Touristen sind immer so unfreundlich!").
                                 createDialog()
 
-                )
 
-                        .
-
+                ).
                 markAsTop().
-
                 createDialog()
+
+
         ),
 
         VILLAGER_DIALOG_2(new DialogBuilder().
@@ -268,12 +267,61 @@ public class DialogHandler {
                                                 setDialogText("Da gibt es hier den besten. ").
                                                 createDialog()
 
-                                ).createDialog()).createDialog());
+                                ).createDialog(),
+                        new DialogBuilder().
+                                setDialogText("Ah … Ryu jetzt erkenne ich dich. Natürlich kannte ich ihn. Er hatte das Herz am rechten Fleck. Nimm las Zeichen der Dankbarkeit diesen Trank der Stärke.")
+                        createDialog().
+                                markAsTop().
+                                createDialog()
+                ),
+
+                VILLAGER_DIALOG_3(new DialogBuilder().
+                        setDialogTitle("Lukas - Villager").
+                        setDialogText("Du scheinst nicht von hier zu sein. Was führt dich in unser Dorf?").
+                        setButtonTexts("Ich will inn die Fußstapfen meines Vaters treten.", "Dein Mundgeruch.", "Ich bin auf der Suche nach jemanden. Und bin hierhergekommen, um mich auf der Durchreise auszurüsten.").
+                        setNextDialogs(
+                                new DialogBuilder().
+                                        setDialogText("Oh, Viel Glück dabei. Vielleicht helfen dir diese Rhoades.").
+                                        createDialog(),
+                                new DialogBuilder().
+                                        setDialogText("So eine Unverschämtheit lass ich mir nicht bieten! Ich werde das allen hier im Dorf erzählen! Das wird teuer für dich!").
+                                        createDialog(),
+                                new DialogBuilder().
+                                        setDialogText("Wir haben hier ein paar gute Händler. Lass mich dir unter die Arme greifen mit ein paar Rhoades.").
+                                        createDialog()
+                        ).
+                        markAsTop().
+                        createDialog()
+                )),
+
+
+        KARTOGRAPH(new DialogBuilder().
+                setDialogTitle("Adrian - Kartograph").
+                setDialogText("Hallo! Was kann ich für dich tun?").
+                setButtonTexts("Hallo, mein Name ist Ryu. Ich habe erfahren das mein Vater bei ihnen sich vor einigen Jahren eine Karte gekauft hat. ", "", "").
+                setNextDialogs(
+                        new DialogBuilder().
+                                setDialogText("Ryu? Ryu? ….. Ahhh, dein Vater hat mir von dir sehr stolz erzählt. Ich kann mich noch genau an die Karte erinnern, die er gekauft hat.").
+                                setButtonTexts("", "", "Das ist super! Ich bräuchte nämlich eine Kopie der Karte. Er ist nämlich verschwunden und ich will ihn Wiederfinden.").
+                                setNextDialogs(new DialogBuilder().
+                                        setDialogText("Oh … Das tut mir leid! Dein Vater war ein großartiger Mensch, er hat unserem Dorf viel geholfen als er hier war. Ich hoffe du findest ihn wieder! Hier hast du die Kopie der Karte.").
+                                        setButtonTexts("", "", "Vielen Dank! Was bin ich ihnen für die Kopie schuldig?").
+                                        setNextDialogs(new DialogBuilder().
+                                                setDialogText("Ach lass gut sein kleiner! Viel Glück auf deiner Reise.").
+                                                setButtonTexts("", "", "Vielen Dank! Auf Wiedersehen!").
+                                                setNextDialogs(new DialogBuilder().
+                                                        setDialogText("Dafür doch nnicht! Sei vorsichtig und wenn du deinen Vater gefunden hast müsst ihr in unserem Dorf vorbeikommen unnd wir trinken was zusammen.").
+                                                        createDialog(),
+                                               )))
+                ).markAsTop().
+                createDialog())
 
         Dialogs(Dialog dialog) {
             this.dialog = dialog;
         }
 
         private Dialog dialog;
-    }
+        }
 }
+
+

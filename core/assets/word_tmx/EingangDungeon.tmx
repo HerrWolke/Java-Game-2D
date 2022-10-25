@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="75" height="57" tilewidth="128" tileheight="128" infinite="0" nextlayerid="9" nextobjectid="21">
  <tileset firstgid="1" name="Dungeon 2 Color2@128x128" tilewidth="128" tileheight="128" tilecount="256" columns="16">
-  <image source="Dungeon 2 Color2@128x128.png" width="2048" height="2048"/>
+  <image source="graphics/Dungeon 2 Color2@128x128.png" width="2048" height="2048"/>
  </tileset>
- <tileset firstgid="257" source="Dungeon 2 Color3@128x128.tsx"/>
- <tileset firstgid="513" source="Dungeon 2@128x128.tsx"/>
- <tileset firstgid="769" source="Dungeon Color2@128x128.tsx"/>
- <tileset firstgid="1025" source="Dungeon Color3@128x128.tsx"/>
- <tileset firstgid="1281" source="Dungeon @128x128.tsx"/>
+ <tileset firstgid="257" source="graphics/Dungeon 2 Color3@128x128.tsx"/>
+ <tileset firstgid="513" source="graphics/Dungeon 2@128x128.tsx"/>
+ <tileset firstgid="769" source="graphics/Dungeon Color2@128x128.tsx"/>
+ <tileset firstgid="1025" source="graphics/Dungeon Color3@128x128.tsx"/>
+ <tileset firstgid="1281" source="graphics/Dungeon @128x128.tsx"/>
  <layer id="5" name="Kachelebene 5" width="75" height="57">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

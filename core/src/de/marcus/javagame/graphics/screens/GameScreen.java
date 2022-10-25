@@ -14,10 +14,12 @@ import de.marcus.javagame.managers.ContactListenerExtern;
 import de.marcus.javagame.managers.EntityManager;
 import de.marcus.javagame.managers.InputManager;
 import de.marcus.javagame.world.GameWorld;
+import lombok.Getter;
 
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+@Getter
 public class GameScreen extends AbstractScreen {
 
 
@@ -48,6 +50,7 @@ public class GameScreen extends AbstractScreen {
     public GameScreen(LoadingScreen app, int profile) {
         super(app);
         //app.dispose();
+        Gdx.input.setCursorCatched(true);
 
         new Thread(() -> {
             Scanner scanner = new Scanner(System.in);
@@ -81,7 +84,7 @@ public class GameScreen extends AbstractScreen {
 //        entityManager.getPlayer().getEffects().add(new StatusEffect(EffectType.HEAL,1000));
 
 
-        inputManager = new InputManager(entityManager.getPlayer(), ui);
+        inputManager = new InputManager(entityManager.getPlayer(), ui, this);
 
 
         font = new BitmapFont();
@@ -100,7 +103,7 @@ public class GameScreen extends AbstractScreen {
         entityManager.getPlayer().setSwordBody((gameWorld.getWorld().createBody(entityManager.getPlayer().getSwordBodyDef())));
         entityManager.getPlayer().setSwordFixture(entityManager.getPlayer().getSwordBody().createFixture(entityManager.getPlayer().getSwordFixtureDef()));
         gameWorld.getWorld().setContactListener(new ContactListenerExtern(this));
-
+        gameWorld.setMap(1);
 
     }
 
@@ -122,7 +125,7 @@ public class GameScreen extends AbstractScreen {
     @Override
     public void render(float delta) {
         update(delta);
-        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
@@ -130,6 +133,7 @@ public class GameScreen extends AbstractScreen {
         gameWorld.render(entityManager.getPlayer().getCamera());
         entityManager.render(batch);
         debugRenderer.render(gameWorld.getWorld(), entityManager.getPlayer().getCamera().combined);
+
 
 //        font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 20);
 

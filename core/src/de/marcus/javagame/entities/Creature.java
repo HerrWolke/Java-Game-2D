@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import de.marcus.javagame.entities.Entity;
 import de.marcus.javagame.managers.SoundManager;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,17 +30,17 @@ import java.util.List;
 public abstract class Creature extends Entity {
     LinkedList<StatusEffect> effects;
 
-    private int health;
-    private int maxHealth;
+    protected int health;
+    protected int maxHealth;
 
-    private int hunger;
-    private int maxHunger;
+    protected int hunger;
+    protected int maxHunger;
 
-    private int armor;
-    private int maxArmor;
+    protected int armor;
+    protected int maxArmor;
 
-    private int thirst;
-    private int maxThirst;
+    protected int thirst;
+    protected int maxThirst;
 
 
     @JsonIgnore
@@ -88,7 +87,7 @@ public abstract class Creature extends Entity {
         this.maxThirst = maxThirst;
         health = maxHealth;
         hunger = maxHunger;
-        armor = maxArmor;
+        armor = 0;
         thirst = maxThirst;
         this.movementSpeed = movementSpeed;
         effects = new LinkedList<>();
@@ -158,7 +157,7 @@ public abstract class Creature extends Entity {
 //        }
 
         //position.set(position.x + (Gdx.graphics.getDeltaTime() * (x * movementSpeed)), position.y + (Gdx.graphics.getDeltaTime() * (y * movementSpeed)));
-        position.set(body.getPosition().x - 0.5f /2 , body.getPosition().y - 0.5f );
+        position.set(body.getPosition().x - 1.25f , body.getPosition().y - 1f);
     }
 
 }

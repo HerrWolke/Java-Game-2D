@@ -33,7 +33,7 @@ public class LoadingScreen extends Game {
         //ScreenUtils.clear(1, 0, 0, 1);
         if (loaded) {
 
-            Gdx.gl.glClearColor(0, 0, 0, 1);
+            Gdx.gl.glClearColor(255, 0, 0, 1.0f);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
             g.setScreen(GameScreenManager.SCREENS.GAME1);
             loaded = false;

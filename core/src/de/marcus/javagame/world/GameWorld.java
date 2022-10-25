@@ -3,8 +3,10 @@ package de.marcus.javagame.world;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
+import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -15,6 +17,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import static com.badlogic.gdx.physics.box2d.BodyDef.BodyType.StaticBody;
@@ -54,85 +57,62 @@ public class GameWorld {
         renderer = new OrthogonalTiledMapRenderer(dungeonRechts, UNIT_SCALE);
         renderer.setView(camera);
         //TODO: Kommentar wieder entfernen
-        renderer.setMap(tiledMap);
-         getForms("nicht betretbar",tiledMap,0);
+       // renderer.setMap(tiledMap);
+        /* getForms("nicht betretbar",tiledMap,0);
          getForms("Dach",tiledMap,0);
-           getForms("Eingang",tiledMap,0);
+           getForms("Eingang",tiledMap,0);*/
         TILE_SIZE =  Float.valueOf(dungeonLinks.getProperties().get("tilewidth",Integer.class));;
 
     }
     public void getForms(String layer,TiledMap map,int mapt) {
         MapLayer collisionObjectLayer = map.getLayers().get(layer);
         MapObjects objects = collisionObjectLayer.getObjects();
-        System.out.println("objects: " + objects.getByType(PolygonMapObject.class).size);
-        int ind = 0;
-        for (PolygonMapObject mapobject : objects.getByType(PolygonMapObject.class)) {
-            System.out.println("vor error");
-            if(mapobject.getPolygon().getTransformedVertices().length > 8){
-                System.out.println("error");
+        for(MapObject mapobject : objects){
+            Shape shape;
+            Vector2 v;
+            if(mapobject instanceof PolylineMapObject){
+                ArrayList<Object> r = createPolyline((PolylineMapObject) mapobject);
+                shape = (ChainShape) r.get(0);
+                v = (Vector2) r.get(1);
             }
-            Polygon p = mapobject.getPolygon(); //
-            PolygonShape gb = new PolygonShape();
-            BodyDef bodydef = new BodyDef();
-            bodydef.type = StaticBody;
-            Body bod = world.createBody(bodydef);
-
-            float[] vertices = p.getTransformedVertices();
-
-            float[] worldVertices = new float[vertices.length];
-            System.out.println("x: " + p.getX() + " y: " + p.getY());
-            for (int i = 0; i < vertices.length; ++i) {
-                System.out.println(vertices[i]);
-                worldVertices[i] = vertices[i] / 128;
+            else{
+                continue;
             }
-            System.out.println("finished " + layer);
-            if(vertices.length <=8) {
+            Body body;
+            BodyDef bodyDef = new BodyDef();
+            bodyDef.type = StaticBody;
+            body = world.createBody(bodyDef);
+            body.createFixture(shape,1.0f);
 
-
-                gb.set(worldVertices);
-
-                bod.createFixture(gb, 100.0f);
-            }else{
-                System.out.println("-----------------------------------------Error------------------------------------------");
-                for (int i = 0; i < vertices.length; ++i) {
-                    System.out.println(vertices[i]);
-
-                }
-                System.out.println("-----------------------------------------------------------------------------------------");
-            }
-            System.out.println(ind);
             if(layer.equals("Eingang")){
-                eingang.put(bod, new Eingang(bod.getPosition().x ,bod.getPosition().y,mapt));//TODO: x position anpassen
+                    eingang.put(body,new Eingang(v.x,v.y,mapt));
             }
-            ind++;
-
+            shape.dispose();
         }
 
+    }
 
-
-        for (RectangleMapObject mapobject : objects.getByType(RectangleMapObject.class)) {
-
-            Rectangle p = mapobject.getRectangle(); //
-            PolygonShape gb = new PolygonShape();
-            BodyDef bodydef = new BodyDef();
-            bodydef.type = StaticBody;
-
-           // bodydef.position.set(p.width*0.5F/ TILE_SIZE,p.height*0.5F/ TILE_SIZE);
-
-
-            System.out.println("Box information: " + p.width/2 + " , " + p.height/2);
-
-            gb.setAsBox(p.width*0.5F/ TILE_SIZE,p.height*0.5F/ TILE_SIZE);
-            Body bod = world.createBody(bodydef);
-            bod.createFixture(gb, 100.0f);
-            System.out.println("Pos x: " + (bod.getPosition().x - p.width/2) + " ,y: " + (bod.getPosition().y - p.height/2));
-
-            System.out.println("-----------------");
-            bod.setTransform(getTransformedCenterForRectangle(p),0);
-            if(layer.equals("Eingang")){
-                eingang.put(bod, new Eingang(bod.getPosition().x-p.width/2,bod.getPosition().y,mapt));
-            }
+    private ArrayList<Object> createPolyline(PolylineMapObject polyline) {
+        float[] verticies = polyline.getPolyline().getTransformedVertices();
+        Vector2[] worldVertices = new Vector2[verticies.length/2];
+        for(int i =0; i <worldVertices.length; i++){
+            worldVertices[i] = new Vector2(verticies[i*2] / 96, verticies[i*2+1] / 96);
         }
+        ArrayList<Object> l = new ArrayList<>();
+        ChainShape cs = new ChainShape();
+        cs.createChain(worldVertices);
+        l.add(cs);
+        l.add(worldVertices[0]);
+        return l;
+    }
+
+    private BodyDef getBodyDef(float x, float y)
+    {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.position.set(x, y);
+
+        return bodyDef;
     }
     public void render(OrthographicCamera camera) {
         renderer.setView(camera);
