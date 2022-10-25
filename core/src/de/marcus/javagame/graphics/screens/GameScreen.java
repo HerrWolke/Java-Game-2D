@@ -109,7 +109,7 @@ public class GameScreen extends AbstractScreen {
         entityManager.getPlayer().setSwordBody(body);
         entityManager.getPlayer().setSwordFixture(entityManager.getPlayer().getSwordBody().createFixture(entityManager.getPlayer().getSwordFixtureDef()));
         gameWorld.getWorld().setContactListener(new ContactListenerExtern(this));
-        gameWorld.setMap(1,entityManager.getPlayer());
+        gameWorld.setMap(2,entityManager.getPlayer());
 
         entityManager.getPlayer().tp(14f,73f);
 
@@ -124,7 +124,7 @@ public class GameScreen extends AbstractScreen {
         ui.update(entityManager.getPlayer().getPosition().x, entityManager.getPlayer().getPosition().y);
 
         gameWorld.getWorld().step(1 / 60f, 6, 2);
-        cleanupBodys();
+       // cleanupBodys();
     }
 
     private void cleanupBodys() {

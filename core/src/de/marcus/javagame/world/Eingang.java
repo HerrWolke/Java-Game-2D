@@ -43,6 +43,14 @@ public class Eingang {
                   mapType = 8;
            }else if(x >60 && x<64 && y > 135 && y < 140 && map ==0){
                   mapType = 6;
+           }else if(map ==1){
+                  mapType = 2;
+           }else if(map == 2 && x < 10 ){
+                   mapType =1;
+           }else if(map ==2 && x > 20){
+                  mapType =4;
+           }else if(map ==4){
+
            }
     }
 }

@@ -153,7 +153,7 @@ public class GameWorld {
 
         } else if (i == 2) {
             if (screen != i) {
-               destroy =true;
+
                 renderer.setMap(dungeonEingang);
 
                 getForms("Wände", dungeonEingang, 2);
