@@ -20,9 +20,9 @@ public enum Shops {
 
     @Getter
     public enum ShopItems {
-        HEAL_POTION(5,"Dieser Trank wird dich um eine Herz heilen!"),
-        STRENGTH_POTION(10,"Dieser Trank verdoppelt deine Angriffkraft um das 2x-Fache für " + InventoryItem.STRENGTH_POTION.getEffect().getDuration()),
-        SPEED_POTION(5,"Dieser Trank erhöht deine Laufgeschwindigkeit");
+        HEAL_POTION(5, "Dieser Trank wird dich um eine Herz heilen!"),
+        STRENGTH_POTION(10, "Dieser Trank verdoppelt deine Angriffkraft um das 2x-Fache für " + InventoryItem.STRENGTH_POTION.getEffect().getDuration()),
+        SPEED_POTION(5, "Dieser Trank erhöht deine Laufgeschwindigkeit");
 
         ShopItems(int price, String info) {
             this.inventoryItem = InventoryItem.valueOf(this.name());

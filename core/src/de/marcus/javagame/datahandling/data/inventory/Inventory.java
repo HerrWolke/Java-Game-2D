@@ -84,11 +84,11 @@ public class Inventory extends Loadable {
                     inventoryWindow.setItemAtPosition(slot, null, 0);
 
                     ArrayList<Integer> toRemove = new ArrayList<>();
-                    for (int i = 0; i<hotbar.size();i++) {
+                    for (int i = 0; i < hotbar.size(); i++) {
 
-                        if(hotbar.get(i).getUuid().equals(remove.getUuid())) {
+                        if (hotbar.get(i).getUuid().equals(remove.getUuid())) {
                             System.out.println("Same uuid");
-                            inventoryWindow.setItemIntoHotbar(i,null,0);
+                            inventoryWindow.setItemIntoHotbar(i, null, 0);
                             toRemove.add(i);
                         }
                     }
@@ -110,14 +110,14 @@ public class Inventory extends Loadable {
 
     private void removeHotbarItemsCorrectly(List<Integer> slotsToReplace) {
         for (int slot : slotsToReplace) {
-            hotbar.set(slot,new InventorySlot());
+            hotbar.set(slot, new InventorySlot());
         }
     }
 
     private void moveInventoryItems() {
         for (InventorySlot slot : inventory) {
             inventoryWindow.setItemAtPosition(inventory.indexOf(slot), slot.getTexture(), slot.getItemCount());
-            inventoryWindow.setItemAtPosition(inventory.indexOf(slot)+1,null,0);
+            inventoryWindow.setItemAtPosition(inventory.indexOf(slot) + 1, null, 0);
         }
     }
 
@@ -161,7 +161,7 @@ public class Inventory extends Loadable {
                 } else if (inventory.size() < INVENTORY_SIZE && i == inventory.size() - 1) {
                     System.out.println("Adding to new slot");
                     inventory.add(slot);
-                    inventoryWindow.setItemAtPosition(inventory.size()-1, slot.getTexture(), slot.getItemCount());
+                    inventoryWindow.setItemAtPosition(inventory.size() - 1, slot.getTexture(), slot.getItemCount());
                     return true;
                 }
             }

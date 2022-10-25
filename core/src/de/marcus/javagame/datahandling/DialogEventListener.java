@@ -19,7 +19,7 @@ public class DialogEventListener extends TypingAdapter {
     @Override
     public void event(String event) {
         System.out.println("Received text event: " + event);
-        if(event.equalsIgnoreCase("OpenShop")) {
+        if (event.equalsIgnoreCase("OpenShop")) {
             ui.getShopWindow().generateShop(Shops.POTION_SHOP);
         }
     }

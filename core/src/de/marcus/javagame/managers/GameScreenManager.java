@@ -33,9 +33,10 @@ public class GameScreenManager {
         this.screens.put(SCREENS.START_MENU, new StartMenuScreen(app));
         this.screens.put(SCREENS.MENU, new MenuScreen(app));
         this.screens.put(SCREENS.SELECT_PROFILE, new SelectProfileScreen(app));
-        this.screens.put(SCREENS.GAME1, new GameScreen(app, 1));
-        this.screens.put(SCREENS.GAME2, new GameScreen(app, 2));
-        this.screens.put(SCREENS.GAME3, new GameScreen(app, 3));
+        GameScreen gameScreen = new GameScreen(app, 1);
+        this.screens.put(SCREENS.GAME1, gameScreen);
+        this.screens.put(SCREENS.GAME2, gameScreen);
+        this.screens.put(SCREENS.GAME3, gameScreen);
         this.screens.put(SCREENS.SETTINGS, new SettingScreen(app));
         //weitere screens
 

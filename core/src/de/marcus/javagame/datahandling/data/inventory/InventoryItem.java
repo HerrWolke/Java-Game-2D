@@ -20,8 +20,7 @@ public enum InventoryItem {
     //Potions
     HEAL_POTION(Inventory.MAX_POTION_STACK, true, true, new StatusEffect(EffectType.HEAL, 1000)),
     STRENGTH_POTION(Inventory.MAX_POTION_STACK, true, true, new StatusEffect(EffectType.STRENGTH, 1000)),
-    SPEED_POTION(Inventory.MAX_POTION_STACK,true,true,new StatusEffect(EffectType.HEAL,1000))
-    ;
+    SPEED_POTION(Inventory.MAX_POTION_STACK, true, true, new StatusEffect(EffectType.HEAL, 1000));
 
     InventoryItem(int maxStackSize, boolean deletable, boolean hotbarSelectable) {
         this.maxStackSize = maxStackSize;

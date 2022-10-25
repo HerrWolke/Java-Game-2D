@@ -1,14 +1,12 @@
 package de.marcus.javagame.graphics.ui.windows;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.SnapshotArray;
@@ -18,6 +16,7 @@ import de.marcus.javagame.datahandling.data.dialog.Dialog;
 import de.marcus.javagame.datahandling.data.shop.Shops;
 import de.marcus.javagame.graphics.ui.UI;
 import de.marcus.javagame.handlers.DialogHandler;
+import de.marcus.javagame.managers.TextureManager;
 import de.marcus.javagame.misc.Util;
 import lombok.Getter;
 
@@ -25,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class DialogWindow extends Window {
+public class DialogWindow extends GenericGameWindow {
 
     Group dialogOptionsGroup;
     Label label;
@@ -40,7 +39,7 @@ public class DialogWindow extends Window {
     UI ui;
 
     public DialogWindow(Stage stage, UI ui) {
-        super("", new WindowStyle(new BitmapFont(), Color.WHITE, new TextureRegionDrawable(new Texture("dialog.png"))));
+        super("", new WindowStyle(new BitmapFont(), Color.WHITE, new TextureRegionDrawable(TextureManager.getTexture("dialog"))));
         this.ui = ui;
         dialogOptionsGroup = new Group();
         otherElements = new Group();
@@ -67,7 +66,7 @@ public class DialogWindow extends Window {
         dialog.setTypingListener(new TypingAdapter() {
             public void event(String event) {
                 System.out.println("Received text event: " + event);
-                if(event.equalsIgnoreCase("OpenShop")) {
+                if (event.equalsIgnoreCase("OpenShop")) {
                     ui.getShopWindow().generateShop(Shops.POTION_SHOP);
                     setVisible(false);
                 }
@@ -88,8 +87,8 @@ public class DialogWindow extends Window {
             }
         });
 
-        TextureRegionDrawable itemOption = new TextureRegionDrawable(new Texture("dialog_option.png"));
-        TextureRegionDrawable itemOptionSelected = new TextureRegionDrawable(new Texture("dialog_option_selected.png"));
+        TextureRegionDrawable itemOption = new TextureRegionDrawable(TextureManager.getTexture("dialog_option"));
+        TextureRegionDrawable itemOptionSelected = new TextureRegionDrawable(TextureManager.getTexture("dialog_option_selected"));
 
 
         ImageTextButton dialogOption = new ImageTextButton("", new ImageTextButton.ImageTextButtonStyle(itemOption, itemOption, itemOptionSelected, Util.getFontForScreenSize(stage, 25)));
@@ -198,12 +197,12 @@ public class DialogWindow extends Window {
         boolean fitsOnScreen = true;
 
         for (String text : arg.getButtonTexts()) {
-            if(text.length() > 52) {
+            if (text.length() > 52) {
                 fitsOnScreen = false;
                 break;
             }
 
-            if(!text.equals("") && !(arg.getNextDialog(arg.getButtonTexts().indexOf(text)).isDisableOnOnceFinished() && dialogHandler.hasCurrentDialogBeenCompletedBefore())) {
+            if (!text.equals("") && !(arg.getNextDialog(arg.getButtonTexts().indexOf(text)).isDisableOnOnceFinished() && dialogHandler.hasCurrentDialogBeenCompletedBefore())) {
                 texts.add(text);
             } else {
                 addToEnd.add("");
@@ -224,7 +223,6 @@ public class DialogWindow extends Window {
 
 
 
-
         if (menuTitle.length() < 18 && dialogText.length() < 280 && fitsOnScreen) {
             label.setText(menuTitle);
             dialog.setText("");
@@ -237,7 +235,7 @@ public class DialogWindow extends Window {
             for (char currentChar : dialogText.toCharArray()) {
                 if (String.valueOf(currentChar).matches("[^,]\\p{Punct}")) {
                     dialogTextTimingBuilder.append(currentChar).append("{WAIT}");
-                } else if(String.valueOf(currentChar).matches("\\p{Punct}")){
+                } else if (String.valueOf(currentChar).matches("\\p{Punct}")) {
                     dialogTextTimingBuilder.append(currentChar).append("{WAIT=0.5}");
                 } else {
                     dialogTextTimingBuilder.append(currentChar);
@@ -268,7 +266,6 @@ public class DialogWindow extends Window {
     }
 
     /**
-     *
      * @return The amount of children, that are visible within a group
      * This is for dialogs, which have a disabled option after being used once, so you can not click that option anymore (Hope that makes sense)
      */
@@ -277,7 +274,7 @@ public class DialogWindow extends Window {
 
         int visible = 0;
         for (Actor actor : children) {
-            if(actor.isVisible()) visible++;
+            if (actor.isVisible()) visible++;
         }
 
         return visible;

@@ -4,13 +4,22 @@ package de.marcus.javagame.managers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import de.marcus.javagame.datahandling.data.datahandling.SavedataHandler;
 import de.marcus.javagame.datahandling.data.shop.Shops;
 import de.marcus.javagame.entities.Player;
 import de.marcus.javagame.graphics.ui.UI;
 import de.marcus.javagame.graphics.ui.windows.InventoryWindow;
 import de.marcus.javagame.handlers.DialogHandler;
+import de.marcus.javagame.misc.Util;
 
 import java.util.HashMap;
 
@@ -68,11 +77,13 @@ public class InputManager implements InputProcessor {
 
 //        System.out.printf("x: %s, y: %s",posCam.x,posCam.y);
 
-        p.move(posCam.x, posCam.y, true);
+        p.move(posCam.x, posCam.y, true,null);
     }
 
     @Override
     public boolean keyDown(int keycode) {
+
+        ui.handleUIInput(keycode);
 
         if (keycode == settings.get(CONTROLS.SETTINGS)) {
             //new screen
@@ -80,11 +91,7 @@ public class InputManager implements InputProcessor {
         }
 
 
-        if (keycode == settings.get(CONTROLS.OPEN_INVENTORY)) {
-            if (ui.isPlayerAllowedToMove()) {
-                ui.changeInventoryShowState();
-            }
-        }
+
 
         if (keycode == settings.get(CONTROLS.BLOCK_SPEAK)) {
             //wenn person mit der man interacten kann in range vor ihm
@@ -113,12 +120,29 @@ public class InputManager implements InputProcessor {
         if (keycode == Input.Keys.NUMPAD_6) {
             ui.getShopWindow().generateShop(Shops.POTION_SHOP);
         }
+        if (keycode == Input.Keys.NUMPAD_5) {
+            TextField cheatInput = new TextField("",new TextField.TextFieldStyle(new BitmapFont(), Color.BLACK,null,null,null));
+            Dialog dialog = new Dialog("", new Window.WindowStyle(new BitmapFont(), Color.GOLD, new TextureRegionDrawable(new Texture("generic_dialog.png"))));
+
+            Stage stage = ui.getStage();
+
+
+            dialog.getContentTable().add(cheatInput);
+
+            float screenHeight = Util.getScreenHeight(stage);
+            float screenWidth = Util.getScreenWidth(stage);
+            dialog.setSize(screenWidth / 5.0f, (screenHeight / 5.0f) * Util.getReversedAspectRatio(stage));
+            dialog.setPosition((screenWidth / 2.0f) - dialog.getWidth() / 2, (screenHeight / 2.0f) - dialog.getHeight() / 2);
+
+            stage.addActor(dialog);
+        }
+
 
         if (ui.getInventoryWindow().isVisible()) {
             ui.getInventoryWindow().handleInput(keycode, ui);
         }
 
-        if(ui.getShopWindow().isVisible() && InventoryWindow.InventoryControlKey.CLOSE_MENU.contains(keycode)) {
+        if (ui.getShopWindow().isVisible() && InventoryWindow.InventoryControlKey.CLOSE_MENU.contains(keycode)) {
             ui.getShopWindow().setVisible(false);
         }
 
@@ -153,19 +177,19 @@ public class InputManager implements InputProcessor {
             p.blockStop();
             return false;
         }
-        if(keycode == settings.get(CONTROLS.RUN_LEFT) ) {
-
-           return false;
-        }
-        if( keycode == settings.get(CONTROLS.RUN_RIGHT) ){
+        if (keycode == settings.get(CONTROLS.RUN_LEFT)) {
 
             return false;
         }
-        if(keycode  == settings.get(CONTROLS.RUN_FORWARD)){
+        if (keycode == settings.get(CONTROLS.RUN_RIGHT)) {
 
             return false;
         }
-        if(keycode == settings.get(CONTROLS.RUN_BACKWARD)){
+        if (keycode == settings.get(CONTROLS.RUN_FORWARD)) {
+
+            return false;
+        }
+        if (keycode == settings.get(CONTROLS.RUN_BACKWARD)) {
 
             return false;
         }

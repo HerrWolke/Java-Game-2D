@@ -20,8 +20,6 @@ public class Dialog {
     private boolean disableOnOnceFinished;
 
     /**
-     *
-     *
      * @param disableOnOnceFinished Describes if the dialog is not to be displayed anymore once the dialog was finished once
      */
     public Dialog(String title, String dialogText, List<String> buttonTexts, List<Dialog> nextDialogs, boolean topDialog, boolean disableOnOnceFinished, String dialogTextOnceFinished) {
