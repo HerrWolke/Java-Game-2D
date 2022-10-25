@@ -15,20 +15,19 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import lombok.Getter;
 
+import java.util.LinkedHashMap;
+
 import static com.badlogic.gdx.physics.box2d.BodyDef.BodyType.StaticBody;
 
-
+//Eingang, npc , gegenstände auf map, mob
 @Getter
 public class GameWorld {
     public static final float UNIT_SCALE = 1f / 96f;
     private final float TILE_SIZE;
+    public LinkedHashMap<Body,Eingang> eingang;
+
     World world;
-    TiledMap tiledMap;
-    TiledMap dungeonEingang;
-    TiledMap boss;
-    TiledMap dungeonRechts;
-    TiledMap dungeonLinks;
-    TiledMap mine;
+    TiledMap innenRaum1,innenRaum2,innenRaum3,tiledMap,dungeonEingang,boss,dungeonRechts,dungeonLinks,mine1,mine2;
     int screen = 0;
     OrthogonalTiledMapRenderer renderer;
 
@@ -37,13 +36,20 @@ public class GameWorld {
     public GameWorld(OrthographicCamera camera) {
 
         world = new World(new Vector2(0, 0), true);
+        eingang = new LinkedHashMap<>();
         AssetManager assetManager = new AssetManager();
         TmxMapLoader tmxMapLoader = new TmxMapLoader();
-       tiledMap = tmxMapLoader.load("word_tmx/Tilemap.tmx");
+        tiledMap = tmxMapLoader.load("word_tmx/Tilemap.tmx");
         dungeonEingang = tmxMapLoader.load("word_tmx/EingangDungeon.tmx");
         boss = tmxMapLoader.load("word_tmx/Boss.tmx");
         dungeonRechts = tmxMapLoader.load("word_tmx/Boss.tmx");
         dungeonLinks = tmxMapLoader.load("word_tmx/linksDungeon.tmx");
+        innenRaum1 =tmxMapLoader.load("word_tmx/Innenraum1.tmx");;
+        innenRaum2 =tmxMapLoader.load("word_tmx/Innenraum2.tmx");;
+        innenRaum3 =tmxMapLoader.load("word_tmx/Innenraum3.tmx");;
+        mine1=tmxMapLoader.load("word_tmx/mine1.tmx");;
+        mine2=tmxMapLoader.load("word_tmx/mine2.tmx");;
+
         //mine = tmxMapLoader.load("word_tmx/Innenraum1.tmx");
         renderer = new OrthogonalTiledMapRenderer(dungeonRechts, UNIT_SCALE);
         renderer.setView(camera);
@@ -104,6 +110,9 @@ public class GameWorld {
                 System.out.println("-----------------------------------------------------------------------------------------");
             }
             System.out.println(ind);
+            if(layer.equals("Eingang")){
+                eingang.put(bod, new Eingang(bod.getPosition().x ,bod.getPosition().y));//TODO: x position anpassen
+            }
             ind++;
 
         }
@@ -111,6 +120,7 @@ public class GameWorld {
 
 
         for (RectangleMapObject mapobject : objects.getByType(RectangleMapObject.class)) {
+
             Rectangle p = mapobject.getRectangle(); //
             PolygonShape gb = new PolygonShape();
             BodyDef bodydef = new BodyDef();
@@ -128,6 +138,9 @@ public class GameWorld {
 
             System.out.println("-----------------");
             bod.setTransform(getTransformedCenterForRectangle(p),0);
+            if(layer.equals("Eingang")){
+                eingang.put(bod, new Eingang(bod.getPosition().x-p.width/2,bod.getPosition().y));
+            }
         }
     }
     public void render(OrthographicCamera camera) {
@@ -164,11 +177,24 @@ public class GameWorld {
             }
         } else if (i == 5) {
             if (screen != i) {
-                renderer.setMap(dungeonLinks);
+                renderer.setMap(mine1);
+
             }
         } else if (i == 6) {
             if (screen != i) {
-                renderer.setMap(mine);
+                renderer.setMap(mine2);
+            }
+        }else if (i == 7) {
+            if (screen != i) {
+                renderer.setMap(innenRaum1);
+            }
+        }else if (i == 8) {
+            if (screen != i) {
+                renderer.setMap(innenRaum2);
+            }
+        }else if (i == 9) {
+            if (screen != i) {
+                renderer.setMap(innenRaum3);
             }
         }
     }

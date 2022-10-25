@@ -24,7 +24,7 @@ public class GameScreen extends AbstractScreen {
     InputManager inputManager;
 
 
-    GameWorld gameWorld;
+   public GameWorld gameWorld;
     Label label;
     //testen
     Box2DDebugRenderer debugRenderer;

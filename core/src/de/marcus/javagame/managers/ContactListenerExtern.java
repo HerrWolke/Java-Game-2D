@@ -1,9 +1,6 @@
 package de.marcus.javagame.managers;
 
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Manifold;
+import com.badlogic.gdx.physics.box2d.*;
 import de.marcus.javagame.graphics.screens.GameScreen;
 
 public class ContactListenerExtern implements ContactListener {
@@ -15,8 +12,11 @@ public class ContactListenerExtern implements ContactListener {
 
     @Override
     public void beginContact(Contact contact) {
+          Body body1 = contact.getFixtureA().getBody();
+        Body body2 = contact.getFixtureB().getBody();
+        if(body1 == g.entityManager.getPlayer().getPlayerBody() && g.gameWorld.eingang.containsKey(body2)){
 
-        //if(contact.getFixtureA().getBody() == g.entityManager.getPlayer().getPlayerBody() && contact.getFixtureB().getBody() == g.)
+        }
     }
 
     @Override
