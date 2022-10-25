@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="53" height="62" tilewidth="128" tileheight="128" infinite="0" nextlayerid="6" nextobjectid="10">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="53" height="62" tilewidth="128" tileheight="128" infinite="0" nextlayerid="6" nextobjectid="21">
  <tileset firstgid="1" source="Dungeon 2 Color3@128x128.tsx"/>
  <tileset firstgid="257" source="Dungeon @128x128.tsx"/>
  <tileset firstgid="513" source="Dungeon Color2@128x128.tsx"/>
@@ -202,14 +202,19 @@
 </data>
  </layer>
  <objectgroup id="4" name="Wand">
-  <object id="1" x="508.242" y="642.061" width="775.758" height="372.727"/>
-  <object id="3" x="-12.97" y="-3.39" width="269.697" height="1681.82"/>
-  <object id="4" x="259.758" y="1408.73" width="1530.3" height="248.485"/>
-  <object id="5" x="1541.58" y="896.606" width="242.424" height="506.061"/>
-  <object id="6" x="1544.61" y="8.73" width="245.455" height="754.545"/>
-  <object id="8" x="262.788" y="5.7" width="1284.85" height="254.545"/>
+  <object id="16" x="1544" y="246">
+   <polyline points="0,0 -1294,4 -1296,1174"/>
+  </object>
+  <object id="18" x="246" y="1420">
+   <polyline points="0,0 1306,2 1300,-1176"/>
+  </object>
+  <object id="20" x="516" y="648">
+   <polyline points="0,0 0,356 760,358 762,-8 24,-8 2,56"/>
+  </object>
  </objectgroup>
  <objectgroup id="5" name="Eingang">
-  <object id="9" x="1538.55" y="772.364" width="251.515" height="121.212"/>
+  <object id="19" x="1536" y="770">
+   <polyline points="0,0 -22,-2 -20,130 -10,136 4,134"/>
+  </object>
  </objectgroup>
 </map>
