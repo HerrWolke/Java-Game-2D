@@ -26,9 +26,11 @@ public class ContactListenerExtern implements ContactListener {
 
             //TODO: Vllt world clearen, koordinaten setzen
         }
-        if ((body1 == g.entityManager.getPlayer().getPlayerBody() && g.getNpcs().containsKey(body2) || body2 == g.entityManager.getPlayer().getPlayerBody() && g.getNpcs().containsKey(body1)) && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 
-              g.getNpcs().get(body2 == g.entityManager.getPlayer().getPlayerBody() ? body1 : body2).callDialog();
+        System.out.println("is button pressed: " +  Gdx.input.isButtonPressed(Input.Buttons.LEFT));
+        if (((body1 == g.entityManager.getPlayer().getPlayerBody() && g.getEntityManager().getNpcBodyList().contains(body2)) || (body2 == g.entityManager.getPlayer().getPlayerBody() && g.getEntityManager().getNpcBodyList().contains(body1))) && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+            System.out.println("call the collision");
+              g.getEntityManager().getNpcs().getNpcList().get(g.getEntityManager().getNpcBodyList().indexOf(body2 == g.entityManager.getPlayer().getPlayerBody() ? body1 : body2)).callDialog();
 
             //TODO: Vllt world clearen, koordinaten setzen
         }

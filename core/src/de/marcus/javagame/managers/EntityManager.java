@@ -3,6 +3,7 @@ package de.marcus.javagame.managers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -45,6 +46,8 @@ public class EntityManager extends Loadable {
     @JsonIgnore
     private NPCs npcs;
 
+    private List<Body> npcBodyList;
+
 
     public EntityManager() {
         passedAnimTime = 0f;
@@ -70,7 +73,7 @@ public class EntityManager extends Loadable {
     public void generateNPCs(List<Vector2> asList, UI ui, World world) {
         npcs = new NPCs(asList,ui,world);
         npcs.getNpcList().forEach(npc ->  currentUsedEntities.put(UUID.randomUUID(), npc));
-
+        npcBodyList = npcs.getGeneratedBodys();
     }
 
     public void update() {

@@ -2,6 +2,7 @@ package de.marcus.javagame.datahandling.data;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import de.marcus.javagame.entities.NPC;
 import de.marcus.javagame.graphics.ui.UI;
@@ -26,10 +27,19 @@ public class NPCs {
             if(coordList.size() > i) {
                 NPC npc = new NPC(coordList.get(i).x, coordList.get(i).y, dialog, new Texture("npc.png"), ui, world);
                 npcList.add(npc);
+
                 i++;
             } else {
                 break;
             }
         }
+    }
+
+    public List<Body> getGeneratedBodys() {
+        List<Body> bodies = new ArrayList<>();
+        for (NPC npc : npcList) {
+            bodies.add(npc.getBody());
+        }
+        return bodies;
     }
 }

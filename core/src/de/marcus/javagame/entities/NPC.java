@@ -7,15 +7,19 @@ import com.badlogic.gdx.physics.box2d.*;
 import de.marcus.javagame.graphics.ui.UI;
 import de.marcus.javagame.handlers.DialogHandler;
 import de.marcus.javagame.managers.TextureManager;
+import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class NPC extends Creature{
     public Fixture npcFixture;
     public BodyDef npcBodyDef;
     public FixtureDef npcFixtureDef;
     public Body body;
     DialogHandler.Dialogs dialog;
+    List<Body> bodies;
     float x;
     float y;
     private UI ui;
@@ -26,12 +30,14 @@ public class NPC extends Creature{
         this.y = y;
         this.ui = ui;
         this.dialog = dialog;
+        this.bodies = new ArrayList<>();
 
         this.world = world;
         createCollisionNpc();
     }
 
     public void callDialog() {
+        System.out.println("calling dialog");
         ui.getDialogWindow().getDialogHandler().setCurrentDialog(dialog);
     }
     public void createCollisionNpc() {
@@ -51,6 +57,7 @@ public class NPC extends Creature{
         npcFixtureDef.density = 0f;
         npcFixtureDef.friction = 0.0f;
         body = world.createBody(npcBodyDef);
+        body.createFixture(shape,100f);
 
     }
 }
