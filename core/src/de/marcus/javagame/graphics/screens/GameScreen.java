@@ -3,21 +3,33 @@ package de.marcus.javagame.graphics.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Timer;
+import de.marcus.javagame.datahandling.data.NPCs;
+import de.marcus.javagame.datahandling.data.collisions.BodyData;
 import de.marcus.javagame.datahandling.data.datahandling.SavedataHandler;
+import de.marcus.javagame.datahandling.data.dialog.Dialog;
+import de.marcus.javagame.entities.DialogData;
+import de.marcus.javagame.entities.Item;
+import de.marcus.javagame.entities.NPC;
 import de.marcus.javagame.graphics.ui.UI;
+import de.marcus.javagame.handlers.DialogHandler;
 import de.marcus.javagame.io.logging.LoggingSystem;
 import de.marcus.javagame.managers.ContactListenerExtern;
 import de.marcus.javagame.managers.EntityManager;
 import de.marcus.javagame.managers.InputManager;
+import de.marcus.javagame.managers.TextureManager;
 import de.marcus.javagame.world.GameWorld;
 import lombok.Getter;
 
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+import java.util.*;
 
 @Getter
 public class GameScreen extends AbstractScreen {
@@ -32,16 +44,22 @@ public class GameScreen extends AbstractScreen {
     Box2DDebugRenderer debugRenderer;
     private final BitmapFont font;
     private final SpriteBatch batch;
-
+    boolean timer = false;
     public EntityManager entityManager;
     UI ui;
 
     public static LoggingSystem loggingSystem = new LoggingSystem();
-
-
+    LinkedHashMap<Body, NPC> npcs;
     boolean yes = true;
+    LinkedHashMap<Body, Item> items;
+    ArrayList<Vector2> itemKoord = new ArrayList<Vector2>(); //TODO: koord setzen
+    ArrayList<String> itemNames = new ArrayList<>(); //TODO: namen setzen
+    ArrayList<Item> itemsList = new ArrayList<>();
+    ArrayList<String> currentItemName = new ArrayList<>();
 
-
+    ArrayList<Item> currentItem = new ArrayList<>();
+    float timeSeconds = 0f;
+    float period = 120f;
     // StoryHandler sthandler;
     //LoadWorld loader;
     //Entities entities;
@@ -50,8 +68,14 @@ public class GameScreen extends AbstractScreen {
     public GameScreen(LoadingScreen app, int profile) {
         super(app);
         //app.dispose();
+        currentItemName.add(0, "keins");
+        currentItem.add(0,new Item(new Vector2(-100,-100)));
+        items = new LinkedHashMap<>();
+         //TODO: items adden
+        itemKoord.add(new Vector2(120f, 90f));
+        itemNames.add("test");
         Gdx.input.setCursorCatched(true);
-
+        npcs = new LinkedHashMap<>();
         new Thread(() -> {
             Scanner scanner = new Scanner(System.in);
             try {
@@ -100,12 +124,73 @@ public class GameScreen extends AbstractScreen {
         entityManager.getPlayer().setPlayerBody(gameWorld.getWorld().createBody(entityManager.getPlayer().getPlayerBodyDef()));
         //setzt die fixture
         entityManager.getPlayer().setPlayerFixture(entityManager.getPlayer().getPlayerBody().createFixture(entityManager.getPlayer().getPlayerFixtureDef()));
-        entityManager.getPlayer().setSwordBody((gameWorld.getWorld().createBody(entityManager.getPlayer().getSwordBodyDef())));
+        Body body = gameWorld.getWorld().createBody(entityManager.getPlayer().getSwordBodyDef());
+        body.setUserData(new BodyData(false,false));
+        entityManager.getPlayer().setSwordBody(body);
         entityManager.getPlayer().setSwordFixture(entityManager.getPlayer().getSwordBody().createFixture(entityManager.getPlayer().getSwordFixtureDef()));
         gameWorld.getWorld().setContactListener(new ContactListenerExtern(this));
-        gameWorld.setMap(1);
+       // gameWorld.setMap(1,entityManager.getPlayer());
 
+        entityManager.getPlayer().tp(123f,90.5f);
+       createNpcs();
+       createItems();
     }
+    public void createNpcs(){
+        NPCs npcs = new NPCs(Arrays.asList(),ui);
+    }
+    public void createItems(){
+        for(Vector2 v : itemKoord){
+            Item item = new Item(v);
+            item.createCollisionItem();
+            item.body = gameWorld.getWorld().createBody(item.itemBodyDef);
+
+            //setzt die fixture
+            item.itemFixture = item.body.createFixture(item.itemFixtureDef);
+            itemsList.add(item);
+            items.put(item.body, item);
+        }
+    }
+    //TODO in dialog callen
+    public void startSearch(){
+        if(itemsList.size() > 0){
+            currentItem.set(0,itemsList.get(itemsList.size()-1));
+            currentItemName.set(0,itemNames.get(itemsList.size()-1));
+            //TODO: Benachrichtigung mit current Item name
+            itemsList.remove(itemsList.size()-1);
+            itemNames.remove(itemsList.size()-1);
+
+            startTimer();
+        }else if( itemsList.size() ==0){
+                currentItem.set(0,itemsList.get(0));
+                currentItemName.set(0,itemNames.get(0));
+            //TODO: Benachrichtigung mit current Item name
+                itemsList.remove(0);
+                itemNames.remove(0);
+            startTimer();
+
+        }else{
+            //TODO: Fenster öffnen alle gefunden
+        }
+        //setze mission in current
+    }
+    public void startTimer(){
+        timer = true;
+        //Dialogfenster mit timer wenn 0 tod
+    }
+    public void stopTimer(){
+        timer = false;
+        period = 120f;
+    }
+public void itemFound(){
+        //TODO: lana
+    if(currentItem.size() > 0) {
+
+        currentItem.set(0, new Item(new Vector2(-100,-100)));
+        currentItemName.set(0,"keins");
+        stopTimer();
+        startSearch();
+    }
+}
 
     @Override
     public void update(float delta) {
@@ -114,6 +199,20 @@ public class GameScreen extends AbstractScreen {
         ui.update(entityManager.getPlayer().getPosition().x, entityManager.getPlayer().getPosition().y);
 
         gameWorld.getWorld().step(1 / 60f, 6, 2);
+       // cleanupBodys();
+    }
+    public void kill(){
+        //TODO: kill player
+    }
+
+    private void cleanupBodys() {
+        Array<Body> bodies = new Array<>();
+        gameWorld.getWorld().getBodies(bodies);
+        for (Body body : bodies) {
+            BodyData userData = (BodyData) body.getUserData();
+            System.out.println(userData.isCanBeDestroyed());
+        }
+
     }
 
     @Override
@@ -128,12 +227,19 @@ public class GameScreen extends AbstractScreen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+       if(timer){
+           timeSeconds +=Gdx.graphics.getRawDeltaTime();
+           if(timeSeconds > period){
+               timeSeconds-=period;
+               kill();
+           }
+       }
 
         batch.setProjectionMatrix(entityManager.getPlayer().getCamera().combined);
         gameWorld.render(entityManager.getPlayer().getCamera());
         entityManager.render(batch);
         debugRenderer.render(gameWorld.getWorld(), entityManager.getPlayer().getCamera().combined);
-
+        gameWorld.getWorld().setContactListener(new ContactListenerExtern(this));
 
 //        font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 20);
 
@@ -146,7 +252,7 @@ public class GameScreen extends AbstractScreen {
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-        gameWorld.getWorld().step(1 / 60f, 6, 2);
+
     }
 
     @Override

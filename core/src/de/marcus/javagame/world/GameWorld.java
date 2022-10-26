@@ -15,10 +15,15 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
+import de.marcus.javagame.datahandling.data.collisions.BodyData;
+import de.marcus.javagame.entities.Player;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static com.badlogic.gdx.physics.box2d.BodyDef.BodyType.StaticBody;
 
@@ -28,7 +33,7 @@ public class GameWorld {
     public static final float UNIT_SCALE = 1f / 96f;
     private final float TILE_SIZE;
     public LinkedHashMap<Body,Eingang> eingang;
-
+    public boolean destroy = false;
     World world;
     TiledMap innenRaum1,innenRaum2,innenRaum3,tiledMap,dungeonEingang,boss,dungeonRechts,dungeonLinks,mine1,mine2;
     int screen = 0;
@@ -45,7 +50,7 @@ public class GameWorld {
         tiledMap = tmxMapLoader.load("word_tmx/Tilemap.tmx");
         dungeonEingang = tmxMapLoader.load("word_tmx/EingangDungeon.tmx");
         boss = tmxMapLoader.load("word_tmx/Boss.tmx");
-        dungeonRechts = tmxMapLoader.load("word_tmx/Boss.tmx");
+        dungeonRechts = tmxMapLoader.load("word_tmx/rechtsDungeon.tmx");
         dungeonLinks = tmxMapLoader.load("word_tmx/linksDungeon.tmx");
         innenRaum1 =tmxMapLoader.load("word_tmx/Innenraum1.tmx");;
         innenRaum2 =tmxMapLoader.load("word_tmx/Innenraum2.tmx");;
@@ -57,13 +62,14 @@ public class GameWorld {
         renderer = new OrthogonalTiledMapRenderer(dungeonRechts, UNIT_SCALE);
         renderer.setView(camera);
         //TODO: Kommentar wieder entfernen
-       // renderer.setMap(tiledMap);
-        /* getForms("nicht betretbar",tiledMap,0);
+        renderer.setMap(tiledMap);
+        getForms("nicht betretbar",tiledMap,0);
          getForms("Dach",tiledMap,0);
-           getForms("Eingang",tiledMap,0);*/
+          // getForms("Eingang",tiledMap,0);
         TILE_SIZE =  Float.valueOf(dungeonLinks.getProperties().get("tilewidth",Integer.class));;
 
     }
+
     public void getForms(String layer,TiledMap map,int mapt) {
         MapLayer collisionObjectLayer = map.getLayers().get(layer);
         MapObjects objects = collisionObjectLayer.getObjects();
@@ -83,13 +89,23 @@ public class GameWorld {
             bodyDef.type = StaticBody;
             body = world.createBody(bodyDef);
             body.createFixture(shape,1.0f);
-
+            body.setUserData(new BodyData(true,false));
             if(layer.equals("Eingang")){
                     eingang.put(body,new Eingang(v.x,v.y,mapt));
             }
             shape.dispose();
         }
 
+    }
+    private void markDeleteableForDestruction() {
+        Array<Body> bodies = new Array<>();
+        world.getBodies(bodies);
+        for (Body body : bodies) {
+            BodyData userData = (BodyData) body.getUserData();
+            if(userData.isCanBeDestroyed()) {
+                userData.setMarkedForDestruction(true);
+            }
+        }
     }
 
     private ArrayList<Object> createPolyline(PolylineMapObject polyline) {
@@ -119,7 +135,7 @@ public class GameWorld {
         renderer.render();
     }
 
-    public void setMap(int i) {
+    public void setMap(int i,Player p) {
         if (i == 0) {
             if (screen != i) {
                 renderer.setMap(tiledMap);
@@ -128,18 +144,23 @@ public class GameWorld {
             }
         } else if (i == 1) {
             if (screen != i) {
+               // markDeleteableForDestruction();
                 renderer.setMap(dungeonLinks);
-                getForms("Wand",dungeonLinks,1);
-                getForms("Eingang",dungeonLinks,1);
-            }
-        } else if (i == 2) {
-            if (screen != i) {
-                renderer.setMap(dungeonEingang);
-                getForms("Wände",dungeonEingang,2);
-                getForms("Dach",dungeonEingang,2);
-                getForms("Eingang",dungeonEingang,2);
+                getForms("Wand", dungeonLinks, 1);
+                getForms("Eingang", dungeonLinks, 1);
+
             }
 
+        } else if (i == 2) {
+            if (screen != i) {
+
+                renderer.setMap(dungeonEingang);
+
+                getForms("Wände", dungeonEingang, 2);
+                getForms("Dach", dungeonEingang, 2);
+                getForms("Eingang", dungeonEingang, 2);
+
+            }
         } else if (i == 3) {
             if (screen != i) {
                 renderer.setMap(boss);
@@ -150,7 +171,7 @@ public class GameWorld {
         } else if (i == 4) {
             if (screen != i) {
                 renderer.setMap(dungeonRechts);
-                getForms("nicht betretbar",dungeonRechts,4);
+                getForms("Wand",dungeonRechts,4);
                 getForms("Eingang",dungeonRechts,4);
                 getForms("Kisten",dungeonRechts,4);
 

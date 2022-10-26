@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="40" height="45" tilewidth="128" tileheight="128" infinite="0" nextlayerid="5" nextobjectid="1">
+<map version="1.9" tiledversion="1.9.1" orientation="orthogonal" renderorder="right-down" width="40" height="45" tilewidth="128" tileheight="128" infinite="0" nextlayerid="6" nextobjectid="2">
  <tileset firstgid="1" name="Einrichtung" tilewidth="128" tileheight="128" tilecount="256" columns="16">
   <image source="graphics/ExtraObjects@128x128.png" width="2048" height="2048"/>
  </tileset>
@@ -69,6 +69,11 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="5" name="nicht betretbar">
+  <object id="1" x="256" y="898">
+   <polyline points="0,0 262,4 270,72 308,126 362,122 342,-58 278,-134 88,-130 116,-258 882,-268 896,-650 1042,-646 1044,-184 966,-218 924,-186 910,-172 908,-132 612,-130 582,-110 566,-68 560,-30 552,40 532,80 546,118 592,124 648,6 1152,-4 1148,-518 2428,-520 2430,-50 2300,-48 2300,760 2430,758 2430,2838 2358,2822 2320,2840 2318,2940 1296,2942 1348,3110 1100,3104 1138,2944 120,2942 124,2722 -2,2610 -6,1800 130,1790 138,1574 126,1148 124,1086 -2,1084 0,30"/>
+  </object>
+ </objectgroup>
  <layer id="2" name="2" width="40" height="45">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,300,0,0,0,0,0,0,0,0,0,0,300,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
