@@ -2,13 +2,13 @@ package de.marcus.javagame.managers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.marcus.javagame.datahandling.Loadable;
-import de.marcus.javagame.entities.Creature;
-import de.marcus.javagame.entities.Entity;
-import de.marcus.javagame.entities.Player;
-import de.marcus.javagame.entities.Weapon;
+import de.marcus.javagame.datahandling.data.NPCs;
+import de.marcus.javagame.entities.*;
+import de.marcus.javagame.graphics.ui.UI;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -40,11 +41,15 @@ public class EntityManager extends Loadable {
     @JsonIgnore
     private float passedAnimTime;
 
+    @JsonIgnore
+    private NPCs npcs;
+
 
     public EntityManager() {
         passedAnimTime = 0f;
         this.currentUsedEntities = new LinkedHashMap<>();
         this.memoryLoadedEntities = new LinkedHashMap<>();
+
         this.player = new Player(60, 80);
     }
 
@@ -56,9 +61,15 @@ public class EntityManager extends Loadable {
         spriteBatch.begin();
         player.render(spriteBatch, passedAnimTime, 1.5f, 2f);
         for (Entity entity : currentUsedEntities.values()) {
-            spriteBatch.draw(entity.getTexture(), entity.getPosition().x, entity.getPosition().y);
+            spriteBatch.draw(entity.getTexture(), entity.getPosition().x, entity.getPosition().y,1.5f,2f);
         }
         spriteBatch.end();
+    }
+
+    public void generateNPCs(List<Vector2> asList, UI ui) {
+        npcs = new NPCs(asList,ui);
+        npcs.getNpcList().forEach(npc ->  currentUsedEntities.put(UUID.randomUUID(), npc));
+
     }
 
     public void update() {
@@ -109,4 +120,6 @@ public class EntityManager extends Loadable {
                 ", memoryLoadedEntities=" + memoryLoadedEntities.toString() +
                 '}';
     }
+
+
 }

@@ -132,12 +132,11 @@ public class GameScreen extends AbstractScreen {
        // gameWorld.setMap(1,entityManager.getPlayer());
 
         entityManager.getPlayer().tp(123f,90.5f);
-       createNpcs();
+        entityManager.generateNPCs(Arrays.asList(new Vector2(0,0)),ui);
+
        createItems();
     }
-    public void createNpcs(){
-        NPCs npcs = new NPCs(Arrays.asList(),ui);
-    }
+
     public void createItems(){
         for(Vector2 v : itemKoord){
             Item item = new Item(v);
