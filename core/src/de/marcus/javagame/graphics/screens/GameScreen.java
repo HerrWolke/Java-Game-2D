@@ -62,6 +62,7 @@ public class GameScreen extends AbstractScreen {
     ArrayList<String> itemNames = new ArrayList<>(); //TODO: namen setzen
     ArrayList<Item> itemsList = new ArrayList<>();
     ArrayList<String> currentItemName = new ArrayList<>();
+
     ArrayList<Item> currentItem = new ArrayList<>();
     float timeSeconds = 0f;
     float period = 120f;
@@ -73,6 +74,8 @@ public class GameScreen extends AbstractScreen {
     public GameScreen(LoadingScreen app, int profile) {
         super(app);
         //app.dispose();
+        currentItemName.add(0, "keins");
+        currentItem.add(0,new Item(new Vector2(-100,-100)));
         items = new LinkedHashMap<>();
         //TODO: richtig adden
         npcKoord.add(new Vector2(120f, 92f));
@@ -168,16 +171,16 @@ public class GameScreen extends AbstractScreen {
     //TODO in dialog callen
     public void startSearch(){
         if(itemsList.size() > 0){
-            currentItem.add(itemsList.get(itemsList.size()-1));
-            currentItemName.add(itemNames.get(itemsList.size()-1));
+            currentItem.set(0,itemsList.get(itemsList.size()-1));
+            currentItemName.set(0,itemNames.get(itemsList.size()-1));
             //TODO: Benachrichtigung mit current Item name
             itemsList.remove(itemsList.size()-1);
             itemNames.remove(itemsList.size()-1);
 
             startTimer();
         }else if( itemsList.size() ==0){
-                currentItem.add(itemsList.get(0));
-                currentItemName.add(itemNames.get(0));
+                currentItem.set(0,itemsList.get(0));
+                currentItemName.set(0,itemNames.get(0));
             //TODO: Benachrichtigung mit current Item name
                 itemsList.remove(0);
                 itemNames.remove(0);
@@ -198,9 +201,13 @@ public class GameScreen extends AbstractScreen {
     }
 public void itemFound(){
         //TODO: lana
-         currentItem.remove(0);
-         stopTimer();
-         startSearch();
+    if(currentItem.size() > 0) {
+
+        currentItem.set(0, new Item(new Vector2(-100,-100)));
+        currentItemName.set(0,"keins");
+        stopTimer();
+        startSearch();
+    }
 }
 
     @Override
