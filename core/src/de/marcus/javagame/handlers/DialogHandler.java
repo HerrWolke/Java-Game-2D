@@ -191,15 +191,16 @@ public class DialogHandler {
                 setButtonTexts("Ich benötige Beratung bei den Tränken.", "Ich möchte mich erstmals ein wenig umschauen.", "Wie viel kosten die Tränke jeweils?  ").
                 setNextDialogs(
                         new DialogBuilder().
-                                setDialogText("Das kommt auf die Situation an in der sie sich befinden. \n Manchmal muss man sich schnell regenerieren, ein andermal sollte man besser schneller sein als der Gegner und manchmal ist es von Vorteil Stärker zu sein als er.{EVENT=OpenShop}").
+                                setDialogText("Das kommt auf die Situation an in der sie sich befinden." +
+                                        "\nManchmal muss man sich schnell regenerieren, ein andermal sollte man besser schneller sein als der Gegner und manchmal ist es von Vorteil Stärker zu sein als er.{WAIT=1}{EVENT=OpenShop,POTION_SHOP}").
                                 setAsDefaultDialog().
                                 createDialog(),
                         new DialogBuilder().
-                                setDialogText("Falls sie Hilfe benötigen, geben sie mir bescheid. {EVENT=OpenShop}").
+                                setDialogText("Falls sie Hilfe benötigen, geben sie mir bescheid. {WAIT=1}{EVENT=OpenShop,POTION_SHOP}").
                                 setAsDefaultDialog()
                                 .createDialog(),
                         new DialogBuilder().
-                                setDialogText("Der Heiltrank kostet [], der Stärketrank kostet [] und der Geschwindigkeitstrank kostet []. {EVENT=OpenShop}").
+                                setDialogText("Der Heiltrank kostet 5, der Stärketrank kostet 10 und der Geschwindigkeitstrank kostet 5. {WAIT=1}{EVENT=OpenShop,POTION_SHOP}").
                                 setAsDefaultDialog().
                                 createDialog()
                 ).
