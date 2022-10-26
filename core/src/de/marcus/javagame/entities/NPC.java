@@ -19,12 +19,15 @@ public class NPC extends Creature{
     float x;
     float y;
     private UI ui;
-    public NPC(float x, float y,DialogHandler.Dialogs dialog, Texture t, UI ui) {
+    World world;
+    public NPC(float x, float y,DialogHandler.Dialogs dialog, Texture t, UI ui, World world) {
         super(x,  y, t,  1,  1,  0,  0, 0f , null);
         this.x = x;
         this.y = y;
         this.ui = ui;
         this.dialog = dialog;
+
+        this.world = world;
         createCollisionNpc();
     }
 
@@ -47,7 +50,7 @@ public class NPC extends Creature{
         npcFixtureDef.shape = shape;
         npcFixtureDef.density = 0f;
         npcFixtureDef.friction = 0.0f;
-
+        body = world.createBody(npcBodyDef);
 
     }
 }
