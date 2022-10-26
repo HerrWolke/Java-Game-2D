@@ -132,12 +132,12 @@ public class GameScreen extends AbstractScreen {
        // gameWorld.setMap(1,entityManager.getPlayer());
 
         entityManager.getPlayer().tp(123f,90.5f);
-       createNpcs();
+        entityManager.generateNPCs(Arrays.asList(new Vector2(0,0)),ui);
+        NPCs npcs = new NPCs(Arrays.asList(new Vector2(211.59f,225.96f),new Vector2(186.43f,121.92f),new Vector2(216.94f,123.55f),new Vector2(123.48f,92.75f),new Vector2(68.38f,155.39f),new Vector2(140f,142f)),ui);
+
        createItems();
     }
-    public void createNpcs(){
-        NPCs npcs = new NPCs(Arrays.asList(new Vector2(211.59f,225.96f),new Vector2(186.43f,121.92f),new Vector2(216.94f,123.55f),new Vector2(123.48f,92.75f),new Vector2(68.38f,155.39f),new Vector2(140f,142f)),ui);
-    }
+
     public void createItems(){
         for(Vector2 v : itemKoord){
             Item item = new Item(v);
