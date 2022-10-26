@@ -3,23 +3,31 @@ package de.marcus.javagame.graphics.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Array;
 import de.marcus.javagame.datahandling.data.collisions.BodyData;
 import de.marcus.javagame.datahandling.data.datahandling.SavedataHandler;
+import de.marcus.javagame.datahandling.data.dialog.Dialog;
+import de.marcus.javagame.entities.DialogData;
+import de.marcus.javagame.entities.NPC;
 import de.marcus.javagame.graphics.ui.UI;
+import de.marcus.javagame.handlers.DialogHandler;
 import de.marcus.javagame.io.logging.LoggingSystem;
 import de.marcus.javagame.managers.ContactListenerExtern;
 import de.marcus.javagame.managers.EntityManager;
 import de.marcus.javagame.managers.InputManager;
+import de.marcus.javagame.managers.TextureManager;
 import de.marcus.javagame.world.GameWorld;
 import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -41,8 +49,11 @@ public class GameScreen extends AbstractScreen {
     UI ui;
 
     public static LoggingSystem loggingSystem = new LoggingSystem();
-
-
+    LinkedHashMap<Body, NPC> npcs;
+    ArrayList<Vector2> npcKoord = new ArrayList<Vector2>();
+    ArrayList<DialogData> dialogData = new ArrayList<>();   //TODO: Dialog data setzen wenn wir neue brauchen
+    ArrayList<DialogHandler.Dialogs> dialoge= new ArrayList<>(); //TODO: Dialoge zuordenen
+    ArrayList<Texture> npcTextures = new ArrayList<>();   //TODO: Grafiken zuordnen
     boolean yes = true;
 
 
@@ -54,8 +65,13 @@ public class GameScreen extends AbstractScreen {
     public GameScreen(LoadingScreen app, int profile) {
         super(app);
         //app.dispose();
-        Gdx.input.setCursorCatched(true);
+        //TODO: richtig adden
+        npcKoord.add(new Vector2(120f, 92f));
+        dialoge.add(DialogHandler.Dialogs.POTION_SHOP_DIALOG);
+        npcTextures.add( TextureManager.getTexture("standing_character").getTexture());
 
+        Gdx.input.setCursorCatched(true);
+        npcs = new LinkedHashMap<>();
         new Thread(() -> {
             Scanner scanner = new Scanner(System.in);
             try {
@@ -109,12 +125,22 @@ public class GameScreen extends AbstractScreen {
         entityManager.getPlayer().setSwordBody(body);
         entityManager.getPlayer().setSwordFixture(entityManager.getPlayer().getSwordBody().createFixture(entityManager.getPlayer().getSwordFixtureDef()));
         gameWorld.getWorld().setContactListener(new ContactListenerExtern(this));
-        gameWorld.setMap(2,entityManager.getPlayer());
+       // gameWorld.setMap(1,entityManager.getPlayer());
 
-        entityManager.getPlayer().tp(14f,73f);
-
+        entityManager.getPlayer().tp(123f,90.5f);
+       createNpcs();
     }
+    public void createNpcs(){
+        for(int i = 0; i < npcKoord.size(); i++ ){
+           // NPC n = new NPC(npcKoord.get(i).x,npcKoord.get(i).y, new Dialog(dialogData.get(i).title, dialogData.get(i).dialogText, dialogData.get(i).buttonTexts, dialogData.get(i).nextDialogs, dialogData.get(i).topDialog,dialogData.get(i).disableOnOnceFinished, dialogData.get(i).dialogTextOnceFinished));    TextureManager.getTexture("standing_character").getTexture()
+            NPC n = new NPC(npcKoord.get(i).x,npcKoord.get(i).y,dialoge.get(i),npcTextures.get(i));
+           n.body = gameWorld.getWorld().createBody(n.npcBodyDef);
 
+            //setzt die fixture
+            n.npcFixture = n.body.createFixture(n.npcFixtureDef);
+            npcs.put(n.body, n);
+        }
+    }
 
 
     @Override

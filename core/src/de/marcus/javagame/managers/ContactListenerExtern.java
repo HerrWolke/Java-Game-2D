@@ -1,5 +1,7 @@
 package de.marcus.javagame.managers;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import de.marcus.javagame.graphics.screens.GameScreen;
@@ -24,7 +26,12 @@ public class ContactListenerExtern implements ContactListener {
 
             //TODO: Vllt world clearen, koordinaten setzen
         }
+        if ((body1 == g.entityManager.getPlayer().getPlayerBody() && g.getNpcs().containsKey(body2) || body2 == g.entityManager.getPlayer().getPlayerBody() && g.getNpcs().containsKey(body1)) && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 
+              g.getNpcs().get(body2 == g.entityManager.getPlayer().getPlayerBody() ? body1 : body2).callDialog();
+
+            //TODO: Vllt world clearen, koordinaten setzen
+        }
 
     }
 

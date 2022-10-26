@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.1" orientation="orthogonal" renderorder="right-down" width="64" height="63" tilewidth="128" tileheight="128" infinite="0" nextlayerid="9" nextobjectid="52">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="64" height="63" tilewidth="128" tileheight="128" infinite="0" nextlayerid="9" nextobjectid="52">
  <tileset firstgid="1" source="graphics/Dungeon @128x128.tsx"/>
  <tileset firstgid="257" source="graphics/Dungeon 2 Color3@128x128.tsx"/>
  <tileset firstgid="513" source="graphics/Dungeon Color3@128x128.tsx"/>
@@ -219,14 +219,13 @@
    <polyline points="0,0 0,163.636 284.848,169.697 266.667,-33.3333 24.2424,-6.06061"/>
   </object>
  </objectgroup>
- <objectgroup id="5" name="EingangZwischenRaum">
-  <object id="50" x="1512.12" y="1490.91">
-   <polyline points="0,0 3.0303,227.273 133.333,193.939 118.182,9.09091 27.2727,-6.06061"/>
-  </object>
- </objectgroup>
- <objectgroup id="6" name="EingangBoss">
+ <objectgroup id="5" name="EingangZwischenRaum"/>
+ <objectgroup id="6" name="Eingang">
   <object id="49" x="5645.45" y="1533.33">
    <polyline points="0,0 118.182,-48.4848 130.303,193.939 3.0303,169.697 3.0303,24.2424"/>
+  </object>
+  <object id="50" x="1512.12" y="1490.91">
+   <polyline points="0,0 3.0303,227.273 133.333,193.939 118.182,9.09091 27.2727,-6.06061"/>
   </object>
  </objectgroup>
  <objectgroup id="7" name="Gegenstände"/>

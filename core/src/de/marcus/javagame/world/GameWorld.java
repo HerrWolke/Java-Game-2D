@@ -50,7 +50,7 @@ public class GameWorld {
         tiledMap = tmxMapLoader.load("word_tmx/Tilemap.tmx");
         dungeonEingang = tmxMapLoader.load("word_tmx/EingangDungeon.tmx");
         boss = tmxMapLoader.load("word_tmx/Boss.tmx");
-        dungeonRechts = tmxMapLoader.load("word_tmx/Boss.tmx");
+        dungeonRechts = tmxMapLoader.load("word_tmx/rechtsDungeon.tmx");
         dungeonLinks = tmxMapLoader.load("word_tmx/linksDungeon.tmx");
         innenRaum1 =tmxMapLoader.load("word_tmx/Innenraum1.tmx");;
         innenRaum2 =tmxMapLoader.load("word_tmx/Innenraum2.tmx");;
@@ -62,10 +62,10 @@ public class GameWorld {
         renderer = new OrthogonalTiledMapRenderer(dungeonRechts, UNIT_SCALE);
         renderer.setView(camera);
         //TODO: Kommentar wieder entfernen
-       // renderer.setMap(tiledMap);
-        /* getForms("nicht betretbar",tiledMap,0);
+        renderer.setMap(tiledMap);
+        getForms("nicht betretbar",tiledMap,0);
          getForms("Dach",tiledMap,0);
-           getForms("Eingang",tiledMap,0);*/
+          // getForms("Eingang",tiledMap,0);
         TILE_SIZE =  Float.valueOf(dungeonLinks.getProperties().get("tilewidth",Integer.class));;
 
     }
@@ -144,7 +144,7 @@ public class GameWorld {
             }
         } else if (i == 1) {
             if (screen != i) {
-                markDeleteableForDestruction();
+               // markDeleteableForDestruction();
                 renderer.setMap(dungeonLinks);
                 getForms("Wand", dungeonLinks, 1);
                 getForms("Eingang", dungeonLinks, 1);
@@ -171,7 +171,7 @@ public class GameWorld {
         } else if (i == 4) {
             if (screen != i) {
                 renderer.setMap(dungeonRechts);
-                getForms("nicht betretbar",dungeonRechts,4);
+                getForms("Wand",dungeonRechts,4);
                 getForms("Eingang",dungeonRechts,4);
                 getForms("Kisten",dungeonRechts,4);
 
