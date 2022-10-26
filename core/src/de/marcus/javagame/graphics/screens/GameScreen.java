@@ -240,7 +240,6 @@ public void itemFound(){
         batch.setProjectionMatrix(entityManager.getPlayer().getCamera().combined);
         gameWorld.render(entityManager.getPlayer().getCamera());
         entityManager.render(batch);
-        debugRenderer.render(gameWorld.getWorld(), entityManager.getPlayer().getCamera().combined);
         gameWorld.getWorld().setContactListener(new ContactListenerExtern(this));
 
 //        font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 20);

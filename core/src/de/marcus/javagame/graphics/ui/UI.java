@@ -23,6 +23,7 @@ import de.marcus.javagame.graphics.ui.windows.InventoryWindow;
 import de.marcus.javagame.graphics.ui.windows.ShopWindow;
 import de.marcus.javagame.managers.SoundManager;
 import de.marcus.javagame.managers.TextureManager;
+import de.marcus.javagame.mathgame.MathWindow;
 import de.marcus.javagame.misc.Util;
 import lombok.Getter;
 
@@ -46,6 +47,7 @@ public class UI {
     InventoryWindow inventoryWindow;
     DialogWindow dialogWindow;
     ShopWindow shopWindow;
+//    MathWindow mathWindow;
 
     List<GenericGameWindow> extraWindowList;
 
@@ -111,9 +113,11 @@ public class UI {
         inventoryWindow = new InventoryWindow(player.getInventory(), stage);
         dialogWindow = new DialogWindow(stage, this);
         shopWindow = new ShopWindow(this, player);
+//        mathWindow = new MathWindow(stage);
         extraWindowList.add(inventoryWindow);
         extraWindowList.add(dialogWindow);
         extraWindowList.add(shopWindow);
+//        extraWindowList.add(mathWindow);
 
 
         player.setInventoryWindow(inventoryWindow);
@@ -130,6 +134,7 @@ public class UI {
         stage.addActor(inventoryWindow);
         stage.addActor(mainUIContainer);
         stage.addActor(shopWindow);
+//        stage.addActor(mathWindow);
 
 
         //TOP LEFT PLAYER UI INIT
