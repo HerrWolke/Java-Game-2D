@@ -46,7 +46,7 @@ public class GameScreen extends AbstractScreen {
     Box2DDebugRenderer debugRenderer;
     private final BitmapFont font;
     private final SpriteBatch batch;
-    Timer t;
+    boolean timer = false;
     public EntityManager entityManager;
     UI ui;
 
@@ -63,6 +63,8 @@ public class GameScreen extends AbstractScreen {
     ArrayList<Item> itemsList = new ArrayList<>();
     ArrayList<String> currentItemName = new ArrayList<>();
     ArrayList<Item> currentItem = new ArrayList<>();
+    float timeSeconds = 0f;
+    float period = 120f;
     // StoryHandler sthandler;
     //LoadWorld loader;
     //Entities entities;
@@ -187,10 +189,12 @@ public class GameScreen extends AbstractScreen {
         //setze mission in current
     }
     public void startTimer(){
+        timer = true;
         //Dialogfenster mit timer wenn 0 tod
     }
     public void stopTimer(){
-
+        timer = false;
+        period = 120f;
     }
 public void itemFound(){
         //TODO: lana
@@ -207,6 +211,9 @@ public void itemFound(){
 
         gameWorld.getWorld().step(1 / 60f, 6, 2);
        // cleanupBodys();
+    }
+    public void kill(){
+        //TODO: kill player
     }
 
     private void cleanupBodys() {
@@ -231,6 +238,13 @@ public void itemFound(){
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+       if(timer){
+           timeSeconds +=Gdx.graphics.getRawDeltaTime();
+           if(timeSeconds > period){
+               timeSeconds-=period;
+               kill();
+           }
+       }
 
         batch.setProjectionMatrix(entityManager.getPlayer().getCamera().combined);
         gameWorld.render(entityManager.getPlayer().getCamera());
