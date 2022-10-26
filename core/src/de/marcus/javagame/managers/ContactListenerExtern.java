@@ -32,7 +32,12 @@ public class ContactListenerExtern implements ContactListener {
 
             //TODO: Vllt world clearen, koordinaten setzen
         }
+        if ((body1 == g.entityManager.getPlayer().getPlayerBody() && g.getItems().containsKey(body2) || body2 == g.entityManager.getPlayer().getPlayerBody() && g.getItems().containsKey(body1)) && Gdx.input.isButtonPressed(Input.Buttons.LEFT) && (g.getCurrentItem().get(0).body == body1 || g.getCurrentItem().get(0).body == body2)) {
 
+            g.itemFound();
+
+            //TODO: Vllt world clearen, koordinaten setzen
+        }
     }
 
 

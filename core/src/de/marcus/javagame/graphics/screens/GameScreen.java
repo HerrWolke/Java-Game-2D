@@ -11,10 +11,12 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Timer;
 import de.marcus.javagame.datahandling.data.collisions.BodyData;
 import de.marcus.javagame.datahandling.data.datahandling.SavedataHandler;
 import de.marcus.javagame.datahandling.data.dialog.Dialog;
 import de.marcus.javagame.entities.DialogData;
+import de.marcus.javagame.entities.Item;
 import de.marcus.javagame.entities.NPC;
 import de.marcus.javagame.graphics.ui.UI;
 import de.marcus.javagame.handlers.DialogHandler;
@@ -44,7 +46,7 @@ public class GameScreen extends AbstractScreen {
     Box2DDebugRenderer debugRenderer;
     private final BitmapFont font;
     private final SpriteBatch batch;
-
+    Timer t;
     public EntityManager entityManager;
     UI ui;
 
@@ -55,8 +57,12 @@ public class GameScreen extends AbstractScreen {
     ArrayList<DialogHandler.Dialogs> dialoge= new ArrayList<>(); //TODO: Dialoge zuordenen
     ArrayList<Texture> npcTextures = new ArrayList<>();   //TODO: Grafiken zuordnen
     boolean yes = true;
-
-
+    LinkedHashMap<Body, Item> items;
+    ArrayList<Vector2> itemKoord = new ArrayList<Vector2>(); //TODO: koord setzen
+    ArrayList<String> itemNames = new ArrayList<>(); //TODO: namen setzen
+    ArrayList<Item> itemsList = new ArrayList<>();
+    ArrayList<String> currentItemName = new ArrayList<>();
+    ArrayList<Item> currentItem = new ArrayList<>();
     // StoryHandler sthandler;
     //LoadWorld loader;
     //Entities entities;
@@ -65,11 +71,14 @@ public class GameScreen extends AbstractScreen {
     public GameScreen(LoadingScreen app, int profile) {
         super(app);
         //app.dispose();
+        items = new LinkedHashMap<>();
         //TODO: richtig adden
         npcKoord.add(new Vector2(120f, 92f));
         dialoge.add(DialogHandler.Dialogs.POTION_SHOP_DIALOG);
         npcTextures.add( TextureManager.getTexture("standing_character").getTexture());
-
+         //TODO: items adden
+        itemKoord.add(new Vector2(120f, 90f));
+        itemNames.add("test");
         Gdx.input.setCursorCatched(true);
         npcs = new LinkedHashMap<>();
         new Thread(() -> {
@@ -129,6 +138,7 @@ public class GameScreen extends AbstractScreen {
 
         entityManager.getPlayer().tp(123f,90.5f);
        createNpcs();
+       createItems();
     }
     public void createNpcs(){
         for(int i = 0; i < npcKoord.size(); i++ ){
@@ -141,7 +151,53 @@ public class GameScreen extends AbstractScreen {
             npcs.put(n.body, n);
         }
     }
+    public void createItems(){
+        for(Vector2 v : itemKoord){
+            Item item = new Item(v);
+            item.createCollisionItem();
+            item.body = gameWorld.getWorld().createBody(item.itemBodyDef);
 
+            //setzt die fixture
+            item.itemFixture = item.body.createFixture(item.itemFixtureDef);
+            itemsList.add(item);
+            items.put(item.body, item);
+        }
+    }
+    //TODO in dialog callen
+    public void startSearch(){
+        if(itemsList.size() > 0){
+            currentItem.add(itemsList.get(itemsList.size()-1));
+            currentItemName.add(itemNames.get(itemsList.size()-1));
+            //TODO: Benachrichtigung mit current Item name
+            itemsList.remove(itemsList.size()-1);
+            itemNames.remove(itemsList.size()-1);
+
+            startTimer();
+        }else if( itemsList.size() ==0){
+                currentItem.add(itemsList.get(0));
+                currentItemName.add(itemNames.get(0));
+            //TODO: Benachrichtigung mit current Item name
+                itemsList.remove(0);
+                itemNames.remove(0);
+            startTimer();
+
+        }else{
+            //TODO: Fenster öffnen alle gefunden
+        }
+        //setze mission in current
+    }
+    public void startTimer(){
+        //Dialogfenster mit timer wenn 0 tod
+    }
+    public void stopTimer(){
+
+    }
+public void itemFound(){
+        //TODO: lana
+         currentItem.remove(0);
+         stopTimer();
+         startSearch();
+}
 
     @Override
     public void update(float delta) {
