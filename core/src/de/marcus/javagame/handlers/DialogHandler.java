@@ -117,6 +117,7 @@ public class DialogHandler {
      *
      * </p>
      */
+    @Getter
     public enum Dialogs {
         TEST_DIALOG
                 (

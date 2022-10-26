@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
+import de.marcus.javagame.datahandling.data.NPCs;
 import de.marcus.javagame.datahandling.data.collisions.BodyData;
 import de.marcus.javagame.datahandling.data.datahandling.SavedataHandler;
 import de.marcus.javagame.datahandling.data.dialog.Dialog;
@@ -28,10 +29,7 @@ import de.marcus.javagame.managers.TextureManager;
 import de.marcus.javagame.world.GameWorld;
 import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+import java.util.*;
 
 @Getter
 public class GameScreen extends AbstractScreen {
@@ -52,10 +50,6 @@ public class GameScreen extends AbstractScreen {
 
     public static LoggingSystem loggingSystem = new LoggingSystem();
     LinkedHashMap<Body, NPC> npcs;
-    ArrayList<Vector2> npcKoord = new ArrayList<Vector2>();
-    ArrayList<DialogData> dialogData = new ArrayList<>();   //TODO: Dialog data setzen wenn wir neue brauchen
-    ArrayList<DialogHandler.Dialogs> dialoge= new ArrayList<>(); //TODO: Dialoge zuordenen
-    ArrayList<Texture> npcTextures = new ArrayList<>();   //TODO: Grafiken zuordnen
     boolean yes = true;
     LinkedHashMap<Body, Item> items;
     ArrayList<Vector2> itemKoord = new ArrayList<Vector2>(); //TODO: koord setzen
@@ -77,10 +71,6 @@ public class GameScreen extends AbstractScreen {
         currentItemName.add(0, "keins");
         currentItem.add(0,new Item(new Vector2(-100,-100)));
         items = new LinkedHashMap<>();
-        //TODO: richtig adden
-        npcKoord.add(new Vector2(120f, 92f));
-        dialoge.add(DialogHandler.Dialogs.POTION_SHOP_DIALOG);
-        npcTextures.add( TextureManager.getTexture("standing_character").getTexture());
          //TODO: items adden
         itemKoord.add(new Vector2(120f, 90f));
         itemNames.add("test");
@@ -146,15 +136,7 @@ public class GameScreen extends AbstractScreen {
        createItems();
     }
     public void createNpcs(){
-        for(int i = 0; i < npcKoord.size(); i++ ){
-           // NPC n = new NPC(npcKoord.get(i).x,npcKoord.get(i).y, new Dialog(dialogData.get(i).title, dialogData.get(i).dialogText, dialogData.get(i).buttonTexts, dialogData.get(i).nextDialogs, dialogData.get(i).topDialog,dialogData.get(i).disableOnOnceFinished, dialogData.get(i).dialogTextOnceFinished));    TextureManager.getTexture("standing_character").getTexture()
-            NPC n = new NPC(npcKoord.get(i).x,npcKoord.get(i).y,dialoge.get(i),npcTextures.get(i));
-           n.body = gameWorld.getWorld().createBody(n.npcBodyDef);
-
-            //setzt die fixture
-            n.npcFixture = n.body.createFixture(n.npcFixtureDef);
-            npcs.put(n.body, n);
-        }
+        NPCs npcs = new NPCs(Arrays.asList(),ui);
     }
     public void createItems(){
         for(Vector2 v : itemKoord){

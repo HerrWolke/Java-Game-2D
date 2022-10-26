@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.*;
+import de.marcus.javagame.graphics.ui.UI;
 import de.marcus.javagame.handlers.DialogHandler;
 import de.marcus.javagame.managers.TextureManager;
 
@@ -14,18 +15,21 @@ public class NPC extends Creature{
     public BodyDef npcBodyDef;
     public FixtureDef npcFixtureDef;
     public Body body;
+    DialogHandler.Dialogs dialog;
     float x;
     float y;
-    public NPC(float x, float y,DialogHandler.Dialogs dialog, Texture t) {
+    private UI ui;
+    public NPC(float x, float y,DialogHandler.Dialogs dialog, Texture t, UI ui) {
         super(x,  y, t,  1,  1,  0,  0, 0f , null);
         this.x = x;
         this.y = y;
+        this.ui = ui;
+        this.dialog = dialog;
         createCollisionNpc();
     }
 
     public void callDialog() {
-        System.out.println("CALLLL");
-          //TODO: Call schreiben
+        ui.getDialogWindow().getDialogHandler().setCurrentDialog(dialog);
     }
     public void createCollisionNpc() {
         npcBodyDef = new BodyDef();
