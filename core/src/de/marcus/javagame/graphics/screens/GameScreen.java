@@ -19,7 +19,6 @@ import de.marcus.javagame.managers.InputManager;
 import de.marcus.javagame.world.GameWorld;
 import lombok.Getter;
 
-import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -30,7 +29,7 @@ public class GameScreen extends AbstractScreen {
     InputManager inputManager;
 
 
-   public GameWorld gameWorld;
+    public GameWorld gameWorld;
     Label label;
     //testen
     Box2DDebugRenderer debugRenderer;
@@ -67,9 +66,9 @@ public class GameScreen extends AbstractScreen {
                     float y = Float.parseFloat(split[1]);
 
                     System.out.println("input is " + x + " " + y);
-                    entityManager.getPlayer().tp(x,y);
+                    entityManager.getPlayer().tp(x, y);
                 }
-            } catch(IllegalStateException | NoSuchElementException e) {
+            } catch (IllegalStateException | NoSuchElementException e) {
                 System.out.println("System.in was closed; exiting");
             }
 
@@ -101,20 +100,23 @@ public class GameScreen extends AbstractScreen {
         //TODO: Player body
         entityManager.getPlayer().createCollisionPlayer();
         //setzt Body in Player
-        entityManager.getPlayer().setPlayerBody(gameWorld.getWorld().createBody(entityManager.getPlayer().getPlayerBodyDef()));
+        Body body1 = gameWorld.getWorld().createBody(entityManager.getPlayer().getPlayerBodyDef());
+        body1.setUserData(new BodyData(false, false));
+        entityManager.getPlayer().setPlayerBody(body1);
         //setzt die fixture
         entityManager.getPlayer().setPlayerFixture(entityManager.getPlayer().getPlayerBody().createFixture(entityManager.getPlayer().getPlayerFixtureDef()));
         Body body = gameWorld.getWorld().createBody(entityManager.getPlayer().getSwordBodyDef());
-        body.setUserData(new BodyData(false,false));
+        body.setUserData(new BodyData(false, false));
         entityManager.getPlayer().setSwordBody(body);
         entityManager.getPlayer().setSwordFixture(entityManager.getPlayer().getSwordBody().createFixture(entityManager.getPlayer().getSwordFixtureDef()));
         gameWorld.getWorld().setContactListener(new ContactListenerExtern(this));
-        gameWorld.setMap(2,entityManager.getPlayer());
+        gameWorld.setMap(1, entityManager.getPlayer());
 
-        entityManager.getPlayer().tp(14f,73f);
+        entityManager.getPlayer().tp(14f, 73f);
 
     }
 
+    boolean blockUpdate = false;
 
 
     @Override
@@ -123,17 +125,26 @@ public class GameScreen extends AbstractScreen {
         inputManager.handleMovement();
         ui.update(entityManager.getPlayer().getPosition().x, entityManager.getPlayer().getPosition().y);
 
-        gameWorld.getWorld().step(1 / 60f, 6, 2);
-       // cleanupBodys();
+        gameWorld.getWorld().step(1/60f, 6, 2);
     }
 
     private void cleanupBodys() {
+        blockUpdate = true;
         Array<Body> bodies = new Array<>();
         gameWorld.getWorld().getBodies(bodies);
+        int i = 0;
         for (Body body : bodies) {
             BodyData userData = (BodyData) body.getUserData();
-            System.out.println(userData.isCanBeDestroyed());
+            if (userData.isMarkedForDestruction()) {
+                System.out.println("destroyed");
+                gameWorld.getWorld().destroyBody(body);
+                body.setUserData(null);
+                body = null;
+
+            }
+            i++;
         }
+        blockUpdate = false;
 
     }
 
@@ -153,8 +164,7 @@ public class GameScreen extends AbstractScreen {
         batch.setProjectionMatrix(entityManager.getPlayer().getCamera().combined);
         gameWorld.render(entityManager.getPlayer().getCamera());
         entityManager.render(batch);
-        debugRenderer.render(gameWorld.getWorld(), entityManager.getPlayer().getCamera().combined);
-        gameWorld.getWorld().setContactListener(new ContactListenerExtern(this));
+//        debugRenderer.render(gameWorld.getWorld(), entityManager.getPlayer().getCamera().combined);
 
 //        font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 20);
 
@@ -168,6 +178,23 @@ public class GameScreen extends AbstractScreen {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
 
+
+
+
+    }
+
+    private float accumulator = 0;
+    private final float TIME_STEP = 1 / 240f;
+
+    private void doPhysicsStep(float deltaTime) {
+        // fixed time step
+        // max frame time to avoid spiral of death (on slow devices)
+        float frameTime = Math.min(deltaTime, 0.25f);
+        accumulator += frameTime;
+        while (accumulator >= TIME_STEP) {
+            gameWorld.getWorld().step(TIME_STEP, 6, 2);
+            accumulator -= TIME_STEP;
+        }
     }
 
     @Override

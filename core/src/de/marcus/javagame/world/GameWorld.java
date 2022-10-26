@@ -33,7 +33,6 @@ public class GameWorld {
     public static final float UNIT_SCALE = 1f / 96f;
     private final float TILE_SIZE;
     public LinkedHashMap<Body,Eingang> eingang;
-    public boolean destroy = false;
     World world;
     TiledMap innenRaum1,innenRaum2,innenRaum3,tiledMap,dungeonEingang,boss,dungeonRechts,dungeonLinks,mine1,mine2;
     int screen = 0;
@@ -72,12 +71,16 @@ public class GameWorld {
 
     public void getForms(String layer,TiledMap map,int mapt) {
         MapLayer collisionObjectLayer = map.getLayers().get(layer);
+        System.out.println("layer????");
         MapObjects objects = collisionObjectLayer.getObjects();
+        System.out.println("objeccctssss???????");
         for(MapObject mapobject : objects){
+            System.out.println("loooop?");
             Shape shape;
             Vector2 v;
             if(mapobject instanceof PolylineMapObject){
                 ArrayList<Object> r = createPolyline((PolylineMapObject) mapobject);
+                System.out.println("poly?");
                 shape = (ChainShape) r.get(0);
                 v = (Vector2) r.get(1);
             }
@@ -87,12 +90,17 @@ public class GameWorld {
             Body body;
             BodyDef bodyDef = new BodyDef();
             bodyDef.type = StaticBody;
+            System.out.println("trying create " + layer);
             body = world.createBody(bodyDef);
+            System.out.println("create ze body " + layer);
             body.createFixture(shape,1.0f);
+            System.out.println("want to set?");
             body.setUserData(new BodyData(true,false));
+            System.out.println("set user data?");
             if(layer.equals("Eingang")){
                     eingang.put(body,new Eingang(v.x,v.y,mapt));
             }
+            System.out.println("Ende Forms");
             shape.dispose();
         }
 
@@ -103,6 +111,7 @@ public class GameWorld {
         for (Body body : bodies) {
             BodyData userData = (BodyData) body.getUserData();
             if(userData.isCanBeDestroyed()) {
+                System.out.println("marked for destruction");
                 userData.setMarkedForDestruction(true);
             }
         }
@@ -144,7 +153,7 @@ public class GameWorld {
             }
         } else if (i == 1) {
             if (screen != i) {
-                markDeleteableForDestruction();
+
                 renderer.setMap(dungeonLinks);
                 getForms("Wand", dungeonLinks, 1);
                 getForms("Eingang", dungeonLinks, 1);
@@ -153,16 +162,18 @@ public class GameWorld {
 
         } else if (i == 2) {
             if (screen != i) {
-
+                System.out.println("setze zwei");
                 renderer.setMap(dungeonEingang);
-
+                System.out.println("generiere forms");
                 getForms("Wände", dungeonEingang, 2);
                 getForms("Dach", dungeonEingang, 2);
                 getForms("Eingang", dungeonEingang, 2);
+                System.out.println("Ende mit dem Shit");
 
             }
         } else if (i == 3) {
             if (screen != i) {
+
                 renderer.setMap(boss);
                 getForms("Wand",boss,3);
                 getForms("Dach",boss,3);
@@ -170,6 +181,7 @@ public class GameWorld {
             }
         } else if (i == 4) {
             if (screen != i) {
+
                 renderer.setMap(dungeonRechts);
                 getForms("nicht betretbar",dungeonRechts,4);
                 getForms("Eingang",dungeonRechts,4);
@@ -178,6 +190,7 @@ public class GameWorld {
             }
         } else if (i == 5) {
             if (screen != i) {
+
                 renderer.setMap(mine1);
                 getForms("nicht betretbar",mine1,5);
                 getForms("Eingang",mine1,5);
