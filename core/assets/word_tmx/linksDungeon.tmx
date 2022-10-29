@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="53" height="62" tilewidth="128" tileheight="128" infinite="0" nextlayerid="6" nextobjectid="10">
- <tileset firstgid="1" source="Dungeon 2 Color3@128x128.tsx"/>
- <tileset firstgid="257" source="Dungeon @128x128.tsx"/>
- <tileset firstgid="513" source="Dungeon Color2@128x128.tsx"/>
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="53" height="62" tilewidth="128" tileheight="128" infinite="0" nextlayerid="6" nextobjectid="15">
+ <tileset firstgid="1" source="graphics/Dungeon 2 Color3@128x128.tsx"/>
+ <tileset firstgid="257" source="graphics/Dungeon @128x128.tsx"/>
+ <tileset firstgid="513" source="graphics/Dungeon Color2@128x128.tsx"/>
  <layer id="3" name="Kachelebene 3" width="53" height="62">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -202,14 +202,19 @@
 </data>
  </layer>
  <objectgroup id="4" name="Wand">
-  <object id="1" x="508.242" y="642.061" width="775.758" height="372.727"/>
-  <object id="3" x="-12.97" y="-3.39" width="269.697" height="1681.82"/>
-  <object id="4" x="259.758" y="1408.73" width="1530.3" height="248.485"/>
-  <object id="5" x="1541.58" y="896.606" width="242.424" height="506.061"/>
-  <object id="6" x="1544.61" y="8.73" width="245.455" height="754.545"/>
-  <object id="8" x="262.788" y="5.7" width="1284.85" height="254.545"/>
+  <object id="10" x="260" y="264">
+   <polyline points="-6,-14 -10,1144 1282,1148 1292,668 1444,680 1432,412 1280,468 1290,-12"/>
+  </object>
+  <object id="11" x="280" y="250">
+   <polyline points="0,0 1242,-2"/>
+  </object>
+  <object id="12" x="510" y="1022">
+   <polyline points="0,0 4,-390 756,-390 770,0 26,2"/>
+  </object>
  </objectgroup>
  <objectgroup id="5" name="Eingang">
-  <object id="9" x="1538.55" y="772.364" width="251.515" height="121.212"/>
+  <object id="14" x="1541.33" y="746.667">
+   <polyline points="0,0 -33.3333,1.33333 -32,170.667 -1.33333,170.667"/>
+  </object>
  </objectgroup>
 </map>

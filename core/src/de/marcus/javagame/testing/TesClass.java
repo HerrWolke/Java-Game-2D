@@ -6,6 +6,8 @@ public class TesClass {
         System.out.println(name);
     }
 
+
+
     private enum Names {
         JOHN
     }

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="70" height="68" tilewidth="128" tileheight="128" infinite="0" nextlayerid="7" nextobjectid="1">
  <tileset firstgid="1" name="mine" tilewidth="128" tileheight="128" tilecount="256" columns="16">
-  <image source="Mine Ice@128x128.png" width="2048" height="2048"/>
+  <image source="graphics/Mine Ice@128x128.png" width="2048" height="2048"/>
  </tileset>
  <tileset firstgid="257" name="Grassland Color 2@128x128" tilewidth="128" tileheight="128" tilecount="256" columns="16">
-  <image source="Grassland Color 2@128x128.png" width="2048" height="2048"/>
+  <image source="graphics/Grassland Color 2@128x128.png" width="2048" height="2048"/>
  </tileset>
  <layer id="1" name="Rand" width="70" height="68">
   <data encoding="csv">

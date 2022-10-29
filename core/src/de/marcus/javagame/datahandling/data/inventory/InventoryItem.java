@@ -17,11 +17,13 @@ public enum InventoryItem {
     MAP(Inventory.MAX_WEAPON_STACK, false, false),
     STARTER_SWORD(Inventory.MAX_WEAPON_STACK, false, true),
 
+    //Equipment
+    ARMOR(Inventory.MAX_ITEM_STACK, true,true,true),
+
     //Potions
     HEAL_POTION(Inventory.MAX_POTION_STACK, true, true, new StatusEffect(EffectType.HEAL, 1000)),
     STRENGTH_POTION(Inventory.MAX_POTION_STACK, true, true, new StatusEffect(EffectType.STRENGTH, 1000)),
-    SPEED_POTION(Inventory.MAX_POTION_STACK,true,true,new StatusEffect(EffectType.HEAL,1000))
-    ;
+    SPEED_POTION(Inventory.MAX_POTION_STACK, true, true, new StatusEffect(EffectType.SPEED, 1000));
 
     InventoryItem(int maxStackSize, boolean deletable, boolean hotbarSelectable) {
         this.maxStackSize = maxStackSize;
@@ -30,6 +32,16 @@ public enum InventoryItem {
         this.usable = false;
         this.hotbarSelectable = hotbarSelectable;
     }
+
+    InventoryItem(int maxStackSize, boolean deletable, boolean hotbarSelectable, boolean usable) {
+        this.maxStackSize = maxStackSize;
+        this.deletable = deletable;
+        this.effect = null;
+        this.usable = usable;
+        this.hotbarSelectable = hotbarSelectable;
+    }
+
+
 
     InventoryItem(int maxStackSize, boolean deletable, boolean hotbarSelectable, StatusEffect effect) {
         this.maxStackSize = maxStackSize;

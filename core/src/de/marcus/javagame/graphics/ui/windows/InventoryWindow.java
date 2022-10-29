@@ -10,10 +10,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import de.marcus.javagame.datahandling.data.inventory.Inventory;
 import de.marcus.javagame.graphics.ui.UI;
+import de.marcus.javagame.managers.TextureManager;
 import de.marcus.javagame.misc.Util;
 import lombok.Getter;
 
@@ -21,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class InventoryWindow extends Window {
+public class InventoryWindow extends GenericGameWindow {
 
 
     private static final String DELETE_BUTTON_TEXT = "Löschen";
@@ -54,7 +58,7 @@ public class InventoryWindow extends Window {
 
     public InventoryWindow(Inventory inventory, Stage stage) {
 
-        super("", new WindowStyle(new BitmapFont(), Color.WHITE, new TextureRegionDrawable(new Texture("inventory3.png"))));
+        super("", new WindowStyle(new BitmapFont(), Color.WHITE, new TextureRegionDrawable(TextureManager.getTexture("inventory3"))));
         this.stage = stage;
         this.inventory = inventory;
         selectedItem = 0;
@@ -65,10 +69,10 @@ public class InventoryWindow extends Window {
         selectedItemOption = 2;
         this.setResizable(true);
 
-        TextureRegionDrawable itemOption = new TextureRegionDrawable(new Texture("item_option.png"));
+        TextureRegionDrawable itemOption = new TextureRegionDrawable(TextureManager.getTexture("item_option"));
         itemOption.setMinHeight(height / 8f);
         itemOption.setMinWidth(width / 9f);
-        TextureRegionDrawable itemOptionSelected = new TextureRegionDrawable(new Texture("item_option_selected.png"));
+        TextureRegionDrawable itemOptionSelected = new TextureRegionDrawable(TextureManager.getTexture("item_option_selected"));
         itemOptionSelected.setMinHeight(height / 8f);
         itemOptionSelected.setMinWidth(width / 9f);
 
@@ -93,7 +97,7 @@ public class InventoryWindow extends Window {
         hotbar = new Group();
         hotbarNumbers = new Group();
 
-        TextureRegionDrawable placeholder = new TextureRegionDrawable(new Texture("placeholder.png"));
+        TextureRegionDrawable placeholder = new TextureRegionDrawable(TextureManager.getTexture("placeholder"));
         placeholder.setMinHeight((screenWidth * 0.5f) / 11);
         placeholder.setMinWidth((screenWidth * 0.5f) / 11);
         placeholders = new Group();
@@ -105,7 +109,7 @@ public class InventoryWindow extends Window {
         parameter.borderColor = Color.BLACK;
         parameter.borderWidth = 1;
         parameter.padLeft = 40;
-        BitmapFont font12 = generator.generateFont(parameter); // font size 12 pixels
+        BitmapFont font12 = generator.generateFont(parameter);
 
         for (int x = 0; x < 3; x++) {
             for (int i = 1; i < 11; i++) {
@@ -124,7 +128,7 @@ public class InventoryWindow extends Window {
             image.setPosition(width - placeholder.getMinWidth() * i - width * (0.031f + 0.00325f * (i - 1)), -height * 0.24f - placeholder.getMinHeight() * 3.5f - height * (0.015f) * 4.5f);
             Label label = new Label("" + Math.abs(i - 11), new Label.LabelStyle(font12, null));
             label.setPosition(width - placeholder.getMinWidth() * i - width * (0.031f + 0.00325f * (i - 1)), -height * 0.24f - placeholder.getMinHeight() * 3.5f - height * (0.015f) * 4.5f);
-
+            System.out.println("Size of hotbar " + hotbar.getChildren().size);
 
             hotbar.addActor(image);
             hotbarNumbers.addActor(label);
@@ -272,6 +276,18 @@ public class InventoryWindow extends Window {
     }
 
 
+    @Override
+    public void closeWindow() {
+        if (isItemOptionOpen()) {
+            waitingForSlotSelection = false;
+            resetItemOptionGroup();
+        } else {
+            waitingForSlotSelection = false;
+            setVisible(false);
+        }
+        super.closeWindow();
+    }
+
     public void toggleItemsOptionMenu(boolean toggleState) {
         group.setVisible(toggleState);
     }
@@ -334,7 +350,7 @@ public class InventoryWindow extends Window {
             child.setDrawable(new TextureRegionDrawable(texture));
             label.setText(itemCount);
         } else {
-            child.setDrawable(new TextureRegionDrawable(new Texture("placeholder.png")));
+            child.setDrawable(new TextureRegionDrawable(TextureManager.getTexture("placeholder")));
             label.setText("");
         }
     }
@@ -344,7 +360,7 @@ public class InventoryWindow extends Window {
         if (texture != null) {
             child.setDrawable(new TextureRegionDrawable(texture));
         } else {
-            child.setDrawable(new TextureRegionDrawable(new Texture("placeholder_marked.png")));
+            child.setDrawable(new TextureRegionDrawable(TextureManager.getTexture("placeholder")));
         }
     }
 

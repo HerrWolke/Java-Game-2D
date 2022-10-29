@@ -8,15 +8,18 @@ import com.badlogic.gdx.math.Vector3;
 import de.marcus.javagame.datahandling.data.datahandling.SavedataHandler;
 import de.marcus.javagame.datahandling.data.shop.Shops;
 import de.marcus.javagame.entities.Player;
+import de.marcus.javagame.graphics.screens.GameScreen;
 import de.marcus.javagame.graphics.ui.UI;
-import de.marcus.javagame.graphics.ui.windows.InventoryWindow;
 import de.marcus.javagame.handlers.DialogHandler;
+import de.marcus.javagame.misc.Util;
 
 import java.util.HashMap;
 
 public class InputManager implements InputProcessor {
     Player p;
     UI ui;
+    GameScreen screen;
+    int i = 0;
 
     enum CONTROLS {
         RUN_FORWARD,
@@ -33,7 +36,7 @@ public class InputManager implements InputProcessor {
 
     HashMap<CONTROLS, Integer> settings = new HashMap<CONTROLS, Integer>();
 
-    public InputManager(Player player, UI ui) {
+    public InputManager(Player player, UI ui, GameScreen screen) {
         settings.put(CONTROLS.RUN_FORWARD, Input.Keys.W);
         settings.put(CONTROLS.RUN_BACKWARD, Input.Keys.S);
         settings.put(CONTROLS.RUN_LEFT, Input.Keys.A);
@@ -45,6 +48,7 @@ public class InputManager implements InputProcessor {
         settings.put(CONTROLS.CLOSE_DIALOG, Input.Keys.BACKSPACE);
         p = player;
         this.ui = ui;
+        this.screen = screen;
     }
 
 
@@ -68,11 +72,13 @@ public class InputManager implements InputProcessor {
 
 //        System.out.printf("x: %s, y: %s",posCam.x,posCam.y);
 
-        p.move(posCam.x, posCam.y, true);
+        p.move(posCam.x, posCam.y, true,null);
     }
 
     @Override
     public boolean keyDown(int keycode) {
+
+        ui.handleUIInput(keycode);
 
         if (keycode == settings.get(CONTROLS.SETTINGS)) {
             //new screen
@@ -80,11 +86,7 @@ public class InputManager implements InputProcessor {
         }
 
 
-        if (keycode == settings.get(CONTROLS.OPEN_INVENTORY)) {
-            if (ui.isPlayerAllowedToMove()) {
-                ui.changeInventoryShowState();
-            }
-        }
+
 
         if (keycode == settings.get(CONTROLS.BLOCK_SPEAK)) {
             //wenn person mit der man interacten kann in range vor ihm
@@ -94,43 +96,67 @@ public class InputManager implements InputProcessor {
 
         }
 
-        if (keycode == Input.Keys.NUM_5) {
-            p.setHealth(p.getHealth() - 1);
+        if((keycode > 6 && keycode < 17) && !ui.getInventoryWindow().isVisible()) {
+            int keycodeTranslated = keycode == 7 ? 9 : keycode-8;
+            System.out.println("This say its code " + keycodeTranslated);
+            ui.getPlayer().getInventory().useItemFromHotbar(keycodeTranslated);
         }
 
-        if (keycode == Input.Keys.NUM_7) {
+//        if (keycode == Input.Keys.NUMPAD_5) {
+//            System.out.println(i);
+//            boolean b = screen.getGameWorld().setMap(i);
+//            System.out.println("changing map");
+//            if(!b) {
+//                i = 0;
+//                System.out.println("reset");
+//            }else {
+//                i++;
+//            }
+//        }
+
+        if (keycode == Input.Keys.NUMPAD_7) {
             SavedataHandler.save(p.getInventory());
         }
 
-        if (keycode == Input.Keys.NUM_6) {
+        if (keycode == Input.Keys.PAGE_UP) {
+            p.setHealth(p.getHealth() - 1);
+        }
+
+        if (keycode == Input.Keys.NUMPAD_6) {
             p.setHealth(p.getHealth() + 1);
         }
 
-        if (keycode == Input.Keys.NUM_9) {
+        if (keycode == Input.Keys.NUMPAD_9) {
             ui.getDialogWindow().getDialogHandler().setCurrentDialog(DialogHandler.Dialogs.POTION_SHOP_DIALOG);
+        }
+
+        if (keycode == Input.Keys.NUMPAD_8) {
+            ui.getPlayer().respwawn();
+            System.out.println("respawn");
         }
 
         if (keycode == Input.Keys.NUMPAD_6) {
             ui.getShopWindow().generateShop(Shops.POTION_SHOP);
+            Gdx.input.setCursorCatched(false);
+            Gdx.input.setCursorPosition((int) (Util.getScreenWidth(ui.getStage())/2), (int) (Util.getScreenHeight(ui.getStage())/2));
         }
+//        if (keycode == Input.Keys.NUMPAD_5) {
+//            TextField cheatInput = new TextField("",new TextField.TextFieldStyle(new BitmapFont(), Color.BLACK,null,null,null));
+//            Dialog dialog = new Dialog("", new Window.WindowStyle(new BitmapFont(), Color.GOLD, new TextureRegionDrawable(TextureManager.getTexture("generic_dialog"))));
+//
+//            Stage stage = ui.getStage();
+//
+//
+//            dialog.getContentTable().add(cheatInput);
+//
+//            float screenHeight = Util.getScreenHeight(stage);
+//            float screenWidth = Util.getScreenWidth(stage);
+//            dialog.setSize(screenWidth / 5.0f, (screenHeight / 5.0f) * Util.getReversedAspectRatio(stage));
+//            dialog.setPosition((screenWidth / 2.0f) - dialog.getWidth() / 2, (screenHeight / 2.0f) - dialog.getHeight() / 2);
+//
+//            stage.addActor(dialog);
+//        }
 
-        if (ui.getInventoryWindow().isVisible()) {
-            ui.getInventoryWindow().handleInput(keycode, ui);
-        }
-
-        if(ui.getShopWindow().isVisible() && InventoryWindow.InventoryControlKey.CLOSE_MENU.contains(keycode)) {
-            ui.getShopWindow().setVisible(false);
-        }
-
-        if (ui.getDialogWindow().isVisible()) {
-            if (ui.getDialogWindow().areDialogButtonsVisible()) {
-                ui.getDialogWindow().handleInput(keycode);
-            } else {
-                if (!ui.getDialogWindow().getDialogHandler().isDialogActive()) {
-                    ui.getDialogWindow().setVisible(false);
-                }
-            }
-        }
 
         return true;
     }
@@ -153,19 +179,19 @@ public class InputManager implements InputProcessor {
             p.blockStop();
             return false;
         }
-        if(keycode == settings.get(CONTROLS.RUN_LEFT) ) {
-
-           return false;
-        }
-        if( keycode == settings.get(CONTROLS.RUN_RIGHT) ){
+        if (keycode == settings.get(CONTROLS.RUN_LEFT)) {
 
             return false;
         }
-        if(keycode  == settings.get(CONTROLS.RUN_FORWARD)){
+        if (keycode == settings.get(CONTROLS.RUN_RIGHT)) {
 
             return false;
         }
-        if(keycode == settings.get(CONTROLS.RUN_BACKWARD)){
+        if (keycode == settings.get(CONTROLS.RUN_FORWARD)) {
+
+            return false;
+        }
+        if (keycode == settings.get(CONTROLS.RUN_BACKWARD)) {
 
             return false;
         }

@@ -160,7 +160,7 @@ public class JavaGame extends Game {
 //
 //        batch.end();
 
-        world.step(1 / 60f, 6, 2);
+
     }
 
     public void update() {

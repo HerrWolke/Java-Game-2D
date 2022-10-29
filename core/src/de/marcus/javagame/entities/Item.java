@@ -3,6 +3,7 @@ package de.marcus.javagame.entities;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.*;
 
 /**
  * @author Marcus
@@ -12,28 +13,42 @@ import com.badlogic.gdx.math.Vector2;
  * Extended Entity for items. On creation, a despawn timer is created (using long / ms) that will delete that
  * item when the timer hits zero
  */
-public class Item extends Entity {
-    public static final long MAX_ITEM_LIFETIME = 600000;
-
-    public long despawnTimer;
-
-    public Item(Vector2 position, Texture texture) {
-        super(position, texture);
-        this.despawnTimer = MAX_ITEM_LIFETIME;
-    }
-
+public class Item {
+    public Body body;
+    public Fixture itemFixture;
+    public BodyDef itemBodyDef = new BodyDef();
+    public  FixtureDef itemFixtureDef = new FixtureDef();
+    float x;
+    float y;
     public Item(Vector2 position) {
-        super(position, null);
-        this.despawnTimer = MAX_ITEM_LIFETIME;
+       this.x = position.x;
+       this.y = position.y;
     }
 
-    public void update() {
-        despawnTimer = -1;
+    public void createCollisionItem() {
+
+
+
+
+        itemBodyDef.type = BodyDef.BodyType.StaticBody;
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(0.5f, 0.5f);
+
+
+
+        //TODO: position anpassen
+        itemBodyDef.position.set(x + 1.3f, y + 1.3f);
+
+        itemFixtureDef.shape = shape;
+        itemFixtureDef.density = 0f;
+        itemFixtureDef.friction = 0.0f;
+
+
     }
 
-    public void render(SpriteBatch spriteBatch) {
-        spriteBatch.draw(getTexture(), getPosition().x, getPosition().y);
-    }
+
+
+
 
 
 }

@@ -2,7 +2,6 @@ package de.marcus.javagame.graphics.ui.windows;
 
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -10,21 +9,22 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.SnapshotArray;
 import de.marcus.javagame.datahandling.data.shop.Shops;
 import de.marcus.javagame.entities.Player;
+import de.marcus.javagame.graphics.ui.UI;
 import de.marcus.javagame.graphics.ui.elements.ScrollPaneShop;
 import de.marcus.javagame.managers.TextureManager;
 import de.marcus.javagame.misc.Util;
 
 //TODO: Add a way to close this window without buying anything
-public class ShopWindow extends Window {
+public class ShopWindow extends GenericGameWindow {
     ScrollPaneShop shop;
     Stage stage;
+    UI ui;
     Player player;
 
     Label priceLabel;
@@ -33,10 +33,11 @@ public class ShopWindow extends Window {
 
     Shops currentShopType;
 
-    public ShopWindow(Stage stage, Player player) {
-        super("", new WindowStyle(new BitmapFont(), Color.WHITE, new TextureRegionDrawable(new TextureRegion(new Texture("shop_background.png")))));
-        this.stage = stage;
+    public ShopWindow(UI ui, Player player) {
+        super("", new WindowStyle(new BitmapFont(), Color.WHITE, new TextureRegionDrawable(new TextureRegion(TextureManager.getTexture("shop_background")))));
+        this.stage = ui.getStage();
         this.player = player;
+        this.ui = ui;
 
 
         float screenHeight = Util.getScreenHeight(stage);
@@ -48,21 +49,21 @@ public class ShopWindow extends Window {
         Table shopCenterTable = new Table();
         Table shopItemInformation = new Table();
 
-         priceLabel = new Label("0 Lana",new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-         itemInformationLabel = new Label("Item Info",new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-         //TODO: Add page label!
+        priceLabel = new Label("0 Lana", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        itemInformationLabel = new Label("Item Info", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        //TODO: Add page label!
 
         shop = new ScrollPaneShop(null, new ScrollPane.ScrollPaneStyle(null, null, null, null, null));
         shop.setSmoothScrolling(true);
         shop.setScrollingDisabled(false, true);
 
-        priceTable.add(priceLabel).top().center().padBottom(priceLabel.getHeight()/2);
+        priceTable.add(priceLabel).top().center().padBottom(priceLabel.getHeight() / 2);
         priceTable.top().center();
 
-        this.add(priceTable).growX().padTop(Value.percentHeight(0.11f,this));
+        this.add(priceTable).growX().padTop(Value.percentHeight(0.11f, this));
         this.row();
         shopCenterTable.bottom();
-        shopCenterTable.add(shop).size(Value.percentWidth(1,this),Value.percentHeight(1.0f)).padTop(Value.percentHeight(0.25f));
+        shopCenterTable.add(shop).size(Value.percentWidth(1, this), Value.percentHeight(1.0f)).padTop(Value.percentHeight(0.25f));
         this.add(shopCenterTable);
         this.row();
         shopItemInformation.add(itemInformationLabel).padBottom(Value.percentHeight(5.0f));
@@ -82,15 +83,19 @@ public class ShopWindow extends Window {
     }
 
 
-
     public void buy(String item) {
 
+        Shops.ShopItems itemToBuy = Shops.ShopItems.valueOf(item);
 
+        if (player.canAfford(item)) {
+            if((itemToBuy.getMaxItems() == 0 || itemToBuy.getMaxItems() > player.getInventory().itemAmountOfType(itemToBuy.getInventoryItem()))) {
+                this.addActor(generateConfirmationDialog(item));
+            } else {
+                ui.displayNotification(2000L,"Dieses Item ist ausverkauft!");
+            }
 
-        if(player.canAfford(item)) {
-
-            this.addActor(generateConfirmationDialog(item));
-
+        } else {
+            ui.displayNotification(2000L,"Du kannst dir das nicht leisten!");
         }
     }
 
@@ -108,16 +113,15 @@ public class ShopWindow extends Window {
         float screenWidth = Util.getScreenWidth(stage);
         Shops.ShopItems itemToBuy = Shops.ShopItems.valueOf(item);
 
-        Dialog dialog = new Dialog("", new WindowStyle(new BitmapFont(), Color.GOLD, new TextureRegionDrawable(new Texture("generic_dialog.png"))));
+        Dialog dialog = new Dialog("", new WindowStyle(new BitmapFont(), Color.GOLD, new TextureRegionDrawable(TextureManager.getTexture("generic_dialog"))));
         Label priceLabel2 = new Label(" Dieses Item kostet dich " + itemToBuy.getPrice() + " Lana", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        TextButton buyButton = new TextButton("Einkauf Bestätigen", new TextButton.TextButtonStyle( new TextureRegionDrawable(new Texture("generic_dialog_option2.png")), null, null, new BitmapFont()));
-        TextButton cancelButton = new TextButton("Einkauf Abbrechen", new TextButton.TextButtonStyle( new TextureRegionDrawable(new Texture("generic_dialog_option2.png")), null, null, new BitmapFont()));
+        TextButton buyButton = new TextButton("Einkauf Bestätigen", new TextButton.TextButtonStyle(new TextureRegionDrawable(TextureManager.getTexture("generic_dialog_option2")), null, null, new BitmapFont()));
+        TextButton cancelButton = new TextButton("Einkauf Abbrechen", new TextButton.TextButtonStyle(new TextureRegionDrawable(TextureManager.getTexture("generic_dialog_option2")), null, null, new BitmapFont()));
 
         buyButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                System.out.println("buying " + item);
                 player.buyItem(item);
 
             }
@@ -127,8 +131,8 @@ public class ShopWindow extends Window {
         dialog.button(cancelButton);
         dialog.getButtonTable().padBottom(buyButton.getHeight() / 4f);
         dialog.getContentTable().padTop(priceLabel2.getHeight());
-        dialog.setSize(screenWidth / 5.0f,(screenHeight / 5.0f) * Util.getReversedAspectRatio(stage));
-        dialog.setPosition((screenWidth / 4.0f)-dialog.getWidth()/2, (screenHeight / 4.0f)-dialog.getHeight()/2);
+        dialog.setSize(screenWidth / 5.0f, (screenHeight / 5.0f) * Util.getReversedAspectRatio(stage));
+        dialog.setPosition((screenWidth / 4.0f) - dialog.getWidth() / 2, (screenHeight / 4.0f) - dialog.getHeight() / 2);
 
         return dialog;
     }
@@ -148,7 +152,6 @@ public class ShopWindow extends Window {
 
             //Get the texture based on the item name. Hopefully all texture have been added or this will crash!
             TextureRegionDrawable potion = new TextureRegionDrawable(TextureManager.getTexture(item.name().toLowerCase()));
-            System.out.println(item.name().toLowerCase());
             TextureRegionDrawable selected = new TextureRegionDrawable(TextureManager.getTexture("potion_selected"));
 
             TextButton button = new TextButton("", new ImageTextButton.ImageTextButtonStyle(potion, null, null, new BitmapFont()));
@@ -185,7 +188,7 @@ public class ShopWindow extends Window {
                     itemInformationLabel.addAction(Actions.fadeIn(0.5f));
 
                     //child 0 is the "select" image to show button as selected
-                    child.get(0).addAction(Actions.forever(Actions.sequence(Actions.fadeIn(2f), Actions.alpha(0.75f,5f))));
+                    child.get(0).addAction(Actions.forever(Actions.sequence(Actions.fadeIn(2f), Actions.alpha(0.75f, 5f))));
                 }
 
                 @Override
@@ -212,7 +215,7 @@ public class ShopWindow extends Window {
                     buy(((Stack) event.getListenerActor()).getChildren().get(1).getName());
                 }
             });
-            table.add(stack).size(Value.percentWidth(1/6f,this),Value.percentWidth(1/6f,this)).padLeft(Value.percentWidth((1f/2f)/6f,this)).padRight(Value.percentWidth((1f/2f)/6f,this));
+            table.add(stack).size(Value.percentWidth(1 / 6f, this), Value.percentWidth(1 / 6f, this)).padLeft(Value.percentWidth((1f / 2f) / 6f, this)).padRight(Value.percentWidth((1f / 2f) / 6f, this));
 
         }
 

@@ -1,10 +1,13 @@
 package de.marcus.javagame.managers;
 
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Manifold;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
 import de.marcus.javagame.graphics.screens.GameScreen;
+
+
+import java.util.ArrayList;
 
 public class ContactListenerExtern implements ContactListener {
     GameScreen g;
@@ -15,8 +18,30 @@ public class ContactListenerExtern implements ContactListener {
 
     @Override
     public void beginContact(Contact contact) {
-        //if(contact.getFixtureA().getBody() == g.entityManager.getPlayer().getPlayerBody() && contact.getFixtureB().getBody() == g.)
+        Body body1 = contact.getFixtureA().getBody();
+        Body body2 = contact.getFixtureB().getBody();
+        if (body1 == g.entityManager.getPlayer().getPlayerBody() && g.gameWorld.eingang.containsKey(body2) || body2 == g.entityManager.getPlayer().getPlayerBody() && g.gameWorld.eingang.containsKey(body1)) {
+
+            g.gameWorld.setMap(g.gameWorld.eingang.get(body2 == g.entityManager.getPlayer().getPlayerBody() ? body1 : body2).mapType,g.entityManager.getPlayer());
+
+            //TODO: Vllt world clearen, koordinaten setzen
+        }
+
+        System.out.println("is button pressed: " +  Gdx.input.isButtonPressed(Input.Buttons.LEFT));
+        if (((body1 == g.entityManager.getPlayer().getPlayerBody() && g.getEntityManager().getNpcBodyList().contains(body2)) || (body2 == g.entityManager.getPlayer().getPlayerBody() && g.getEntityManager().getNpcBodyList().contains(body1))) && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+            System.out.println("call the collision");
+              g.getEntityManager().getNpcs().getNpcList().get(g.getEntityManager().getNpcBodyList().indexOf(body2 == g.entityManager.getPlayer().getPlayerBody() ? body1 : body2)).callDialog();
+
+            //TODO: Vllt world clearen, koordinaten setzen
+        }
+        if ((body1 == g.entityManager.getPlayer().getPlayerBody() && g.getItems().containsKey(body2) || body2 == g.entityManager.getPlayer().getPlayerBody() && g.getItems().containsKey(body1)) && Gdx.input.isButtonPressed(Input.Buttons.LEFT) && (g.getCurrentItem().get(0).body == body1 || g.getCurrentItem().get(0).body == body2)) {
+
+            g.itemFound();
+
+            //TODO: Vllt world clearen, koordinaten setzen
+        }
     }
+
 
     @Override
     public void endContact(Contact contact) {

@@ -1,23 +1,26 @@
 package de.marcus.javagame.graphics.ui.windows;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.rafaskoberg.gdx.typinglabel.TypingAdapter;
 import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 import de.marcus.javagame.datahandling.data.dialog.Dialog;
+import de.marcus.javagame.datahandling.data.inventory.InventoryItem;
+import de.marcus.javagame.datahandling.data.inventory.InventorySlot;
 import de.marcus.javagame.datahandling.data.shop.Shops;
+import de.marcus.javagame.entities.Player;
 import de.marcus.javagame.graphics.ui.UI;
 import de.marcus.javagame.handlers.DialogHandler;
+import de.marcus.javagame.managers.TextureManager;
 import de.marcus.javagame.misc.Util;
 import lombok.Getter;
 
@@ -25,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class DialogWindow extends Window {
+public class DialogWindow extends GenericGameWindow {
 
     Group dialogOptionsGroup;
     Label label;
@@ -40,7 +43,7 @@ public class DialogWindow extends Window {
     UI ui;
 
     public DialogWindow(Stage stage, UI ui) {
-        super("", new WindowStyle(new BitmapFont(), Color.WHITE, new TextureRegionDrawable(new Texture("dialog.png"))));
+        super("", new WindowStyle(new BitmapFont(), Color.WHITE, new TextureRegionDrawable(TextureManager.getTexture("dialog"))));
         this.ui = ui;
         dialogOptionsGroup = new Group();
         otherElements = new Group();
@@ -64,32 +67,9 @@ public class DialogWindow extends Window {
         dialog.setPosition((width * 0.9f) / 5f, -height / 2.25f);
         dialog.setWidth((width * 0.8f));
 
-        dialog.setTypingListener(new TypingAdapter() {
-            public void event(String event) {
-                System.out.println("Received text event: " + event);
-                if(event.equalsIgnoreCase("OpenShop")) {
-                    ui.getShopWindow().generateShop(Shops.POTION_SHOP);
-                    setVisible(false);
-                }
-            }
 
-            public void end() {
-                for (int i = 0; i < dialogOptionsGroup.getChildren().size; i++) {
-                    ImageTextButton imageTextButton = (ImageTextButton) dialogOptionsGroup.getChild(i);
-                    if (!String.valueOf(imageTextButton.getText()).equalsIgnoreCase("")) {
-                        imageTextButton.setVisible(true);
-                        imageTextButton.setChecked(i == 0);
-                    }
-                }
-
-                if (dialogHandler.isDialogFinished() && isVisible()) {
-                    ui.displayNotification(3000, "Drücke eine beliebige Taste um fortzufahren...");
-                }
-            }
-        });
-
-        TextureRegionDrawable itemOption = new TextureRegionDrawable(new Texture("dialog_option.png"));
-        TextureRegionDrawable itemOptionSelected = new TextureRegionDrawable(new Texture("dialog_option_selected.png"));
+        TextureRegionDrawable itemOption = new TextureRegionDrawable(TextureManager.getTexture("dialog_option"));
+        TextureRegionDrawable itemOptionSelected = new TextureRegionDrawable(TextureManager.getTexture("dialog_option_selected"));
 
 
         ImageTextButton dialogOption = new ImageTextButton("", new ImageTextButton.ImageTextButtonStyle(itemOption, itemOption, itemOptionSelected, Util.getFontForScreenSize(stage, 25)));
@@ -140,25 +120,30 @@ public class DialogWindow extends Window {
 
 
         this.setSize(width, height);
+        generateListener();
+    }
 
-
+    private void generateListener() {
+        dialog.setTypingListener(new DialogEventListener(ui));
     }
 
     public void handleInput(int keycode) {
 
-        if (InventoryWindow.InventoryControlKey.NAV_KEYS.contains(keycode)) {
-            int moveY = 0;
-            if (InventoryWindow.InventoryControlKey.NAV_UP.contains(keycode)) {
-                moveY -= 1;
-            } else if (InventoryWindow.InventoryControlKey.NAV_DOWN.contains(keycode)) {
-                moveY += 1;
-            }
+        if(areDialogButtonsVisible()) {
+            if (InventoryWindow.InventoryControlKey.NAV_KEYS.contains(keycode)) {
+                int moveY = 0;
+                if (InventoryWindow.InventoryControlKey.NAV_UP.contains(keycode)) {
+                    moveY -= 1;
+                } else if (InventoryWindow.InventoryControlKey.NAV_DOWN.contains(keycode)) {
+                    moveY += 1;
+                }
 
-            moveSelector(moveY);
-        } else if (InventoryWindow.InventoryControlKey.CHOOSE_OPTION.contains(keycode)) {
-            Dialog retrievedDialog = dialogHandler.dialogButtonPressed(currentSelectedOption);
-            if (retrievedDialog != null) {
-                setDialogMenuOptions(retrievedDialog);
+                moveSelector(moveY);
+            } else if (InventoryWindow.InventoryControlKey.CHOOSE_OPTION.contains(keycode)) {
+                Dialog retrievedDialog = dialogHandler.dialogButtonPressed(currentSelectedOption);
+                if (retrievedDialog != null) {
+                    setDialogMenuOptions(retrievedDialog);
+                }
             }
         }
     }
@@ -175,6 +160,8 @@ public class DialogWindow extends Window {
 
             currentSelectedOption = nextSelection;
         }
+
+
     }
 
     public boolean setDialogMenuOptions(String menuTitle, String dialogText, String... texts) {
@@ -198,12 +185,12 @@ public class DialogWindow extends Window {
         boolean fitsOnScreen = true;
 
         for (String text : arg.getButtonTexts()) {
-            if(text.length() > 52) {
+            if (text.length() > 52) {
                 fitsOnScreen = false;
                 break;
             }
 
-            if(!text.equals("") && !(arg.getNextDialog(arg.getButtonTexts().indexOf(text)).isDisableOnOnceFinished() && dialogHandler.hasCurrentDialogBeenCompletedBefore())) {
+            if (!text.equals("") && !(arg.getNextDialog(arg.getButtonTexts().indexOf(text)).isDisableOnOnceFinished() && dialogHandler.hasCurrentDialogBeenCompletedBefore())) {
                 texts.add(text);
             } else {
                 addToEnd.add("");
@@ -224,7 +211,6 @@ public class DialogWindow extends Window {
 
 
 
-
         if (menuTitle.length() < 18 && dialogText.length() < 280 && fitsOnScreen) {
             label.setText(menuTitle);
             dialog.setText("");
@@ -237,7 +223,7 @@ public class DialogWindow extends Window {
             for (char currentChar : dialogText.toCharArray()) {
                 if (String.valueOf(currentChar).matches("[^,]\\p{Punct}")) {
                     dialogTextTimingBuilder.append(currentChar).append("{WAIT}");
-                } else if(String.valueOf(currentChar).matches("\\p{Punct}")){
+                } else if (String.valueOf(currentChar).matches("\\p{Punct}")) {
                     dialogTextTimingBuilder.append(currentChar).append("{WAIT=0.5}");
                 } else {
                     dialogTextTimingBuilder.append(currentChar);
@@ -268,7 +254,6 @@ public class DialogWindow extends Window {
     }
 
     /**
-     *
      * @return The amount of children, that are visible within a group
      * This is for dialogs, which have a disabled option after being used once, so you can not click that option anymore (Hope that makes sense)
      */
@@ -277,9 +262,88 @@ public class DialogWindow extends Window {
 
         int visible = 0;
         for (Actor actor : children) {
-            if(actor.isVisible()) visible++;
+            if (actor.isVisible()) visible++;
         }
 
         return visible;
+    }
+
+     class DialogEventListener extends TypingAdapter {
+        private UI ui;
+        private Player player;
+
+
+
+        public DialogEventListener(UI ui) {
+            this.ui = ui;
+            player = ui.getPlayer();
+        }
+
+        @Override
+        public void event(String event) {
+            System.out.println("Received text event: " + event);
+            if (event.contains("OpenShop")) {
+                String[] split = event.split(",");
+                try {
+
+                    if(split.length < 2) {
+                        System.err.print("A dialog tried to open a shop but did not specify a name!");
+                        return;
+                    }
+
+                    Shops shops = Shops.valueOf(split[1]);
+                    ui.getShopWindow().generateShop(shops);
+                    dialog.setVisible(false);
+                    Gdx.input.setCursorCatched(false);
+                } catch (IllegalArgumentException ex) {
+                    System.err.print("A dialog tried to open a shop with the name " + split[1] + " but this shop type does not exist");
+                }
+
+            } else if(event.contains("GiftItem")) {
+                String[] split = event.split(",");
+                try {
+                    if(split.length < 3) {
+                        System.err.print("A dialog tried to gift an item but there were only " + split.length + " arguments insted of " + 3);
+                        return;
+                    }
+
+                    InventoryItem item = InventoryItem.valueOf(split[1]);
+                    player.getInventory().addItem(new InventorySlot(item,Integer.parseInt(split[2])));
+                    dialog.setVisible(false);
+                } catch (IllegalArgumentException ex) {
+                    System.err.print("A dialog tried to gift a item with the name " + split[1] + " but this item does not exist");
+                }
+            } else if(event.contains("GiftMoney")) {
+                String[] split = event.split(",");
+                try {
+                    if(split.length < 2) {
+                        System.err.print("A dialog tried to gift money but there was no money amount specified");
+                        return;
+                    }
+
+                    int moneyAmount = Integer.parseInt(split[1]);
+                    player.getInventory().moneyChange(moneyAmount);
+                    dialog.setVisible(false);
+                } catch (IllegalArgumentException ex) {
+                    System.err.print("A dialog tried to gift a item with the name " + split[1] + " but this item does not exist");
+                }
+            }
+
+        }
+
+        @Override
+        public void end() {
+            Group postion = dialogOptionsGroup;
+            for (int i = 0; i < postion.getChildren().size; i++) {
+                ImageTextButton imageTextButton = (ImageTextButton) postion.getChild(i);
+                if (!String.valueOf(imageTextButton.getText()).equalsIgnoreCase("")) {
+                    imageTextButton.setVisible(true);
+                    imageTextButton.setChecked(i == 0);
+                }
+            }
+
+            if (dialogHandler.isDialogFinished() && dialog.isVisible())
+                ui.displayNotification(3000, "Drücke eine beliebige Taste um fortzufahren...");
+        }
     }
 }

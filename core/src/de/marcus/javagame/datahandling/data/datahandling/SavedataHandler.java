@@ -5,10 +5,10 @@ import com.badlogic.gdx.Preferences;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.marcus.javagame.datahandling.Loadable;
-import de.marcus.javagame.testing.TestInventoryDoNotTouch;
 import de.marcus.javagame.datahandling.data.inventory.InventoryItem;
 import de.marcus.javagame.datahandling.data.inventory.InventorySlot;
 import de.marcus.javagame.managers.EntityManager;
+import de.marcus.javagame.testing.TestInventoryDoNotTouch;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +24,7 @@ import java.util.Map;
 public class SavedataHandler {
     public static String settingsFilePath = "Rising Mage/Settings/game.settings";
     public static final String userprofile = System.getenv("USERPROFILE");
-    public static String dataPath = String.format("%s/.prefs/Rising Mage/Data/",userprofile.replaceAll("\\\\","/"));
+    public static String dataPath = String.format("%s/.prefs/Rising Mage/Data/", userprofile.replaceAll("\\\\", "/"));
     private static Preferences preferences;
 
     /**
@@ -39,19 +39,24 @@ public class SavedataHandler {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        String name = toLoad.getSimpleName().toLowerCase();File file = new File(dataPath + name + ".json");
+        String name = toLoad.getSimpleName().toLowerCase();
+        File file = new File(dataPath + name + ".json");
+        String fileName = name + ".json";
 
         if (file.exists()) {
-            try {return mapper.readValue(file, toLoad);
+            try {
+                return mapper.readValue(file, toLoad);
+
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         } else {
             try {
-                //gets the no args constructor and creates a new object to return
-                return toLoad.getConstructor().newInstance();
-            } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
-                     NoSuchMethodException e) {
+                Files.createDirectories(new File(dataPath).toPath());
+                Files.copy(Gdx.files.internal("default_data_files/"+fileName).read(),file.toPath());
+
+                return load(toLoad);
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -90,7 +95,7 @@ public class SavedataHandler {
     }
 
     public static void test() {
-        preferences.putBoolean("test",true);
+        preferences.putBoolean("test", true);
         preferences.flush();
     }
 

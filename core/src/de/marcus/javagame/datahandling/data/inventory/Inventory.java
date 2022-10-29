@@ -75,24 +75,22 @@ public class Inventory extends Loadable {
         if (slot < inventory.size()) {
             InventorySlot remove = inventory.get(slot);
             int itemsLeft = remove.getItemCount() - amount;
-            System.out.println("items left " + itemsLeft);
 
             if (remove.getItem().isDeletable()) {
                 if (itemsLeft <= 0) {
-
-                    System.out.println("resetting texture at " + slot);
                     inventoryWindow.setItemAtPosition(slot, null, 0);
-
-                    ArrayList<Integer> toRemove = new ArrayList<>();
-                    for (int i = 0; i<hotbar.size();i++) {
-
-                        if(hotbar.get(i).getUuid().equals(remove.getUuid())) {
-                            System.out.println("Same uuid");
-                            inventoryWindow.setItemIntoHotbar(i,null,0);
-                            toRemove.add(i);
+                    boolean isThereItemOfType = false;
+                    for (InventorySlot inventorySlot : inventory) {
+                        if(remove.getItem().equals(inventorySlot.getItem()) && inventorySlot!=remove) {
+                            isThereItemOfType = true;
+                            break;
                         }
                     }
-                    removeHotbarItemsCorrectly(toRemove);
+
+                    if (!isThereItemOfType) {
+                        removeHotbarItemConnectionOfType(remove.getItem());
+                    }
+
                     inventory.remove(remove);
                     moveInventoryItems();
                 } else {
@@ -108,16 +106,53 @@ public class Inventory extends Loadable {
         }
     }
 
+
+    private void removeHotbarItemConnectionOfType(InventoryItem item) {
+        ArrayList<Integer> toRemove = new ArrayList<>();
+        for (int i = 0; i < hotbar.size(); i++) {
+            if(hotbar.get(i).getItem() != null && hotbar.get(i).getItem().equals(item)) {
+                toRemove.add(i);
+                System.out.println("removing item " + i + " type is " + item.name());
+
+            }
+        }
+        removeHotbarItemsCorrectly(toRemove);
+        hotbar.forEach(inventorySlot -> {
+            System.out.println("slot " + hotbar.indexOf(inventorySlot) + ": " + inventorySlot.getItem());
+        });
+    }
+
     private void removeHotbarItemsCorrectly(List<Integer> slotsToReplace) {
         for (int slot : slotsToReplace) {
-            hotbar.set(slot,new InventorySlot());
+            hotbar.set(slot, new InventorySlot());
+            if (slot != 9) {
+                inventoryWindow.setItemIntoHotbar(Math.abs(slot - 9), null, 0);
+            } else {
+                System.out.println("nine");
+                inventoryWindow.setItemIntoHotbar(0, null, 0);
+            }
         }
     }
 
     private void moveInventoryItems() {
         for (InventorySlot slot : inventory) {
             inventoryWindow.setItemAtPosition(inventory.indexOf(slot), slot.getTexture(), slot.getItemCount());
-            inventoryWindow.setItemAtPosition(inventory.indexOf(slot)+1,null,0);
+            inventoryWindow.setItemAtPosition(inventory.indexOf(slot) + 1, null, 0);
+        }
+    }
+
+    public void useItemFromHotbar(int hotbarSlot) {
+        InventorySlot hotbarSlotSlot = hotbar.get(hotbarSlot);
+        InventoryItem item = hotbarSlotSlot.getItem();
+        System.out.println("The item in this slot is " + (item == null ? "" : item.name()));
+
+        if(item != null) {
+            for (InventorySlot slot : inventory) {
+                if(item.equals(slot.getItem())) {
+                    useItem(inventory.indexOf(slot));
+                    break;
+                }
+            }
         }
     }
 
@@ -127,9 +162,9 @@ public class Inventory extends Loadable {
             int itemsLeft = slot.getItemCount() - 1;
 
             if (slot.getItem().isUsable()) {
-                if (itemsLeft < 0) {
-                    inventory.remove(selectedItem);
-
+                if (itemsLeft <= 0) {
+                    removeItem(selectedItem,MAX_ITEM_STACK);
+                    System.out.println("removing item as there is no more ");
                 } else {
                     slot.setItemCount(itemsLeft);
                     inventoryWindow.setItemAtPosition(selectedItem, slot.getTexture(), itemsLeft);
@@ -161,7 +196,7 @@ public class Inventory extends Loadable {
                 } else if (inventory.size() < INVENTORY_SIZE && i == inventory.size() - 1) {
                     System.out.println("Adding to new slot");
                     inventory.add(slot);
-                    inventoryWindow.setItemAtPosition(inventory.size()-1, slot.getTexture(), slot.getItemCount());
+                    inventoryWindow.setItemAtPosition(inventory.size() - 1, slot.getTexture(), slot.getItemCount());
                     return true;
                 }
             }
@@ -197,15 +232,19 @@ public class Inventory extends Loadable {
             InventorySlot inventorySlot = hotbar.get(i);
 
             if (inventorySlot.getItem() != null) {
-                inventoryWindow.setItemIntoHotbar(i, inventorySlot.getTexture(), inventorySlot.getItemCount());
+                if(doesInventoryHaveItemOfType(inventorySlot.getItem())) {
+
+                    inventoryWindow.setItemIntoHotbar(Math.abs(i-9), inventorySlot.getTexture(), inventorySlot.getItemCount());
+                } else {
+                    removeHotbarItemsCorrectly(List.of(i));
+                }
             }
         }
     }
 
     public boolean isItemEquitable(int selectedItem) {
         if (selectedItem < inventory.size()) {
-            boolean usable = inventory.get(selectedItem).getItem().isHotbarSelectable();
-            return usable;
+            return inventory.get(selectedItem).getItem().isHotbarSelectable();
         } else {
             return false;
         }
@@ -214,7 +253,6 @@ public class Inventory extends Loadable {
     public boolean moveItemToQuickbar(int selectedItem, int quickbarSlot) {
         if (selectedItem < inventory.size()) {
             InventorySlot slot = inventory.get(selectedItem);
-            System.out.println(hotbar.size());
 
             if (slot.getItem().isHotbarSelectable()) {
                 hotbar.set(quickbarSlot, slot);
@@ -231,6 +269,24 @@ public class Inventory extends Loadable {
 
     public void moneyChange(int change) {
         this.money += change;
-        System.out.println(money);
+    }
+
+    public boolean doesInventoryHaveItemOfType(InventoryItem item) {
+        for (InventorySlot slot : inventory) {
+            if(slot.getItem().equals(item)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int itemAmountOfType(InventoryItem item) {
+        int amount = 0;
+        for (InventorySlot slot : inventory) {
+            if(slot.getItem().equals(item)) {
+                amount += slot.getItemCount();
+            }
+        }
+        return amount;
     }
 }

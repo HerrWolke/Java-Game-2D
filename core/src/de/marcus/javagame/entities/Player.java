@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import de.marcus.javagame.datahandling.Loadable;
 import de.marcus.javagame.datahandling.data.datahandling.SavedataHandler;
 import de.marcus.javagame.datahandling.data.inventory.Inventory;
 import de.marcus.javagame.datahandling.data.inventory.InventoryItem;
@@ -14,7 +13,6 @@ import de.marcus.javagame.datahandling.data.inventory.InventorySlot;
 import de.marcus.javagame.datahandling.data.shop.Shops;
 import de.marcus.javagame.graphics.ui.UI;
 import de.marcus.javagame.graphics.ui.windows.InventoryWindow;
-import de.marcus.javagame.graphics.ui.UI;
 import de.marcus.javagame.managers.SoundManager;
 import de.marcus.javagame.managers.TextureManager;
 import lombok.Getter;
@@ -56,11 +54,11 @@ public class Player extends Creature {
 
 
     public Player(float posX, float posY) {
-        super(posX, posY, null, 4, 4, 4, 4, 5.0f, Arrays.asList(
-                TextureManager.getAnimation("standing_character", true, 0.25f),
-                TextureManager.getAnimation("running", true, 0.25f),
-                TextureManager.getAnimation("running", true, 0.25f),
-                TextureManager.getAnimation("running", true, 0.25f)
+        super(posX, posY, null, 4, 4, 4, 4, 8.0f, Arrays.asList(
+                TextureManager.getCharacterAnimation("standingback", true, 0.2f),
+                TextureManager.getCharacterAnimation("walkback", true, 0.2f),
+                TextureManager.getCharacterAnimation("walkfront", true, 0.2f),
+                TextureManager.getCharacterAnimation("walkright", true, 0.2f)
         ));
 
         inventory = SavedataHandler.load(Inventory.class);
@@ -71,19 +69,27 @@ public class Player extends Creature {
 
 
     }
-    public void createCollisionPlayer(){
+
+    public void tp(float x, float y) {
+        camera.position.set(position.x, position.y, 0);
+        camera.update();
+        playerBody.setTransform(x,y,0);
+        this.position.set(x, y);
+    }
+
+    public void createCollisionPlayer() {
         playerBodyDef = new BodyDef();
         circle = new CircleShape();
         playerFixtureDef = new FixtureDef();
         playerBodyDef.type = BodyDef.BodyType.DynamicBody;
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(0.5f,1);
+        shape.setAsBox(0.5f, 1);
 
 
         //TODO: Radius ist noch nicht richtig
         circle.setRadius(1f);
         //TODO: wahrscheinlich in Render
-        playerBodyDef.position.set(position.x+1.3f,position.y+1f);
+        playerBodyDef.position.set(position.x + 1.3f, position.y + 1f);
 
         playerFixtureDef.shape = shape;
         playerFixtureDef.density = 0f;
@@ -100,28 +106,30 @@ public class Player extends Creature {
         swordFixtureDef.density = 0f;
         swordFixtureDef.friction = 0.2f;
     }
-    public void setSwordPosition(){
-              if(super.getActiveAnimation() == 0 || super.getActiveAnimation() == 4){
-                  swordBodyDef.position.set(position.x +6f, position.y );
-              }else if(super.getActiveAnimation() == 3 || super.getActiveAnimation() == 5){
-                  swordBodyDef.position.set(position.x -6f, position.y );
-              }else if(super.getActiveAnimation() == 1 || super.getActiveAnimation() == 6){
-                  swordBodyDef.position.set(position.x , position.y +6f);
-              }else{
-                  swordBodyDef.position.set(position.x , position.y -6f);
-              }
+
+    public void setSwordPosition() {
+        if (super.getActiveAnimation() == 0 || super.getActiveAnimation() == 4) {
+            swordBodyDef.position.set(position.x + 6f, position.y);
+        } else if (super.getActiveAnimation() == 3 || super.getActiveAnimation() == 5) {
+            swordBodyDef.position.set(position.x - 6f, position.y);
+        } else if (super.getActiveAnimation() == 1 || super.getActiveAnimation() == 6) {
+            swordBodyDef.position.set(position.x, position.y + 6f);
+        } else {
+            swordBodyDef.position.set(position.x, position.y - 6f);
+        }
     }
 
     @Override
     public void update(float delta) {
         super.update(delta);
-        ui.update(this.getPosition().x,this.getPosition().y);
+        ui.update(this.getPosition().x, this.getPosition().y);
     }
 
     @Override
-    public void move(float x, float y, boolean attack1) {
-        super.move(x, y, attack);
-        playerBody.setLinearVelocity(new Vector2(x*2.5f,y*2.5f));
+    public void move(float x, float y, boolean attack1, Body body) {
+        playerBody.setLinearVelocity(new Vector2(x * getMovementSpeed(), y * getMovementSpeed()));
+        super.move(x, y, attack, playerBody);
+
         camera.position.set(position.x, position.y, 0);
         camera.update();
     }
@@ -134,9 +142,16 @@ public class Player extends Creature {
         ui.getHealthBar().setValue(health);
     }
 
+    @Override
+    public void setArmor(int armor) {
+        System.out.println("set armor to " + armor);
+        super.setArmor(armor);
+        ui.getArmorBar().setValue(armor);
+    }
+
     @JsonIgnore
     public void setUI(Stage stage) {
-        this.ui = new UI(stage,this);
+        this.ui = new UI(stage, this);
     }
 
     public void setInventoryWindow(InventoryWindow window) {
@@ -154,15 +169,13 @@ public class Player extends Creature {
         float h = Gdx.graphics.getHeight();
 
         camera = new OrthographicCamera();
-        camera = new OrthographicCamera(50, 50 * (h / w));
+        camera = new OrthographicCamera(50, 50 * (h/w));
         camera.position.set(getPosition().x, getPosition().y, 0);
         camera.update();
 
 
         return camera;
     }
-
-
 
 
     public void attack() {
@@ -191,14 +204,30 @@ public class Player extends Creature {
 
     public void useItem(InventoryItem item) {
         System.out.println("using the item");
-        StatusEffect effect = null;
-        try {
-            effect = (StatusEffect) item.getEffect().clone();
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
-        }
 
-        applyEffect(effect);
+        if (item.isUsable()) {
+            if (item.getEffect() != null) {
+                StatusEffect effect;
+                try {
+                    effect = (StatusEffect) item.getEffect().clone();
+                } catch (CloneNotSupportedException e) {
+                    throw new RuntimeException(e);
+                }
+
+                applyEffect(effect);
+            } else if (item.name().equals("ARMOR")) {
+                setArmor(Math.min(armor + 1, maxArmor));
+                SoundManager.playSoundEffect(SoundManager.SoundEffects.EQUIP_ARMOR,false);
+            }
+        }
+    }
+
+    public void respwawn() {
+        camera.position.set(position.x, position.y, 0);
+        camera.update();
+        setPosition(new Vector2(154,113));
+        playerBody.setTransform(154,113,0);
+        inventory.moneyChange((int) (inventory.money * -0.25));
     }
 
 
@@ -219,7 +248,8 @@ public class Player extends Creature {
         if (!b) {
             ui.displayNotification(2000, "Dein Inventar ist voll!");
         } else {
-            SoundManager.playSoundEffect(SoundManager.SoundEffects.BUY,false,0.8f);
+            System.out.println("playing sound");
+            SoundManager.playSoundEffect(SoundManager.SoundEffects.BUY, false, 0.25f);
         }
     }
 }

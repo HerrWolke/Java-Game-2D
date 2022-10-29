@@ -18,11 +18,10 @@ import static de.marcus.javagame.datahandling.data.datahandling.SavedataHandler.
 @Getter
 public class LoggingSystem {
     Logger logger = new Logger(this, Logger.Lvl.DEFAULT);
-    Logger debugger = new Logger(this,Logger.Lvl.DEBUG);
+    Logger debugger = new Logger(this, Logger.Lvl.DEBUG);
 
     public static String dateLogName;
     public static final String LOG_FOLDER = String.format("%s/.prefs/Rising Mage/Logs/",userprofile.replaceAll("\\\\","/"));
-
 
 
     public LoggingSystem() {
