@@ -5,25 +5,19 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.PolylineMapObject;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
-import de.marcus.javagame.datahandling.data.collisions.BodyData;
-import de.marcus.javagame.entities.Player;
+import de.marcus.javagame.framework.collisions.BodyData;
+import de.marcus.javagame.player.Player;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import static com.badlogic.gdx.physics.box2d.BodyDef.BodyType.StaticBody;
 
@@ -37,7 +31,7 @@ public class GameWorld {
     World world;
     TiledMap innenRaum1,innenRaum2,innenRaum3,tiledMap,dungeonEingang,boss,dungeonRechts,dungeonLinks,mine1,mine2;
     int screen = 0;
-    OrthogonalTiledMapRenderer renderer;
+    OrthogonalTiledMapRendererBleeding renderer;
 
     public boolean load2 = false;
 
@@ -59,7 +53,7 @@ public class GameWorld {
         mine2=tmxMapLoader.load("word_tmx/mine2.tmx");;
 
         //mine = tmxMapLoader.load("word_tmx/Innenraum1.tmx");
-        renderer = new OrthogonalTiledMapRenderer(dungeonRechts, UNIT_SCALE);
+        renderer = new OrthogonalTiledMapRendererBleeding(dungeonRechts, UNIT_SCALE);
         renderer.setView(camera);
         //TODO: Kommentar wieder entfernen
         renderer.setMap(tiledMap);
@@ -89,7 +83,7 @@ public class GameWorld {
             bodyDef.type = StaticBody;
             body = world.createBody(bodyDef);
             body.createFixture(shape,1.0f);
-            body.setUserData(new BodyData(true,false));
+            body.setUserData(new BodyData(true,false, BodyData.CollisionType.WALL));
             if(layer.equals("Eingang")){
                     eingang.put(body,new Eingang(v.x,v.y,mapt));
             }

@@ -2,7 +2,7 @@ package de.marcus.javagame;
 
 import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
-import de.marcus.javagame.testing.JavaGame;
+import de.marcus.javagame.z_testing.JavaGame;
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.uikit.UIApplication;
 
